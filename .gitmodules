@@ -1,0 +1,14 @@
+[submodule "src/camera_info_manager_py"]
+	path = src/camera_info_manager_py
+	url = https://github.com/ammarajmal/camera_info_manager_py
+[submodule "src/vision_msgs"]
+	path = src/vision_msgs
+	url = https://github.com/ammarajmal/vision_msgs
+	branch = noetic-devel
+[submodule "src/image_pipeline"]
+	path = src/image_pipeline
+	url = https://github.com/ammarajmal/image_pipeline
+	branch = noetic
+[submodule "src/fiducials"]
+	path = src/fiducials
+	url = https://github.com/ammarajmal/fiducials
