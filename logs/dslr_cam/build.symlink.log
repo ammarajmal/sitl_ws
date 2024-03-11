@@ -1,4 +1,4 @@
-Symlinking /home/sitl3/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig.cmake
-Symlinking /home/sitl3/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig-version.cmake
-Symlinking /home/sitl3/sitl_ws/devel/lib/pkgconfig/dslr_cam.pc
-Symlinking /home/sitl3/sitl_ws/devel/lib/dslr_cam/dslr_cam_node
+Linked: (/home/sitl3/sitl_ws/devel/.private/dslr_cam/share/dslr_cam/cmake/dslr_camConfig.cmake, /home/sitl3/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig.cmake)
+Linked: (/home/sitl3/sitl_ws/devel/.private/dslr_cam/share/dslr_cam/cmake/dslr_camConfig-version.cmake, /home/sitl3/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig-version.cmake)
+Linked: (/home/sitl3/sitl_ws/devel/.private/dslr_cam/lib/pkgconfig/dslr_cam.pc, /home/sitl3/sitl_ws/devel/lib/pkgconfig/dslr_cam.pc)
+Linked: (/home/sitl3/sitl_ws/devel/.private/dslr_cam/lib/dslr_cam/dslr_cam_node, /home/sitl3/sitl_ws/devel/lib/dslr_cam/dslr_cam_node)

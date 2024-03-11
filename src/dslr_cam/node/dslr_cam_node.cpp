@@ -55,15 +55,18 @@ public:
         if (!cap_.open(device_id_, cv::CAP_V4L2)) {
             throw std::runtime_error("Could not open video device: " + device_id_);
         }
-        cap_.set(cv::CAP_PROP_FRAME_WIDTH, image_width_);
-        cap_.set(cv::CAP_PROP_FRAME_HEIGHT, image_height_);
-            // Attempt to set the camera to use MJPG by specifying the FourCC code
-    // Note: The actual effectiveness of this command can vary by camera and driver support
-    bool isSetMJPG = cap_.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
+        //             // Attempt to set the camera to use MJPG by specifying the FourCC code
+        // // Note: The actual effectiveness of this command can vary by camera and driver support
+        // bool isSetMJPG = cap_.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
 
-    if (!isSetMJPG) {
-        ROS_WARN("Unable to set camera to MJPG format; defaulting to camera's current setting.");
-    }
+        // bool result_width = cap_.set(cv::CAP_PROP_FRAME_WIDTH, image_width_);
+        // bool result_height = cap_.set(cv::CAP_PROP_FRAME_HEIGHT, image_height_);
+        // if (!result_width || !result_height) {
+        //     ROS_WARN("Failed to set camera resolution to %dx%d.", image_width_, image_height_);
+        // }
+    // if (!isSetMJPG) {
+    //     ROS_WARN("Unable to set camera to MJPG format; defaulting to camera's current setting.");
+    // }
     }
 
     void InitCameraInfoManager() {
@@ -119,6 +122,8 @@ void AdvertiseTopics() {
         cv::Mat frame;
         if (cap_.read(frame)) { // Capture a frame
             try {
+                cv::resize(frame, frame, cv::Size(image_width_, image_height_), 0, 0, cv::INTER_LINEAR);
+
                 cv_bridge::CvImage cv_image;
                 cv_image.image = frame;
                 cv_image.encoding = sensor_msgs::image_encodings::BGR8;
