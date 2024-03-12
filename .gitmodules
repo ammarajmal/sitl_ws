@@ -9,6 +9,4 @@
 	path = src/image_pipeline
 	url = https://github.com/ammarajmal/image_pipeline
 	branch = noetic
-[submodule "src/fiducials"]
-	path = src/fiducials
-	url = https://github.com/ammarajmal/fiducials
+
