@@ -45,8 +45,8 @@ public:
         nh_private_.param("camera_name", camera_name_, std::string("usb_cam"));
         nh_private_.param("device_id", device_id_, std::string("/dev/video0"));
         nh_private_.param("camera_frame_id", camera_frame_id_, std::string("usb_cam"));
-        nh_private_.param("image_width", image_width_, 1280);
-        nh_private_.param("image_height", image_height_, 720);
+        nh_private_.param("image_width", image_width_, 1920);
+        nh_private_.param("image_height", image_height_, 1080);
         nh_private_.param("frame_rate", frame_rate_, 60);
         nh_private_.param("calibration_file", calibration_file_, std::string(""));
     }
@@ -124,16 +124,22 @@ void AdvertiseTopics() {
             try {
                 cv::resize(frame, frame, cv::Size(image_width_, image_height_), 0, 0, cv::INTER_LINEAR);
 
+                ros::Time current_time = ros::Time::now();
+
                 cv_bridge::CvImage cv_image;
                 cv_image.image = frame;
                 cv_image.encoding = sensor_msgs::image_encodings::BGR8;
                 sensor_msgs::Image ros_image;
                 cv_image.toImageMsg(ros_image);
                 ros_image.header.frame_id = camera_frame_id_;
+                ros_image.header.stamp = current_time; // Use the time at which the image was captured
                 pub_image_raw_.publish(ros_image);
 
                 sensor_msgs::CameraInfo camera_info = cam_info_manager_->getCameraInfo();
                 camera_info.header.frame_id = camera_frame_id_;
+                camera_info.header.stamp = current_time; // Use the time at which the image was captured
+                camera_info.width = image_width_;
+                camera_info.height = image_height_;
                 pub_camera_info_.publish(camera_info);
             } catch (const std::exception& e) {
                 ROS_ERROR("Failed to publish image: %s", e.what());
