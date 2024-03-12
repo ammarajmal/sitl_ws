@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
 )
 find_package(OpenCV REQUIRED)
+# find_package()
 
 catkin_package(
 #  LIBRARIES dslr_cam
