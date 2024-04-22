@@ -64,5 +64,5 @@
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "cmake.sourceDirectory": "/home/sitl3/sitl_ws/build/catkin_tools_prebuild"
+  "cmake.sourceDirectory": "/home/sitl1/sitl_ws/src/aruco_ros/aruco/src/aruco"
 }
