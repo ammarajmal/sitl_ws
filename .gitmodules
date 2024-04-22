@@ -11,8 +11,5 @@
 	branch = noetic
 [submodule "src/fiducials"]
 	path = src/fiducials
-	url = https://github.com/ammarajmal/fiducials
-[submodule "src/aruco_ros"]
-	path = src/aruco_ros
-	url = https://github.com/pal-robotics/aruco_ros
-	branch = noetic-devel
+	url =https://github.com/ammarajmal/fiducials
+

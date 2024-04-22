@@ -1,4 +1,4 @@
-prefix=/home/ammar/sitl_ws/devel/.private/dslr_cam
+prefix=/home/sitl3/sitl_ws/devel/.private/dslr_cam
 
 Name: dslr_cam
 Description: Description of dslr_cam
