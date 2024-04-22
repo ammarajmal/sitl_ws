@@ -3,7 +3,6 @@
   <arg name="camera_name" default="sony_cam1"/>
   <arg name="camera_id" default="0"/>
   <arg name="device_ip" default="192.168.1.201"/>
-  <arg name="calib_file" default="sony_cam1"/>
   <arg name="camera_calib" default="file://$(find dslr_cam)/config/$(arg camera_name)_info.yaml"/>
 
   <node name="$(arg camera_name)_node"
