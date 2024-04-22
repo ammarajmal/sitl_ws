@@ -1,6 +1,8 @@
+# Ignore build artifacts
 devel/
 logs/
 build/
+*.log
 bin/
 lib/
 msg_gen/

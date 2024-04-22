@@ -45,8 +45,8 @@ public:
         nh_private_.param("camera_name", camera_name_, std::string("usb_cam"));
         nh_private_.param("device_id", device_id_, std::string("/dev/video0"));
         nh_private_.param("camera_frame_id", camera_frame_id_, std::string("usb_cam"));
-        nh_private_.param("image_width", image_width_, 1280);
-        nh_private_.param("image_height", image_height_, 720);
+        nh_private_.param("image_width", image_width_, 1920);
+        nh_private_.param("image_height", image_height_, 1080);
         nh_private_.param("frame_rate", frame_rate_, 60);
         nh_private_.param("calibration_file", calibration_file_, std::string(""));
     }
@@ -55,15 +55,18 @@ public:
         if (!cap_.open(device_id_, cv::CAP_V4L2)) {
             throw std::runtime_error("Could not open video device: " + device_id_);
         }
-        cap_.set(cv::CAP_PROP_FRAME_WIDTH, image_width_);
-        cap_.set(cv::CAP_PROP_FRAME_HEIGHT, image_height_);
-            // Attempt to set the camera to use MJPG by specifying the FourCC code
-    // Note: The actual effectiveness of this command can vary by camera and driver support
-    bool isSetMJPG = cap_.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
+        //             // Attempt to set the camera to use MJPG by specifying the FourCC code
+        // // Note: The actual effectiveness of this command can vary by camera and driver support
+        // bool isSetMJPG = cap_.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M', 'J', 'P', 'G'));
 
-    if (!isSetMJPG) {
-        ROS_WARN("Unable to set camera to MJPG format; defaulting to camera's current setting.");
-    }
+        // bool result_width = cap_.set(cv::CAP_PROP_FRAME_WIDTH, image_width_);
+        // bool result_height = cap_.set(cv::CAP_PROP_FRAME_HEIGHT, image_height_);
+        // if (!result_width || !result_height) {
+        //     ROS_WARN("Failed to set camera resolution to %dx%d.", image_width_, image_height_);
+        // }
+    // if (!isSetMJPG) {
+    //     ROS_WARN("Unable to set camera to MJPG format; defaulting to camera's current setting.");
+    // }
     }
 
     void InitCameraInfoManager() {
@@ -119,16 +122,24 @@ void AdvertiseTopics() {
         cv::Mat frame;
         if (cap_.read(frame)) { // Capture a frame
             try {
+                cv::resize(frame, frame, cv::Size(image_width_, image_height_), 0, 0, cv::INTER_LINEAR);
+
+                ros::Time current_time = ros::Time::now();
+
                 cv_bridge::CvImage cv_image;
                 cv_image.image = frame;
                 cv_image.encoding = sensor_msgs::image_encodings::BGR8;
                 sensor_msgs::Image ros_image;
                 cv_image.toImageMsg(ros_image);
                 ros_image.header.frame_id = camera_frame_id_;
+                ros_image.header.stamp = current_time; // Use the time at which the image was captured
                 pub_image_raw_.publish(ros_image);
 
                 sensor_msgs::CameraInfo camera_info = cam_info_manager_->getCameraInfo();
                 camera_info.header.frame_id = camera_frame_id_;
+                camera_info.header.stamp = current_time; // Use the time at which the image was captured
+                camera_info.width = image_width_;
+                camera_info.height = image_height_;
                 pub_camera_info_.publish(camera_info);
             } catch (const std::exception& e) {
                 ROS_ERROR("Failed to publish image: %s", e.what());

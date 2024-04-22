@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/dslr_cam
+CMAKE_SOURCE_DIR = /home/sitl3/sitl_ws/src/dslr_cam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/dslr_cam
+CMAKE_BINARY_DIR = /home/sitl3/sitl_ws/build/dslr_cam
 
 # Utility rule file for sensor_msgs_generate_messages_nodejs.
 
@@ -67,6 +67,6 @@ CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/clean:
 .PHONY : CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/clean
 
 CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/depend:
-	cd /home/ammar/sitl_ws/build/dslr_cam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/dslr_cam /home/ammar/sitl_ws/src/dslr_cam /home/ammar/sitl_ws/build/dslr_cam /home/ammar/sitl_ws/build/dslr_cam /home/ammar/sitl_ws/build/dslr_cam/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl3/sitl_ws/build/dslr_cam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl3/sitl_ws/src/dslr_cam /home/sitl3/sitl_ws/src/dslr_cam /home/sitl3/sitl_ws/build/dslr_cam /home/sitl3/sitl_ws/build/dslr_cam /home/sitl3/sitl_ws/build/dslr_cam/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/depend
 

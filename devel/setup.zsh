@@ -1,1 +1,1 @@
-/home/ammar/sitl_ws/devel/.private/catkin_tools_prebuild/setup.zsh
+/home/sitl3/sitl_ws/devel/.private/catkin_tools_prebuild/setup.zsh
