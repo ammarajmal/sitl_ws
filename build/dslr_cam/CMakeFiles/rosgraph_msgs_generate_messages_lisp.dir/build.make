@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl3/sitl_ws/src/dslr_cam
+CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/dslr_cam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl3/sitl_ws/build/dslr_cam
+CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/dslr_cam
 
 # Utility rule file for rosgraph_msgs_generate_messages_lisp.
 
@@ -67,6 +67,6 @@ CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean:
 .PHONY : CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
 
 CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend:
-	cd /home/sitl3/sitl_ws/build/dslr_cam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl3/sitl_ws/src/dslr_cam /home/sitl3/sitl_ws/src/dslr_cam /home/sitl3/sitl_ws/build/dslr_cam /home/sitl3/sitl_ws/build/dslr_cam /home/sitl3/sitl_ws/build/dslr_cam/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl1/sitl_ws/build/dslr_cam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/dslr_cam /home/sitl1/sitl_ws/src/dslr_cam /home/sitl1/sitl_ws/build/dslr_cam /home/sitl1/sitl_ws/build/dslr_cam /home/sitl1/sitl_ws/build/dslr_cam/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend
 

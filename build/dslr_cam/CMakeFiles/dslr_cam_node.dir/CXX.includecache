@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/sitl3/sitl_ws/src/dslr_cam/node/dslr_cam_node.cpp
+/home/sitl1/sitl_ws/src/dslr_cam/node/dslr_cam_node.cpp
 ros/ros.h
 -
 boost/shared_ptr.hpp

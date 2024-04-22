@@ -1,0 +1,33 @@
+<launch>
+
+<arg name="launch_nuc" default="sony_cam1"/>
+
+<group if = "$(eval 'launch_nuc' == 'sony_cam1')">
+    <include file="$(find dslr_cam)/elaunch/camera.launch">
+        <arg name="camera_name" value="sony_cam1"/>
+        <arg name="device_ip" value="192.168.1.201"/>
+    </include>
+</group>
+
+<group if = "$(eval 'launch_nuc' == 'sony_cam2')">
+    <include file="$(find dslr_cam)/launch/camera.launch">
+        <arg name="camera_name" value="sony_cam2"/>
+        <arg name="device_ip" value="192.168.1.202"/>
+    </include>
+</group>
+
+<group if = "$(eval 'launch_nuc' == 'sony_cam3')">
+    <include file="$(find dslr_cam)/launch/camera.launch">
+        <arg name="camera_name" value="sony_cam3"/>
+        <arg name="device_ip" value="192.168.1.203"/>
+    </include>
+</group>
+
+<group if = "$(eval 'launch_nuc' == 'sony_cam4')">
+    <include file="$(find dslr_cam)/launch/camera.launch">
+        <arg name="camera_name" value="sony_cam4"/>
+        <arg name="device_ip" value="192.168.1.204"/>
+    </include>
+</group>
+
+</launch>
