@@ -1,5 +1,5 @@
 <launch>
-    <arg name="camera_name" default="sony_cam1_node" />
+    <arg name="camera_name" default="sony_cam1" />
     <node   name="$(arg camera_name)_view"
             pkg="dslr_cam"
             type="camera_view.py"

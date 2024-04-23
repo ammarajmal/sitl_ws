@@ -46,14 +46,13 @@ class ClientGUI(customtkinter.CTk):
         # Path management for Launch files
         # ********************************************************************************
         self.launch_path = rospkg.RosPack().get_path(self.package) + '/launch/'
-        # self.prev_cam_path = rospkg.RosPack().get_path('gige_cam_driver') + '/launch/'
         # self.csv_folder_path = rospkg.RosPack().get_path('gige_cam_driver') + '/csvfiles/'
         self.detect_launch_path = rospkg.RosPack().get_path('aruco_detect') + '/launch/'
 
         self.uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
         self.local_nuc_launch = f'{self.launch_path}use.launch'
-        self.view_launch = f"{self.prev_cam_path}viewcam.launch"
-        self.calib_launch = f"{self.prev_cam_path}calib.launch"
+        self.view_launch = f"{self.launch_path}viewcamera.launch"
+        self.calib_launch = f"{self.launch_path}calib.launch"
         self.detect_launch = f"{self.detect_launch_path}local_detect_cam.launch"
 
         self.title(f"CAMERA {self.nuc_number} Dashboard")
