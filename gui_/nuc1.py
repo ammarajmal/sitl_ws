@@ -97,9 +97,9 @@ class ClientGUI(customtkinter.CTk):
         self.right_top_frame_camera_label = None
         self.right_top_frame_camera_result_label = None
         self.right_bottom_frame = None
-        self.right_bottom_frame_detect_result_ans_label = tk.Label(
-            self, text="Initializing...")
-        self.right_bottom_frame_detect_result_ans_label.pack()
+        # self.right_bottom_frame_detect_result_ans_label = tk.Label(
+        #     self)
+        # self.right_bottom_frame_detect_result_ans_label.pack()
         self.left_bottom_frame = customtkinter.CTkFrame(self.left_frame)
         self.left_bottom_frame_label = customtkinter.CTkLabel(
             self.left_bottom_frame)
@@ -195,16 +195,16 @@ class ClientGUI(customtkinter.CTk):
     def _create_widgets(self) -> None:
         """Starting point of the GUI"""
         self._create_left_frame()
-        self._create_middle_frame()
-        self._create_right_frame()
+        # self._create_middle_frame()
+        # self._create_right_frame()
 
     def _create_left_frame(self) -> None:
         """ Camera Settings Frame """
         self.left_frame = tk.Frame(self, bg=themes[COLOR_SELECT][1])
         self.left_frame.place(relx=0, rely=0, relwidth=0.33, relheight=1)
         self._create_left_top_frame()
-        self._create_left_bottom_frame()
-        self._create_left_exit_button()
+        # self._create_left_bottom_frame()
+        # self._create_left_exit_button()
 
     def _create_middle_frame(self) -> None:
         """ Detection Settings Frame """
@@ -235,7 +235,7 @@ class ClientGUI(customtkinter.CTk):
         self._create_left_bottom_frame_content()
     def _create_left_exit_button(self) -> None:
         """ Exit Button """
-        self.left_exit_button = customtkinter.CTkButton(self.left_frame, text="Exit", fg_color=themes["red"], command=self.destroy_routine)
+        self.left_exit_button = customtkinter.CTkButton(self.left_frame, text="Exit Program", fg_color=themes["red"], command=self.destroy_routine)
         self.left_exit_button.place(relx=0.5, rely=0.90, anchor="center")
     def _create_middle_top_frame(self) -> None:
         """ routine to create the top frame of the left panel of GUI"""
