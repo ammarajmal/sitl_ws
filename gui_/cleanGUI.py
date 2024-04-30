@@ -89,7 +89,7 @@ class NodeGUI(customtkinter.CTk):
 
         self.left_top_frame_start_cam_button = customtkinter.CTkButton(
             self.left_top_frame, text="Start Camera",
-            command=lambda: self._start_cam_button_event(self.nuc_number, False))
+            command=self._start_cam_button_event(self.nuc_number))
         self.left_top_frame_start_cam_button.place(
             relx=0.5, rely=0.35, anchor="center")
 
@@ -112,7 +112,7 @@ class NodeGUI(customtkinter.CTk):
         self.left_top_frame_start_view_cam_button = customtkinter.CTkButton(
             self.left_top_frame, text="Start & View Camera", border_width=2,
             border_color=themes['red'][0],
-            command=lambda: self._start_cam_button_event(self.nuc_number, True))
+            command=self._start_view_cam_button_event(self.nuc_number))
         self.left_top_frame_start_view_cam_button.place(
             relx=0.5, rely=0.80, anchor="center")
 
@@ -155,22 +155,27 @@ class NodeGUI(customtkinter.CTk):
         rospy.loginfo(f"Camera {number} view started successfully")
         rospy.sleep(0.5)
         
-    def _start_cam_button_event(self, nuc_number: str, view: bool) -> None:
+    def _start_cam_button_event(self, nuc_number: str) -> None:
         try:
-            camera_topic = f'/{self.node_name}/image_raw'
-            camera_active_check = self.check_active_topic(camera_topic)
             if self.running_processes.get(f'{self.node_name}_cam_driver') is not None: # i.e., camera is running
-            if camera_active_check == "True": # i.e., camera is running
                 rospy.loginfo(f"Camera {nuc_number} already running, Now stopping it")
-                if view:
+                if self.running_processes.get(f'{self.node_name}_view_driver') is not None: # i.e., view is running, so stop both
+                    rospy.loginfo(f"Stopping camera view {nuc_number}")
                     try:
                         self._cleanup_processes(f'{self.node_name}_view_driver')
                     except KeyError:
                         print("Error: View driver not found.")
                     else:
-                        self.left_top_frame_start_view_cam_button.configure(
-                            text="Start & View Camera", fg_color=themes['blue'])
-                else:
+                        try:
+                            self._cleanup_processes(f'{self.node_name}_cam_driver')
+                        except KeyError:
+                            print("Error: Camera driver not found.")
+                        else:
+                            self.left_top_frame_start_cam_button.configure(
+                                text="Start Camera", fg_color=themes['blue'])
+                            self.left_top_frame_view_cam_button.configure(
+                                text="View Camera", fg_color='gray')
+                else: # i.e., camera is running but view is not running, so only stop the camera
                     try:
                         self._cleanup_processes(f'{self.node_name}_cam_driver')
                     except KeyError:
@@ -178,44 +183,16 @@ class NodeGUI(customtkinter.CTk):
                     else:
                         self.left_top_frame_start_cam_button.configure(
                             text="Start Camera", fg_color=themes['blue'])
-                        
-            if camera_active_check == "False": # i.e., camera is not running
+            else: # i.e., camera is not running
                 rospy.loginfo(f"Camera {nuc_number} is not running, Now starting it")
                 self._start_camera(nuc_number)
-                if view:
-                    rospy.loginfo(f"Viewing camera {nuc_number}")
-                    try:
-                        self._view_camera(nuc_number)
-                    except roslaunch.RLException as e:
-                        print(f"Error: Failed to launch camera view: {str(e)}")
-                    else:
-                        self.left_top_frame_start_view_cam_button.configure(
-                            text="Stop View & Camera", fg_color=themes['red'])
-                else:
-                    self.left_top_frame_start_cam_button.configure(
+                self.left_top_frame_start_cam_button.configure(
                     text="Stop Camera", fg_color=themes['red'])
-                # update the camera spceifications tab with the camera specs
-                # self._update_camera_specs()
-                # self._check_camera_fps()
-            if camera_active_check == "Error": # i.e., error in checking the camera status (May be due to ROS not running)
-                print(f"{camera_active_check}! Could not perform action.")
-            # if view:
-            #     print(f"Starting camera {nuc_number} and viewing")
-            # else:
-            #     print(f"Starting camera {nuc_number}")
         except Exception as e:
             print('Error! Close GUI and try again after launching ROS.')
             print(f"Error: {e}")
-    def check_active_topic(self, topic_name):
-        """Checks whether a topic is currently running/active or not.. """
-        try:
-            all_topics = rospy.get_published_topics()
-            if topic_name in [topic[0] for topic in all_topics]:
-                return "True"
-            else:
-                return "False"
-        except:
-            return "Error"
+    def _start_view_cam_button_event(self, nuc_number: str) -> None:
+        print("View Camera Button Clicked")
     
     def _view_cam_button_event(self, nuc_number: str) -> None:
         """Starts the camera view node"""
