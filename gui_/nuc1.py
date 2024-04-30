@@ -195,16 +195,16 @@ class ClientGUI(customtkinter.CTk):
     def _create_widgets(self) -> None:
         """Starting point of the GUI"""
         self._create_left_frame()
-        # self._create_middle_frame()
-        # self._create_right_frame()
+        self._create_middle_frame()
+        self._create_right_frame()
 
     def _create_left_frame(self) -> None:
         """ Camera Settings Frame """
         self.left_frame = tk.Frame(self, bg=themes[COLOR_SELECT][1])
         self.left_frame.place(relx=0, rely=0, relwidth=0.33, relheight=1)
         self._create_left_top_frame()
-        # self._create_left_bottom_frame()
-        # self._create_left_exit_button()
+        self._create_left_bottom_frame()
+        self._create_left_exit_button()
 
     def _create_middle_frame(self) -> None:
         """ Detection Settings Frame """
@@ -779,7 +779,6 @@ class ClientGUI(customtkinter.CTk):
                 finally:
                     self.left_top_frame_view_nuc_local_cam_button.configure(text="Start & View Camera",
                                                                             fg_color=themes[COLOR_SELECT][0])
-
             try:
                 self.running_processes[f'camera_{nuc_machine}_driver'].shutdown(
                 )
