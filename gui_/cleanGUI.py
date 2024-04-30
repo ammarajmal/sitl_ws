@@ -2,15 +2,14 @@
 # -*- coding: utf-8 -*-
 
 
-import subprocess
+# import subprocess
 import tkinter as tk
-from typing import Tuple
 import customtkinter
 import roslaunch.rlutil
 import rospy
 import rospkg
 import roslaunch
-import _backend_
+# import _backend_
 
 from fiducial_msgs.msg import FiducialTransformArray
 from fast_cam.msg import CameraSpecs
@@ -49,12 +48,12 @@ class NodeGUI(customtkinter.CTk):
         self.var_dictionary = tk.StringVar(self, "0")  # dict 5x5 (1000)
         # path management
         self.launch_path = rospkg.RosPack().get_path(self.package) + '/launch/'
-        # self.detect_launch_path = rospkg.RosPack().get_path('aruco_detect') + '/launch/'
+        self.detect_launch_path = rospkg.RosPack().get_path('aruco_detect') + '/launch/'
         self.uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
         self.cam_launch = f'{self.launch_path}use.launch'
         self.view_launch = f"{self.launch_path}viewcamera.launch"
         self.calib_launch = f"{self.launch_path}calib.launch"
-        # self.detect_launch = f"{self.detect_launch_path}local_detect_cam.launch"
+        self.detect_launch = f"{self.detect_launch_path}use_aruco.launch"
 
         # process management
         self.running_processes = {}
@@ -81,7 +80,7 @@ class NodeGUI(customtkinter.CTk):
             relx=0.10, rely=0.08, relwidth=0.8, relheight=0.38)
         self.create_left_top_frame_content()
     def create_left_top_frame_content(self) -> None:
-        """Creates the content of the top frame of the left frame"""
+        """ Starting and Viewing Camera """
         # Camera Start Stop and View
         self.left_top_frame_label = customtkinter.CTkLabel(
             self.left_top_frame, text=f"START CAMERA - NUC {self.nuc_number}")
@@ -96,7 +95,7 @@ class NodeGUI(customtkinter.CTk):
         self.left_top_frame_start_cam_label_number = customtkinter.CTkLabel(
             self.left_top_frame, text="①", font=customtkinter.CTkFont(size=20), text_color=themes[COLOR_SELECT][0])
         self.left_top_frame_start_cam_label_number.place(
-            relx=0.08, rely=0.35, anchor="center")
+            relx=0.1, rely=0.35, anchor="center")
 
         self.left_top_frame_view_cam_button = customtkinter.CTkButton(
             self.left_top_frame, text="View Camera", fg_color='gray',
@@ -107,7 +106,7 @@ class NodeGUI(customtkinter.CTk):
         self.left_top_frame_view_cam_label_number = customtkinter.CTkLabel(
             self.left_top_frame, text="②", font=customtkinter.CTkFont(size=20), text_color=themes[COLOR_SELECT][0])
         self.left_top_frame_view_cam_label_number.place(
-            relx=0.08, rely=0.55, anchor="center")
+            relx=0.1, rely=0.55, anchor="center")
 
         self.left_top_frame_start_view_cam_button = customtkinter.CTkButton(
             self.left_top_frame, text="Start & View Camera", border_width=2,
@@ -121,13 +120,74 @@ class NodeGUI(customtkinter.CTk):
         self.left_bottom_frame = customtkinter.CTkFrame(self.left_frame)
         self.left_bottom_frame.place(
             relx=0.10, rely=0.50, relwidth=0.8, relheight=0.32)
-        # self._create_left_bottom_frame_content()
+        self._create_left_bottom_frame_content()
+    def _create_left_bottom_frame_content(self) -> None:
+        """ Detection of the Marker """
+        self.left_bottom_frame_label = customtkinter.CTkLabel(
+            self.left_bottom_frame, text=f"DETECT & CALIBRATE - NUC {self.nuc_number}")
+        self.left_bottom_frame_label.place(relx=0.5, rely=0.17, anchor="center")
+        self.left_bottom_frame_detect_button = customtkinter.CTkButton(
+            self.left_bottom_frame, text="Start Detection", fg_color=themes[COLOR_SELECT][0],
+            command=lambda: self._detect_marker_button_event(self.nuc_number))
+        self.left_bottom_frame_detect_button.place(
+            relx=0.5, rely=0.40, anchor="center")
+        self.left_bottom_frame_detect_label_number = customtkinter.CTkLabel(
+            self.left_bottom_frame, text="③", font=customtkinter.CTkFont(size=20), text_color=themes[COLOR_SELECT][0])
+        self.left_bottom_frame_detect_label_number.place(
+            relx=0.1, rely=0.40, anchor="center")
+        self.left_bottom_frame_calib_button = customtkinter.CTkButton(
+            self.left_bottom_frame, text="Calibrate Camera", fg_color=themes[COLOR_SELECT][0],
+            command=lambda: self._calibrate_camera_button_event(self.nuc_number))
+        self.left_bottom_frame_calib_button.place(
+            relx=0.5, rely=0.7, anchor="center")
+        self.left_bottom_frame_calib_label_number = customtkinter.CTkLabel(
+            self.left_bottom_frame, text="④", font=customtkinter.CTkFont(size=20), text_color=themes[COLOR_SELECT][0])
+        self.left_bottom_frame_calib_label_number.place(
+            relx=0.1, rely=0.7, anchor="center")
+    def _detect_marker_button_event(self, nuc_number: str) -> None:
+        """Starts the marker detection node"""
+        print("Detect Marker Button Clicked")
+        if self.running_processes.get(f'{self.node_name}_detect_driver') is not None:
+            rospy.loginfo(f"Detection already running, Now stopping it")
+            try:
+                self._cleanup_processes(f'{self.node_name}_detect_driver')
+            except KeyError:
+                print("Error: Detection driver not found.")
+            else:
+                self.left_bottom_frame_detect_button.configure(
+                    text="Start Detection", fg_color=themes[COLOR_SELECT][0])
+        else:
+            if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
+                print(f"Camera {nuc_number} is not running, Please start the camera first")
+                return
+            rospy.loginfo(f"Starting detection for camera {nuc_number}")
+            self._detect_marker()
+            self.left_bottom_frame_detect_button.configure(
+                text="Stop Detection", fg_color=themes['red'])
+
+            
+
     def create_left_exit_button(self) -> None:
         """Creates the exit button of the left frame"""
-        """ Exit Button """
         self.left_exit_button = customtkinter.CTkButton(self.left_frame, text="Exit Program", fg_color=themes["red"], command=self.destroy_routine)
         self.left_exit_button.place(relx=0.5, rely=0.90, anchor="center")
-
+    def _detect_marker(self) -> None:
+        detect_launch_args = [
+            f"{self.detect_launch}",
+            f"launch_nuc:={self.node_name}",
+            f"fiducial_len:={self.marker_dim}",
+            f"dictionary:={self.marker_dict}"]
+        detect_roslaunch_file = [(
+            roslaunch.rlutil.resolve_launch_arguments(detect_launch_args)[0],
+            detect_launch_args[1:])]
+        detect_driver = roslaunch.parent.ROSLaunchParent(
+            self.uuid, detect_roslaunch_file)
+        detect_driver.start()
+        self.running_processes[f'{self.node_name}_detect_driver'] = detect_driver
+        rospy.loginfo(f"Detection started successfully")
+        rospy.sleep(0.5)
+        
+        
     def _start_camera(self, number:str)-> None:
         cam_launch_args = [
             f"{self.cam_launch}",
@@ -154,7 +214,6 @@ class NodeGUI(customtkinter.CTk):
         self.running_processes[f'{self.node_name}_view_driver'] = view_driver
         rospy.loginfo(f"Camera {number} view started successfully")
         rospy.sleep(0.5)
-        
     def _start_cam_button_event(self, nuc_number: str) -> None:
         try:
             if self.running_processes.get(f'{self.node_name}_cam_driver') is not None: # i.e., camera is running
@@ -235,9 +294,6 @@ class NodeGUI(customtkinter.CTk):
                     text="Stop View Camera", fg_color=themes['red'])
                 self.left_top_frame_start_cam_button.configure(
                     text="Stop Camera", fg_color=themes['red'])
-                
-            
-    
     def _view_cam_button_event(self, nuc_number: str) -> None:
         """Starts the camera view node"""
         if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
@@ -261,7 +317,6 @@ class NodeGUI(customtkinter.CTk):
             else:
                 self.left_top_frame_view_cam_button.configure(
                     text="View Camera", fg_color=themes['blue'])
-
     def destroy_routine(self) -> None:
         """destroys the GUI and quits the program"""
         self.destroy()
@@ -276,26 +331,6 @@ class NodeGUI(customtkinter.CTk):
         else:
             print(f"{node_process} stopped successfully.")
             rospy.sleep(0.5)
-
-    def _kill_ros_node(self, node_name: str) -> None:
-        """Kills the ROS node"""
-        try:
-            subprocess.run(["rosnode", "kill", node_name])
-        except subprocess.CalledProcessError:
-            print(f"Error: Failed to kill node {node_name}"
-                    "Please kill the node manually.")
-        else:
-            print(f"Node {node_name} killed successfully.")
-    def _is_node_running(self, node_name: str) -> bool:
-        """Checks if the node is running"""
-        try:
-            subprocess.run(["rosnode", "info", node_name])
-        except subprocess.CalledProcessError:
-            return False
-        else:
-            return True
-
-        
 
 if __name__ == "__main__":
     root = NodeGUI()
