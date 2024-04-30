@@ -89,7 +89,7 @@ class NodeGUI(customtkinter.CTk):
 
         self.left_top_frame_start_cam_button = customtkinter.CTkButton(
             self.left_top_frame, text="Start Camera",
-            command=self._start_cam_button_event(self.nuc_number))
+            command=lambda: self._start_cam_button_event(self.nuc_number))
         self.left_top_frame_start_cam_button.place(
             relx=0.5, rely=0.35, anchor="center")
 
@@ -112,7 +112,7 @@ class NodeGUI(customtkinter.CTk):
         self.left_top_frame_start_view_cam_button = customtkinter.CTkButton(
             self.left_top_frame, text="Start & View Camera", border_width=2,
             border_color=themes['red'][0],
-            command=self._start_view_cam_button_event(self.nuc_number))
+            command=lambda: self._startnview_cam_button_event(self.nuc_number))
         self.left_top_frame_start_view_cam_button.place(
             relx=0.5, rely=0.80, anchor="center")
 
@@ -175,6 +175,8 @@ class NodeGUI(customtkinter.CTk):
                                 text="Start Camera", fg_color=themes['blue'])
                             self.left_top_frame_view_cam_button.configure(
                                 text="View Camera", fg_color='gray')
+                            self.left_top_frame_start_view_cam_button.configure(
+                                text="Start & View Camera", fg_color=themes['blue'])
                 else: # i.e., camera is running but view is not running, so only stop the camera
                     try:
                         self._cleanup_processes(f'{self.node_name}_cam_driver')
@@ -188,44 +190,78 @@ class NodeGUI(customtkinter.CTk):
                 self._start_camera(nuc_number)
                 self.left_top_frame_start_cam_button.configure(
                     text="Stop Camera", fg_color=themes['red'])
-        except Exception as e:
+        except:
             print('Error! Close GUI and try again after launching ROS.')
-            print(f"Error: {e}")
-    def _start_view_cam_button_event(self, nuc_number: str) -> None:
+    def _startnview_cam_button_event(self, nuc_number: str) -> None:
         print("View Camera Button Clicked")
-    
-    def _view_cam_button_event(self, nuc_number: str) -> None:
-        """Starts the camera view node"""
-        if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
-            rospy.loginfo(f"Camera {nuc_number} is not running, Please start the camera first")
-            return
-        else:
-            if self.running_processes.get(f'{self.node_name}_view_driver') is None:
+        if self.running_processes.get(f'{self.node_name}_cam_driver') is not None:
+            if self.running_processes.get(f'{self.node_name}_view_driver') is not None:
+                rospy.loginfo(f"Stopping camera {nuc_number} node and view")
+                try:
+                    self._cleanup_processes(f'{self.node_name}_view_driver')
+                except KeyError:
+                    print("Error: View driver not found.")
+                else:
+                    self._cleanup_processes(f'{self.node_name}_cam_driver')
+                    self.left_top_frame_start_view_cam_button.configure(
+                        text="Start & View Camera", fg_color=themes['blue'])
+                    self.left_top_frame_start_cam_button.configure(
+                        text="Start Camera", fg_color=themes['blue'])
+                    self.left_top_frame_view_cam_button.configure(
+                        text="View Camera", fg_color='gray')
+            else:
                 rospy.loginfo(f"Viewing camera {nuc_number}")
                 try:
                     self._view_camera(nuc_number)
                 except roslaunch.RLException as e:
                     print(f"Error: Failed to launch camera view: {str(e)}")
                 else:
+                    self.left_top_frame_start_view_cam_button.configure(
+                        text="Stop View & Camera", fg_color=themes['red'])
                     self.left_top_frame_view_cam_button.configure(
                         text="Stop View Camera", fg_color=themes['red'])
+                    self.left_top_frame_start_cam_button.configure(
+                        text="Stop Camera", fg_color=themes['red'])
+        else:
+            try:
+                self._start_camera(nuc_number)
+                self._view_camera(nuc_number)
+            except roslaunch.RLException as e:
+                print(f"Error: Failed to launch camera view: {str(e)}")
             else:
-                rospy.loginfo(f"Stopping camera view {nuc_number}")
-                try:
-                    self._cleanup_processes(f'{self.node_name}_view_driver')
-                except KeyError:
-                    print("Error: View driver not found.")
-                else:
-                    self.left_top_frame_view_cam_button.configure(
-                        text="View Camera", fg_color=themes['blue'])
+                self.left_top_frame_start_view_cam_button.configure(
+                    text="Stop View & Camera", fg_color=themes['red'])
+                self.left_top_frame_view_cam_button.configure(
+                    text="Stop View Camera", fg_color=themes['red'])
+                self.left_top_frame_start_cam_button.configure(
+                    text="Stop Camera", fg_color=themes['red'])
+                
+            
+    
+    def _view_cam_button_event(self, nuc_number: str) -> None:
+        """Starts the camera view node"""
+        if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
+            print(f"Camera {nuc_number} is not running, Please start the camera first")
+            return
+        if self.running_processes.get(f'{self.node_name}_view_driver') is None:
+            rospy.loginfo(f"Viewing camera {nuc_number}")
+            try:
+                self._view_camera(nuc_number)
+            except roslaunch.RLException as e:
+                print(f"Error: Failed to launch camera view: {str(e)}")
+            else:
+                self.left_top_frame_view_cam_button.configure(
+                    text="Stop View Camera", fg_color=themes['red'])
+        else:
+            rospy.loginfo(f"Stopping camera view {nuc_number}")
+            try:
+                self._cleanup_processes(f'{self.node_name}_view_driver')
+            except KeyError:
+                print("Error: View driver not found.")
+            else:
+                self.left_top_frame_view_cam_button.configure(
+                    text="View Camera", fg_color=themes['blue'])
 
-
-
-
-        # self.create_camera_specs()
-        # self.create_camera_control()
-        # self.create_camera_view()
-        # self.create_camera_calib()
     def destroy_routine(self) -> None:
         """destroys the GUI and quits the program"""
         self.destroy()
@@ -240,7 +276,7 @@ class NodeGUI(customtkinter.CTk):
         else:
             print(f"{node_process} stopped successfully.")
             rospy.sleep(0.5)
-            
+
     def _kill_ros_node(self, node_name: str) -> None:
         """Kills the ROS node"""
         try:
