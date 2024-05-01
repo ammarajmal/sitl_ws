@@ -8,6 +8,8 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/ammar/sitl_ws/devel/.private/dslr_cam:$CMAKE_PREFIX_PATH"
+export LD_LIBRARY_PATH="/home/ammar/sitl_ws/devel/.private/dslr_cam/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/ammar/sitl_ws/devel/.private/dslr_cam/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/ammar/sitl_ws/build/dslr_cam'
 export ROSLISP_PACKAGE_DIRECTORIES="/home/ammar/sitl_ws/devel/.private/dslr_cam/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/ammar/sitl_ws/src/dslr_cam:$ROS_PACKAGE_PATH"
