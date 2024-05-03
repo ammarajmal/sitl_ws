@@ -68,7 +68,89 @@ class NodeGUI(customtkinter.CTk):
         """Starts the GUI widgets"""
         self.create_left_frame()
         self.create_middle_frame()
-        # self.create_right_frame()
+        self.create_right_frame()
+    def create_right_frame(self) -> None:
+        """Creates the right frame of the GUI"""
+        self.right_frame = tk.Frame(self, bg=themes[COLOR_SELECT][1])
+        self.right_frame.place(relx=0.66, rely=0, relwidth=0.34, relheight=1)
+        self.create_right_top_frame()
+        self.create_right_bottom_frame()
+    def create_right_bottom_frame(self) -> None:
+        """Creates the bottom frame of the right frame"""
+        self.right_bottom_frame = customtkinter.CTkFrame(self.right_frame, fg_color=themes[COLOR_SELECT][0])
+        self.right_bottom_frame.place(relx=0.06, rely=0.2, relwidth=0.8, relheight=0.66)
+        self.create_right_bottom_frame_content()
+    def create_right_bottom_frame_content(self) -> None:
+        """ Camera Information """
+        label_height = 0.13  # This determines the vertical space each label set uses
+        label_color = 'white'  # Set the text color for all labels
+
+        self.right_bottom_frame_cam_name_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Camera Name:", text_color=label_color)
+        self.right_bottom_frame_cam_name_label.place(relx=0.1, rely=0.05)
+        self.right_bottom_frame_cam_name_result_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text=f'Sony Camera {self.nuc_number}', text_color=label_color)
+        self.right_bottom_frame_cam_name_result_label.place(relx=0.6, rely=0.05)
+
+        self.right_bottom_frame_camera_status_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Camera Status:", text_color=label_color)
+        self.right_bottom_frame_camera_status_label.place(relx=0.1, rely=0.05 + label_height * 1)
+        self.right_bottom_frame_camera_status_result_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Running", text_color='yellow')  # Keep specific status colors if needed
+        self.right_bottom_frame_camera_status_result_label.place(relx=0.6, rely=0.05 + label_height * 1)
+
+        self.right_bottom_frame_camera_resolution_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Camera Resolution:", text_color=label_color)
+        self.right_bottom_frame_camera_resolution_label.place(relx=0.1, rely=0.05 + label_height * 2)
+        self.right_bottom_frame_camera_resolution_result_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="1920x1080", text_color=label_color)
+        self.right_bottom_frame_camera_resolution_result_label.place(relx=0.6, rely=0.05 + label_height * 2)
+
+        self.right_bottom_frame_camera_fps_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Camera FPS:", text_color=label_color)
+        self.right_bottom_frame_camera_fps_label.place(relx=0.1, rely=0.05 + label_height * 3)
+        self.right_bottom_frame_camera_fps_result_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="60", text_color=label_color)
+        self.right_bottom_frame_camera_fps_result_label.place(relx=0.6, rely=0.05 + label_height * 3)
+
+        self.right_bottom_frame_camera_detect_status_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Detection Status:", text_color=label_color)
+        self.right_bottom_frame_camera_detect_status_label.place(relx=0.1, rely=0.05 + label_height * 4)
+        self.right_bottom_frame_camera_detect_status_result_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Idle", text_color=label_color)
+        self.right_bottom_frame_camera_detect_status_result_label.place(relx=0.6, rely=0.05 + label_height * 4)
+
+        self.right_bottom_frame_camera_detect_rate_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Detection Rate:", text_color=label_color)
+        self.right_bottom_frame_camera_detect_rate_label.place(relx=0.1, rely=0.05 + label_height * 5)
+        self.right_bottom_frame_camera_detect_rate_result_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="0", text_color=label_color)
+        self.right_bottom_frame_camera_detect_rate_result_label.place(relx=0.6, rely=0.05 + label_height * 5)
+
+        self.right_bottom_frame_camera_detect_result_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Detection Result:", text_color=label_color)
+        self.right_bottom_frame_camera_detect_result_label.place(relx=0.1, rely=0.05 + label_height * 6)
+        self.right_bottom_frame_camera_detect_result_result_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="None", text_color=label_color)
+        self.right_bottom_frame_camera_detect_result_result_label.place(relx=0.6, rely=0.05 + label_height * 6)
+
+
+        
+
+        
+    def create_right_top_frame(self) -> None:
+        """ SYSTEM IDENTIFICATION """
+        self.right_top_frame = customtkinter.CTkFrame(
+            self.right_frame, fg_color=themes[COLOR_SELECT][0])
+        self.right_top_frame.place(relx=0.06, rely=0.08, relwidth=0.8, relheight=0.08)
+        self.create_right_top_frame_content()
+    def create_right_top_frame_content(self) -> None:
+        """ System Identification """
+        self.right_top_frame_label = customtkinter.CTkLabel(
+            self.right_top_frame, text="CAMERA INFORMATION",
+            text_color='white')
+        self.right_top_frame_label.place(relx=0.5, rely=0.5, anchor="center")
+        
     def create_middle_frame(self) -> None:
         """Creates the middle frame of the GUI"""
         self.middle_frame = tk.Frame(self, bg=themes[COLOR_SELECT][1])
