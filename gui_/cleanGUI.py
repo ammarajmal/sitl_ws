@@ -3,8 +3,10 @@
 
 
 # import subprocess
+
 import tkinter as tk
 import customtkinter
+import roslaunch.parent
 import roslaunch.rlutil
 import rospy
 import rospkg
@@ -41,15 +43,16 @@ class NodeGUI(customtkinter.CTk):
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self.destroy_routine)
         # detection & calibration parameters
-        self.board_size = "4x4"  # dimensions for calibration
-        self.square_size = "0.01725"  # in meters for calibration
-        self.marker_dim = "0.0200"  # in meters for ARUCO marker
+        self.board_size = "6x5"  # dimensions for calibration
+        self.square_size = "0.025"  # in meters for calibration
+        self.marker_dim = "0.020"  # in meters for ARUCO marker
         self.marker_dict = "0"  # (DICT_4X4_50)
         self.var_dictionary = tk.StringVar(self, "0")  # dict 5x5 (1000)
         # path management
         self.launch_path = rospkg.RosPack().get_path(self.package) + '/launch/'
         self.detect_launch_path = rospkg.RosPack().get_path('aruco_detect') + '/launch/'
         self.uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+        roslaunch.configure_logging(self.uuid)
         self.cam_launch = f'{self.launch_path}use.launch'
         self.view_launch = f"{self.launch_path}viewcamera.launch"
         self.calib_launch = f"{self.launch_path}calib.launch"
@@ -64,8 +67,209 @@ class NodeGUI(customtkinter.CTk):
     def create_widgets(self) -> None:
         """Starts the GUI widgets"""
         self.create_left_frame()
-        # self.create_middle_frame()
+        self.create_middle_frame()
         # self.create_right_frame()
+    def create_middle_frame(self) -> None:
+        """Creates the middle frame of the GUI"""
+        self.middle_frame = tk.Frame(self, bg=themes[COLOR_SELECT][1])
+        self.middle_frame.place(relx=0.33, rely=0, relwidth=0.33, relheight=1)
+        self.create_middle_top_frame()
+        self.create_middle_center_frame()
+        self.create_middle_bottom_frame()
+    def create_middle_top_frame(self) -> None:
+        """ Calibration & Detection Parameters Lable """
+        self.middle_top_frame = customtkinter.CTkFrame(self.middle_frame)
+        self.middle_top_frame.place(
+            relx=0.06, rely=0.08, relwidth=0.8, relheight=0.08)
+        self.create_middle_top_frame_content()
+    def create_middle_top_frame_content(self) -> None:
+        """ Calibration & Detection Parameters """
+        self.middle_top_frame_label = customtkinter.CTkLabel(
+            self.middle_top_frame, text="SETTING PARAMETERS - CAMERA 1")
+        self.middle_top_frame_label.place(relx=0.5, rely=0.5, anchor="center")
+    def create_middle_center_frame(self) -> None:
+        """Creates the center frame of the middle frame"""
+        self.middle_center_frame = customtkinter.CTkFrame(self.middle_frame)
+        self.middle_center_frame.place(
+            relx=0.06, rely=0.20, relwidth=0.8, relheight=0.30)
+        self.create_middle_center_frame_content()
+    def create_middle_center_frame_content(self) -> None:
+        """ Setting the Calibration Parameters """
+        self.middle_center_frame_label = customtkinter.CTkLabel(
+            self.middle_center_frame, text=f"CAMERA CALIBRATION")
+        self.middle_center_frame_label.place(relx=0.5, rely=0.13, anchor="center")
+        self.middle_center_frame_square_size_label = customtkinter.CTkLabel(
+            self.middle_center_frame, text="Square Size: (m)")
+        self.middle_center_frame_square_size_label.place(relx=0.1, rely=0.22)
+        self.middle_center_frame_square_size_entry = customtkinter.CTkEntry(
+            self.middle_center_frame,
+            placeholder_text=self.square_size,
+            placeholder_text_color="gray")
+        self.middle_center_frame_square_size_entry.place(
+            relx=0.62, rely=0.22, relwidth=0.25)
+        self.middle_center_frame_chessboard_label = customtkinter.CTkLabel(
+            self.middle_center_frame, text="Chessboard Size: (m)")
+        self.middle_center_frame_chessboard_label.place(
+            relx=0.1, rely=0.42)
+        self.middle_center_frame_chessboard_entry = customtkinter.CTkEntry(
+            self.middle_center_frame,
+            placeholder_text=self.board_size,
+            placeholder_text_color="gray")
+        self.middle_center_frame_chessboard_entry.place(
+            relx=0.62, rely=0.42, relwidth=0.25)
+        self.middle_center_frame_calib_update_button = customtkinter.CTkButton(
+            self.middle_center_frame, text='Update',
+            command=lambda: self._update_calib_params())
+        self.middle_center_frame_calib_update_button.place(
+            relx=0.5, rely=0.75, relwidth=0.4, anchor="center")
+        self.middle_center_frame_calib_update_label = customtkinter.CTkLabel(
+            self.middle_center_frame, text="", text_color='green',
+            font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.middle_center_frame_calib_update_label.place(
+            relx=0.8, rely=0.75, anchor="center")
+
+    def _update_calib_params(self) -> None:
+        """ Updates the calibration parameters """
+        square_size_entry = self.middle_center_frame_square_size_entry.get()
+        chessboard_size_entry = self.middle_center_frame_chessboard_entry.get()
+        if not chessboard_size_entry and not square_size_entry:
+            print("Nothing updated")
+            print(f'Original square size: {self.square_size}')
+            print(f'Original board size: {self.board_size}')
+            print('Please enter new calibration parameters')
+            return
+        if square_size_entry:
+            self.square_size = square_size_entry
+            print(f'Updated square size: {self.square_size}')
+        else:
+            print(f'Original square size: {self.square_size}')
+        if chessboard_size_entry:
+            self.board_size = chessboard_size_entry
+            print(f'Updated board size: {self.board_size}')
+        else:
+            print(f'Original board size: {self.board_size}')
+        print('Checkerboard parameters updated successfully')
+        self.middle_center_frame_calib_update_label.configure(
+            text="☑", text_color='green')
+    def _start_camera_calibration(self) -> None:
+        """ Starts the camera calibration """
+        if self.running_processes.get(f'{self.node_name}_calib_driver') is not None:    # Calib node running
+            rospy.loginfo(f"Calibration already running, Now stopping it")
+            if self.running_processes.get(f'{self.node_name}_cam_driver') is not None:  # Camera running
+                try:
+                    self._cleanup_processes(f'{self.node_name}_cam_driver')
+                except KeyError:
+                    print("Error: Could not stop camera.")
+                else:
+                    self.left_top_frame_start_cam_button.configure(
+                        text="Start Camera", fg_color=themes[COLOR_SELECT][0])
+            try:
+                self._cleanup_processes(f'{self.node_name}_calib_driver')
+            except KeyError:
+                print("Error: Calibration driver not found.")
+            else:
+                self.left_bottom_frame_calib_button.configure(
+                    text="Start Calibration", fg_color=themes[COLOR_SELECT][0])
+        else:
+            rospy.loginfo(f"Starting calibration for camera {self.nuc_number}")
+            self._calibrate_camera()
+            self.left_bottom_frame_calib_button.configure(
+                text="Stop Calibration", fg_color=themes['red'])
+                
+    def _calibrate_camera(self) -> None:
+        print("*** Starting Camera Calibration ***")
+        print(f'Board size: {self.board_size}')
+        print(f'Square size: {self.square_size}')
+        if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
+            self._start_camera(self.nuc_number)
+        
+        try:
+            self.calib_process = roslaunch.parent.ROSLaunchParent(
+                self.uuid, [self.calib_launch])
+            self.calib_process.start()
+            self.running_processes[f'{self.node_name}_calib_driver'] = self.calib_process
+            rospy.loginfo(f"Calibration started successfully")
+            rospy.sleep(0.5)
+        except roslaunch.RLException as e:
+            print(f"Error: Failed to launch camera calibration: {str(e)}")
+            
+        # calib_launch_args = [
+        #     f"{self.calib_launch}",
+        #     f"camera_name:={self.node_name}",
+        #     f"cb_size:={self.board_size}",
+        #     f"cb_square:={self.square_size}"]
+        # calib_roslaunch_file = [(
+        #     roslaunch.rlutil.resolve_launch_arguments(calib_launch_args)[0],
+        #     calib_launch_args[1:])]
+        # calib_driver = roslaunch.parent.ROSLaunchParent(
+        #     self.uuid, calib_roslaunch_file)
+        # calib_driver.start()
+        # self.running_processes[f'{self.node_name}_calib_driver'] = calib_driver
+        # rospy.loginfo(f"Calibration started successfully")
+        # rospy.sleep(0.5)
+        
+    def create_middle_bottom_frame(self) -> None:
+        """Creates the bottom frame of the middle frame"""
+        self.middle_bottom_frame = customtkinter.CTkFrame(self.middle_frame)
+        self.middle_bottom_frame.place(
+            relx=0.06, rely=0.54, relwidth=0.8, relheight=0.32)
+        self.create_middle_bottom_frame_content()
+    def create_middle_bottom_frame_content(self) -> None:
+        """ Setting the Detection Parameters """
+        self.middle_bottom_frame_label = customtkinter.CTkLabel(
+            self.middle_bottom_frame, text=f"CAMERA DETECTION")
+        self.middle_bottom_frame_label.place(relx=0.5, rely=0.13, anchor="center")
+        self.middle_bottom_frame_marker_dim_label = customtkinter.CTkLabel(
+            self.middle_bottom_frame, text="Marker Dimension: (m)")
+        self.middle_bottom_frame_marker_dim_label.place(relx=0.1, rely=0.22)
+        self.middle_bottom_frame_marker_dim_entry = customtkinter.CTkEntry(
+            self.middle_bottom_frame,
+            placeholder_text=self.marker_dim,
+            placeholder_text_color="gray")
+        self.middle_bottom_frame_marker_dim_entry.place(relx=0.63, rely=0.22, relwidth=0.25)
+        self.middle_bottom_frame_marker_dict_label = customtkinter.CTkLabel(
+            self.middle_bottom_frame, text="Marker Dictionary:")
+        self.middle_bottom_frame_marker_dict_label.place(relx=0.1, rely=0.42)
+        self.middle_bottom_frame_marker_dict_entry = customtkinter.CTkEntry(
+            self.middle_bottom_frame,
+            placeholder_text="0",
+            placeholder_text_color="gray")
+        self.middle_bottom_frame_marker_dict_entry.place(relx=0.63, rely=0.42, relwidth=0.25)
+        self.middle_bottom_frame_marker_update_button = customtkinter.CTkButton(
+            self.middle_bottom_frame, text='Update',
+            command=self.update_marker_dict)
+        self.middle_bottom_frame_marker_update_button.place(
+            relx=0.5, rely=0.75, relwidth=0.4, anchor="center")
+        self.middle_bottom_frame_marker_update_button_label = customtkinter.CTkLabel(
+            self.middle_bottom_frame, text="", text_color='green',
+            font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.middle_bottom_frame_marker_update_button_label.place(
+            relx=0.8, rely=0.75, anchor="center")
+    def update_marker_dict(self) -> None:
+        """ Updates the marker dictionary """
+        marker_dim_entry = self.middle_bottom_frame_marker_dim_entry.get()
+        marker_dict_entry = self.middle_bottom_frame_marker_dict_entry.get()
+        if not marker_dim_entry and not marker_dict_entry:
+            print("Nothing updated")
+            print(f'Original marker dimension: {self.marker_dim}')
+            print(f'Original marker dictionary: {self.marker_dict}')
+            print('Please enter new detection parameters')
+            return
+        if marker_dim_entry:
+            self.marker_dim = marker_dim_entry
+            print(f'Updated marker dimension: {self.marker_dim}')
+        else:
+            print(f'Original marker dimension: {self.marker_dim}')
+        if marker_dict_entry:
+            self.marker_dict = marker_dict_entry
+            print(f'Updated marker dictionary: {self.marker_dict}')
+        else:
+            print(f'Original marker dictionary: {self.marker_dict}')
+        print('Detection parameters updated successfully')
+        self.middle_bottom_frame_marker_update_button_label.configure(
+            text="☑", text_color='green')
+        
+        
     def create_left_frame(self) -> None:
         """Creates the left frame of the GUI"""
         self.left_frame = tk.Frame(self, bg=themes[COLOR_SELECT][1])
@@ -83,7 +287,7 @@ class NodeGUI(customtkinter.CTk):
         """ Starting and Viewing Camera """
         # Camera Start Stop and View
         self.left_top_frame_label = customtkinter.CTkLabel(
-            self.left_top_frame, text=f"START CAMERA - NUC {self.nuc_number}")
+            self.left_top_frame, text=f"START CAMERA {self.nuc_number}")
         self.left_top_frame_label.place(relx=0.5, rely=0.17, anchor="center")
 
         self.left_top_frame_start_cam_button = customtkinter.CTkButton(
@@ -124,7 +328,7 @@ class NodeGUI(customtkinter.CTk):
     def _create_left_bottom_frame_content(self) -> None:
         """ Detection of the Marker """
         self.left_bottom_frame_label = customtkinter.CTkLabel(
-            self.left_bottom_frame, text=f"DETECT & CALIBRATE - NUC {self.nuc_number}")
+            self.left_bottom_frame, text=f"DETECT & CALIBRATE")
         self.left_bottom_frame_label.place(relx=0.5, rely=0.17, anchor="center")
         self.left_bottom_frame_detect_button = customtkinter.CTkButton(
             self.left_bottom_frame, text="Start Detection", fg_color=themes[COLOR_SELECT][0],
@@ -137,7 +341,7 @@ class NodeGUI(customtkinter.CTk):
             relx=0.1, rely=0.40, anchor="center")
         self.left_bottom_frame_calib_button = customtkinter.CTkButton(
             self.left_bottom_frame, text="Calibrate Camera", fg_color=themes[COLOR_SELECT][0],
-            command=lambda: self._calibrate_camera_button_event(self.nuc_number))
+            command=self._start_camera_calibration)
         self.left_bottom_frame_calib_button.place(
             relx=0.5, rely=0.7, anchor="center")
         self.left_bottom_frame_calib_label_number = customtkinter.CTkLabel(
@@ -186,8 +390,6 @@ class NodeGUI(customtkinter.CTk):
         self.running_processes[f'{self.node_name}_detect_driver'] = detect_driver
         rospy.loginfo(f"Detection started successfully")
         rospy.sleep(0.5)
-        
-        
     def _start_camera(self, number:str)-> None:
         cam_launch_args = [
             f"{self.cam_launch}",
@@ -214,10 +416,22 @@ class NodeGUI(customtkinter.CTk):
         self.running_processes[f'{self.node_name}_view_driver'] = view_driver
         rospy.loginfo(f"Camera {number} view started successfully")
         rospy.sleep(0.5)
+        
     def _start_cam_button_event(self, nuc_number: str) -> None:
         try:
             if self.running_processes.get(f'{self.node_name}_cam_driver') is not None: # i.e., camera is running
                 rospy.loginfo(f"Camera {nuc_number} already running, Now stopping it")
+                # Check and stop detection process if running
+                if self.running_processes.get(f'{self.node_name}_detect_driver') is not None: # i.e., Detection is running
+                    rospy.loginfo(f"Stopping detection {nuc_number}")
+                    try:
+                        self._cleanup_processes(f'{self.node_name}_detect_driver')
+                    except KeyError:
+                        print("Error: Detection driver not found.")
+                    else:
+                        self.left_bottom_frame_detect_button.configure(
+                            text="Start Detection", fg_color=themes[COLOR_SELECT][0])
+                    # Check and stop view process if running
                 if self.running_processes.get(f'{self.node_name}_view_driver') is not None: # i.e., view is running, so stop both
                     rospy.loginfo(f"Stopping camera view {nuc_number}")
                     try:
