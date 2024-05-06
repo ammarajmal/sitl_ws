@@ -6,8 +6,9 @@
 
 import tkinter as tk
 import customtkinter
-import roslaunch.parent
-import roslaunch.rlutil
+import subprocess
+import re
+import psutil
 import rospy
 import rospkg
 import roslaunch
@@ -41,6 +42,9 @@ class NodeGUI(customtkinter.CTk):
         self.image_height = "480"
         self.cam_resolution = f'{self.image_width}x{self.image_height}'
         self.cam_fps = "60"
+        self.update_interval = 1000  # in milliseconds
+        self.is_detection_active = False
+        self.detection_rate_timeout = 5 # Timeout for detection rate calculation for rostopic hz
         # gui settings
         self.title(f"CAMERA {self.nuc_number} Dashboard")
         self.geometry("960x500")
@@ -121,14 +125,14 @@ class NodeGUI(customtkinter.CTk):
             self.right_bottom_frame, text="Detection Status:", text_color=label_color)
         self.right_bottom_frame_camera_detect_status_label.place(relx=0.1, rely=0.05 + label_height * 4)
         self.right_bottom_frame_camera_detect_status_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="IDLE", text_color=label_color)
+            self.right_bottom_frame, text="IDLE", text_color='red')
         self.right_bottom_frame_camera_detect_status_result_label.place(relx=0.6, rely=0.05 + label_height * 4)
 
         self.right_bottom_frame_camera_detect_rate_label = customtkinter.CTkLabel(
             self.right_bottom_frame, text="Detection Rate:", text_color=label_color)
         self.right_bottom_frame_camera_detect_rate_label.place(relx=0.1, rely=0.05 + label_height * 5)
         self.right_bottom_frame_camera_detect_rate_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="0", text_color=label_color)
+            self.right_bottom_frame, text="-", text_color=label_color)
         self.right_bottom_frame_camera_detect_rate_result_label.place(relx=0.6, rely=0.05 + label_height * 5)
 
         self.right_bottom_frame_camera_detect_result_label = customtkinter.CTkLabel(
@@ -446,6 +450,9 @@ class NodeGUI(customtkinter.CTk):
             else:
                 self.left_bottom_frame_detect_button.configure(
                     text="Start Detection", fg_color=themes[COLOR_SELECT][0])
+                # Update the detection specific labels
+                self.right_bottom_frame_camera_detect_status_result_label.configure(
+                    text="IDLE", text_color='red')
         else:
             if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
                 print(f"Camera {nuc_number} is not running, Please start the camera first")
@@ -454,6 +461,9 @@ class NodeGUI(customtkinter.CTk):
             self._detect_marker()
             self.left_bottom_frame_detect_button.configure(
                 text="Stop Detection", fg_color=themes['red'])
+            # Update the detection specific labels
+            self.right_bottom_frame_camera_detect_status_result_label.configure(
+                text="ACTIVE", text_color='yellow')
 
             
 
@@ -462,6 +472,7 @@ class NodeGUI(customtkinter.CTk):
         self.left_exit_button = customtkinter.CTkButton(self.left_frame, text="Exit Program", fg_color=themes["red"], command=self.destroy_routine)
         self.left_exit_button.place(relx=0.5, rely=0.90, anchor="center")
     def _detect_marker(self) -> None:
+        """Start detection node and set up rate calculation."""
         try:
             detect_launch_args = [
                 f"{self.detect_launch}",
@@ -477,6 +488,9 @@ class NodeGUI(customtkinter.CTk):
             self.running_processes[f'{self.node_name}_detect_driver'] = detect_driver
             rospy.loginfo(f"Detection started successfully")
             rospy.sleep(0.5)
+            # Start the detection rate updater
+            self.is_detection_active = True
+            self.update_detection_rate()
         except roslaunch.RLException as e:
             print(f"Error: Failed to launch marker detection: {str(e)}")
             
@@ -524,6 +538,11 @@ class NodeGUI(customtkinter.CTk):
                     else:
                         self.left_bottom_frame_detect_button.configure(
                             text="Start Detection", fg_color=themes[COLOR_SELECT][0])
+                        # Update the detection specific labels
+                        self.right_bottom_frame_camera_detect_status_result_label.configure(
+                            text="IDLE", text_color='red')
+                        # self.right_bottom_frame_camera_detect_rate_result_label.configure(
+                        #     text='detection rate running', text_color='white')
                     # Check and stop view process if running
                 if self.running_processes.get(f'{self.node_name}_view_driver') is not None: # i.e., view is running, so stop both
                     rospy.loginfo(f"Stopping camera view {nuc_number}")
@@ -678,12 +697,85 @@ class NodeGUI(customtkinter.CTk):
         try:
             self.running_processes[node_process].shutdown()
             del self.running_processes[node_process]
+            # Check if it's the detection node being cleaned up
+            if node_process == f'{self.node_name}_detect_driver':
+                self.is_detection_active = False
         except KeyError:
             print(f"Error: {node_process} not found in running processes.")
         else:
             print(f"{node_process} stopped successfully.")
             rospy.sleep(0.5)
 
+        
+    def update_detection_rate(self) -> None:
+        """Periodically update the detection rate and result labels."""
+        detect_topic = f"/{self.node_name}_detect/fiducial_transforms"
+        if self.is_detection_active:
+            frequency = get_ros_topic_frequency(detect_topic)
+            if frequency is not None:
+                self.right_bottom_frame_camera_detect_rate_result_label.configure(
+                    text=f'{frequency:.2f} Hz', text_color='white')
+                self.right_bottom_frame_camera_detect_result_result_label.configure(
+                    text="Detected", text_color=themes['green'][0])
+            else:
+                self.right_bottom_frame_camera_detect_rate_result_label.configure(
+                    text="-", text_color='white')
+                self.right_bottom_frame_camera_detect_result_result_label.configure(
+                    text="Not Detected", text_color='red')
+        else:
+            self.right_bottom_frame_camera_detect_rate_result_label.configure(
+                text="-", text_color='white')
+            self.right_bottom_frame_camera_detect_result_result_label.configure(
+                text="Not Detected", text_color='red')
+
+        self.after(self.update_interval, self.update_detection_rate)
+
+    def update_camera_fps(self) -> None:
+        """Periodically update the camera FPS label."""
+        camera_topic = f"/{self.node_name}/image_raw"
+        if self.running_processes.get(f'{self.node_name}_cam_driver') is not None:
+            frequency = get_ros_topic_frequency(camera_topic)
+            if frequency is not None:
+                self.right_bottom_frame_camera_fps_result_label.configure(
+                    text=f'{frequency:.2f} Hz', text_color='white')
+            else:
+                self.right_bottom_frame_camera_fps_result_label.configure(
+                    text="-", text_color='white')
+        else:
+            self.right_bottom_frame_camera_fps_result_label.configure(
+                text="-", text_color='white')
+
+        self.after(self.update_interval, self.update_camera_fps)
+
+        
+        
+        
+def get_ros_topic_frequency(topic):
+    """Get the frequency of a ROS topic using 'rostopic hz' command."""
+    process = subprocess.Popen(['rostopic', 'hz', topic], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+    # Wait for a while to collect data
+    rospy.sleep(0.9)
+
+    # Terminate the process
+    process.terminate()
+
+    # Read the output
+    try:
+        output, _ = process.communicate(timeout=2)
+        output = output.decode('utf-8')
+    except subprocess.TimeoutExpired:
+        process.kill()
+        output, _ = process.communicate()
+
+    # Extract frequency from the output using regular expression
+    match = re.search(r'average rate: ([\d\.]+)', output)
+    if match:
+        return float(match.group(1))
+    else:
+        return None
+def check_cpu_load():
+    return psutil.cpu_percent(interval=1)
 if __name__ == "__main__":
     root = NodeGUI()
     root.mainloop()
