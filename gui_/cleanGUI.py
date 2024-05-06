@@ -37,6 +37,10 @@ class NodeGUI(customtkinter.CTk):
         self.nuc_number = '1'
         self.package = 'dslr_cam'
         self.node_name = f"sony_cam{self.nuc_number}"
+        self.image_width = "640"
+        self.image_height = "480"
+        self.cam_resolution = f'{self.image_width}x{self.image_height}'
+        self.cam_fps = "60"
         # gui settings
         self.title(f"CAMERA {self.nuc_number} Dashboard")
         self.geometry("960x500")
@@ -96,28 +100,28 @@ class NodeGUI(customtkinter.CTk):
             self.right_bottom_frame, text="Camera Status:", text_color=label_color)
         self.right_bottom_frame_camera_status_label.place(relx=0.1, rely=0.05 + label_height * 1)
         self.right_bottom_frame_camera_status_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Running", text_color='yellow')  # Keep specific status colors if needed
+            self.right_bottom_frame, text="IDLE", text_color='red')  # Keep specific status colors if needed
         self.right_bottom_frame_camera_status_result_label.place(relx=0.6, rely=0.05 + label_height * 1)
 
         self.right_bottom_frame_camera_resolution_label = customtkinter.CTkLabel(
             self.right_bottom_frame, text="Camera Resolution:", text_color=label_color)
         self.right_bottom_frame_camera_resolution_label.place(relx=0.1, rely=0.05 + label_height * 2)
         self.right_bottom_frame_camera_resolution_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="1920x1080", text_color=label_color)
+            self.right_bottom_frame, text='-', text_color=label_color)
         self.right_bottom_frame_camera_resolution_result_label.place(relx=0.6, rely=0.05 + label_height * 2)
 
         self.right_bottom_frame_camera_fps_label = customtkinter.CTkLabel(
             self.right_bottom_frame, text="Camera FPS:", text_color=label_color)
         self.right_bottom_frame_camera_fps_label.place(relx=0.1, rely=0.05 + label_height * 3)
         self.right_bottom_frame_camera_fps_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="60", text_color=label_color)
+            self.right_bottom_frame, text="-", text_color=label_color)
         self.right_bottom_frame_camera_fps_result_label.place(relx=0.6, rely=0.05 + label_height * 3)
 
         self.right_bottom_frame_camera_detect_status_label = customtkinter.CTkLabel(
             self.right_bottom_frame, text="Detection Status:", text_color=label_color)
         self.right_bottom_frame_camera_detect_status_label.place(relx=0.1, rely=0.05 + label_height * 4)
         self.right_bottom_frame_camera_detect_status_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Idle", text_color=label_color)
+            self.right_bottom_frame, text="IDLE", text_color=label_color)
         self.right_bottom_frame_camera_detect_status_result_label.place(relx=0.6, rely=0.05 + label_height * 4)
 
         self.right_bottom_frame_camera_detect_rate_label = customtkinter.CTkLabel(
@@ -167,7 +171,7 @@ class NodeGUI(customtkinter.CTk):
     def create_middle_top_frame_content(self) -> None:
         """ Calibration & Detection Parameters """
         self.middle_top_frame_label = customtkinter.CTkLabel(
-            self.middle_top_frame, text="SETTING PARAMETERS - CAMERA 1")
+            self.middle_top_frame, text="SETTING PARAMETERS")
         self.middle_top_frame_label.place(relx=0.5, rely=0.5, anchor="center")
     def create_middle_center_frame(self) -> None:
         """Creates the center frame of the middle frame"""
@@ -369,7 +373,7 @@ class NodeGUI(customtkinter.CTk):
         """ Starting and Viewing Camera """
         # Camera Start Stop and View
         self.left_top_frame_label = customtkinter.CTkLabel(
-            self.left_top_frame, text=f"START CAMERA {self.nuc_number}")
+            self.left_top_frame, text=f"START CAMERA")
         self.left_top_frame_label.place(relx=0.5, rely=0.17, anchor="center")
 
         self.left_top_frame_start_cam_button = customtkinter.CTkButton(
@@ -504,6 +508,9 @@ class NodeGUI(customtkinter.CTk):
         rospy.sleep(0.5)
         
     def _start_cam_button_event(self, nuc_number: str) -> None:
+        self.start_cam = False
+        self.view_cam = False
+        self.start_view_cam = False
         try:
             if self.running_processes.get(f'{self.node_name}_cam_driver') is not None: # i.e., camera is running
                 rospy.loginfo(f"Camera {nuc_number} already running, Now stopping it")
@@ -536,6 +543,13 @@ class NodeGUI(customtkinter.CTk):
                                 text="View Camera", fg_color='gray')
                             self.left_top_frame_start_view_cam_button.configure(
                                 text="Start & View Camera", fg_color=themes['blue'])
+                            # Update the camera specific labels
+                            self.right_bottom_frame_camera_status_result_label.configure(
+                                text="IDLE", text_color='red')
+                            self.right_bottom_frame_camera_resolution_result_label.configure(
+                                text='-', text_color='white')
+                            self.right_bottom_frame_camera_fps_result_label.configure(
+                                text='-', text_color='white')
                 else: # i.e., camera is running but view is not running, so only stop the camera
                     try:
                         self._cleanup_processes(f'{self.node_name}_cam_driver')
@@ -544,11 +558,27 @@ class NodeGUI(customtkinter.CTk):
                     else:
                         self.left_top_frame_start_cam_button.configure(
                             text="Start Camera", fg_color=themes['blue'])
+                        # Update the camera status label
+                        self.right_bottom_frame_camera_status_result_label.configure(
+                            text="IDLE", text_color='red')
+                        self.right_bottom_frame_camera_resolution_result_label.configure(
+                            text='-', text_color='white')
+                        self.right_bottom_frame_camera_fps_result_label.configure(
+                            text='-', text_color='white')
+                        
+                        
             else: # i.e., camera is not running
                 rospy.loginfo(f"Camera {nuc_number} is not running, Now starting it")
                 self._start_camera(nuc_number)
                 self.left_top_frame_start_cam_button.configure(
                     text="Stop Camera", fg_color=themes['red'])
+                # Update the camera status label
+                self.right_bottom_frame_camera_status_result_label.configure(
+                    text="ACTIVE", text_color='yellow')
+                self.right_bottom_frame_camera_resolution_result_label.configure(
+                    text=self.cam_resolution, text_color='white')
+                self.right_bottom_frame_camera_fps_result_label.configure(
+                    text=self.cam_fps, text_color='white')
         except:
             print('Error! Close GUI and try again after launching ROS.')
     def _startnview_cam_button_event(self, nuc_number: str) -> None:
@@ -568,6 +598,13 @@ class NodeGUI(customtkinter.CTk):
                         text="Start Camera", fg_color=themes['blue'])
                     self.left_top_frame_view_cam_button.configure(
                         text="View Camera", fg_color='gray')
+                    # Update the camera status label
+                    self.right_bottom_frame_camera_status_result_label.configure(
+                        text="IDLE", text_color='red')
+                    self.right_bottom_frame_camera_resolution_result_label.configure(
+                        text='-', text_color='white')
+                    self.right_bottom_frame_camera_fps_result_label.configure(
+                        text='-', text_color='white')
             else:
                 rospy.loginfo(f"Viewing camera {nuc_number}")
                 try:
@@ -581,6 +618,13 @@ class NodeGUI(customtkinter.CTk):
                         text="Stop View Camera", fg_color=themes['red'])
                     self.left_top_frame_start_cam_button.configure(
                         text="Stop Camera", fg_color=themes['red'])
+                    # Update the camera status label
+                    self.right_bottom_frame_camera_status_result_label.configure(
+                        text="ACTIVE", text_color='yellow')
+                    self.right_bottom_frame_camera_resolution_result_label.configure(
+                        text=self.cam_resolution, text_color='white')
+                    self.right_bottom_frame_camera_fps_result_label.configure(
+                        text=self.cam_fps, text_color='white')
         else:
             try:
                 self._start_camera(nuc_number)
@@ -594,6 +638,14 @@ class NodeGUI(customtkinter.CTk):
                     text="Stop View Camera", fg_color=themes['red'])
                 self.left_top_frame_start_cam_button.configure(
                     text="Stop Camera", fg_color=themes['red'])
+                # Update the camera status label
+                self.right_bottom_frame_camera_status_result_label.configure(
+                    text="ACTIVE", text_color='yellow')
+                self.right_bottom_frame_camera_resolution_result_label.configure(
+                    text=self.cam_resolution, text_color='white')
+                self.right_bottom_frame_camera_fps_result_label.configure(
+                    text=self.cam_fps, text_color='white')
+
     def _view_cam_button_event(self, nuc_number: str) -> None:
         """Starts the camera view node"""
         if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
