@@ -1,1 +1,1 @@
-/home/ammar/sitl_ws/devel/.private/dslr_cam/lib/pkgconfig/dslr_cam.pc
+/home/sitl1/sitl_ws/devel/.private/dslr_cam/lib/pkgconfig/dslr_cam.pc

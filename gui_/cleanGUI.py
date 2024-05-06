@@ -458,20 +458,24 @@ class NodeGUI(customtkinter.CTk):
         self.left_exit_button = customtkinter.CTkButton(self.left_frame, text="Exit Program", fg_color=themes["red"], command=self.destroy_routine)
         self.left_exit_button.place(relx=0.5, rely=0.90, anchor="center")
     def _detect_marker(self) -> None:
-        detect_launch_args = [
-            f"{self.detect_launch}",
-            f"launch_nuc:={self.node_name}",
-            f"fiducial_len:={self.marker_dim}",
-            f"dictionary:={self.marker_dict}"]
-        detect_roslaunch_file = [(
-            roslaunch.rlutil.resolve_launch_arguments(detect_launch_args)[0],
-            detect_launch_args[1:])]
-        detect_driver = roslaunch.parent.ROSLaunchParent(
-            self.uuid, detect_roslaunch_file)
-        detect_driver.start()
-        self.running_processes[f'{self.node_name}_detect_driver'] = detect_driver
-        rospy.loginfo(f"Detection started successfully")
-        rospy.sleep(0.5)
+        try:
+            detect_launch_args = [
+                f"{self.detect_launch}",
+                f"launch_nuc:={self.node_name}",
+                f"fiducial_len:={self.marker_dim}",
+                f"dictionary:={self.marker_dict}"]
+            detect_roslaunch_file = [(
+                roslaunch.rlutil.resolve_launch_arguments(detect_launch_args)[0],
+                detect_launch_args[1:])]
+            detect_driver = roslaunch.parent.ROSLaunchParent(
+                self.uuid, detect_roslaunch_file)
+            detect_driver.start()
+            self.running_processes[f'{self.node_name}_detect_driver'] = detect_driver
+            rospy.loginfo(f"Detection started successfully")
+            rospy.sleep(0.5)
+        except roslaunch.RLException as e:
+            print(f"Error: Failed to launch marker detection: {str(e)}")
+            
     def _start_camera(self, number:str)-> None:
         cam_launch_args = [
             f"{self.cam_launch}",
