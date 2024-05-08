@@ -13,35 +13,35 @@
     <group if = "$(eval launch_nuc == 'sony_cam1')">
         <include file="$(find dslr_cam)/launch/camera.launch">
             <arg name="camera_name" value="$(arg launch_nuc)" />
-            <arg name="device_ip" value="192.168.1.11" />
+            <arg name="device_ip" value="192.168.1.101" />
         </include>
     </group>
 
     <group if = "$(eval launch_nuc == 'sony_cam2')">
         <include file="$(find dslr_cam)/launch/camera.launch">
             <arg name="camera_name" value="$(arg launch_nuc)" />
-            <arg name="device_ip" value="192.168.1.12" />
+            <arg name="device_ip" value="192.168.1.102" />
         </include>
     </group>
 
     <group if = "$(eval launch_nuc == 'sony_cam3')">
         <include file="$(find dslr_cam)/launch/camera.launch">
             <arg name="camera_name" value="$(arg launch_nuc)" />
-            <arg name="device_ip" value="192.168.1.13" />
+            <arg name="device_ip" value="192.168.1.103" />
         </include>
     </group>
 
         <group if = "$(eval launch_nuc == 'sony_cam4')">
         <include file="$(find dslr_cam)/launch/camera.launch">
             <arg name="camera_name" value="$(arg launch_nuc)" />
-            <arg name="device_ip" value="192.168.1.14" />
+            <arg name="device_ip" value="192.168.1.104" />
         </include>
     </group>
 
         <group if = "$(eval launch_nuc == 'sony_cam5')">
         <include file="$(find dslr_cam)/launch/camera.launch">
             <arg name="camera_name" value="$(arg launch_nuc)" />
-            <arg name="device_ip" value="192.168.1.15" />
+            <arg name="device_ip" value="192.168.1.105" />
         </include>
     </group>
 </launch>

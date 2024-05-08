@@ -1,16 +1,3 @@
-<!-- <launch>
-    <arg name="camera_name" default="sony_cam1" />
-    <node   name="$(arg camera_name)_view"
-            pkg="dslr_cam"
-            type="camera_view.py"
-            output="screen">
-        <param name="camera_name" value="$(arg camera_name)"/>
-    </node>
-</launch>
-
-
- -->
-
 <launch>
     <arg name="camera_name" default="sony_cam1" />
     <node   name="$(arg camera_name)_view"
