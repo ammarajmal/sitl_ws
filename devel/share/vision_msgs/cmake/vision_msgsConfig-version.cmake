@@ -1,0 +1,1 @@
+/home/sitl2/sitl_ws/devel/.private/vision_msgs/share/vision_msgs/cmake/vision_msgsConfig-version.cmake

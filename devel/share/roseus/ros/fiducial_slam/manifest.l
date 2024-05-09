@@ -1,0 +1,1 @@
+/home/sitl2/sitl_ws/devel/.private/fiducial_slam/share/roseus/ros/fiducial_slam/manifest.l

@@ -1,0 +1,1 @@
+/home/sitl2/sitl_ws/devel/.private/fiducial_msgs/share/gennodejs/ros/fiducial_msgs/srv/_index.js

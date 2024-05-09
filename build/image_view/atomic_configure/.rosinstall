@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/sitl2/sitl_ws/devel/.private/image_view/setup.sh

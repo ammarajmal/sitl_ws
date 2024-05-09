@@ -1,0 +1,1 @@
+/home/sitl2/sitl_ws/devel/.private/python_ex/share/python_ex/cmake/python_exConfig-version.cmake

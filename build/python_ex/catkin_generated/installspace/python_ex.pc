@@ -1,0 +1,8 @@
+prefix=/home/sitl2/sitl_ws/install
+
+Name: python_ex
+Description: Description of python_ex
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

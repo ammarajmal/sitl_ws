@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+207832dfe71b8669c835067859b124f5 /home/sitl2/sitl_ws/devel/.private/image_rotate/include/image_rotate/ImageRotateConfig.h
+47bc0abcc437a812c61645fe7aae3eea CMakeFiles/clean_test_results
+a25e5a5c0f6fd0dca2ceb4a252eec791 CMakeFiles/image_rotate_gencfg
