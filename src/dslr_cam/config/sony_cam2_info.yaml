@@ -1,0 +1,20 @@
+image_width: 640
+image_height: 480
+camera_name: sony_cam1
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [2545.616547968832, 0, 267.8670513337433, 0, 3398.260112488394, 271.8161366474868, 0, 0, 1]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.7663333610365676, 61.49356445237935, -8.145245486490784e-05, -0.006990957640442726, 0]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [2579.2822265625, 0, 269.3452506836547, 0, 0, 3455.445556640625, 270.6135697169429, 0, 0, 0, 1, 0]

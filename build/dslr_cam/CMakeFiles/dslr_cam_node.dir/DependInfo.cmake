@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/ammar/sitl_ws/src/dslr_cam/node/dslr_cam_node.cpp" "/home/ammar/sitl_ws/build/dslr_cam/CMakeFiles/dslr_cam_node.dir/node/dslr_cam_node.cpp.o"
+  "/home/sitl2/sitl_ws/src/dslr_cam/node/dslr_cam_node.cpp" "/home/sitl2/sitl_ws/build/dslr_cam/CMakeFiles/dslr_cam_node.dir/node/dslr_cam_node.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/ammar/sitl_ws/devel/.private/dslr_cam/lib/dslr_cam/dslr_cam_node"
-  "/home/ammar/sitl_ws/devel/.private/dslr_cam/lib/dslr_cam/dslr_cam_node.pdb"
+  "/home/sitl2/sitl_ws/devel/.private/dslr_cam/lib/dslr_cam/dslr_cam_node"
+  "/home/sitl2/sitl_ws/devel/.private/dslr_cam/lib/dslr_cam/dslr_cam_node.pdb"
   "CMakeFiles/dslr_cam_node.dir/node/dslr_cam_node.cpp.o"
 )
 
