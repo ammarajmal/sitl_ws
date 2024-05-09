@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/usr/src/googletest")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/sitl2/sitl_ws/build/image_view")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/tesol/sitl_ws/build/image_view")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

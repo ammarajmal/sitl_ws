@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl2/sitl_ws/src/image_pipeline/image_view
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/image_pipeline/image_view
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl2/sitl_ws/build/image_view
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/image_view
 
 # Utility rule file for std_msgs_generate_messages_cpp.
 
@@ -67,6 +67,6 @@ CMakeFiles/std_msgs_generate_messages_cpp.dir/clean:
 .PHONY : CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
 
 CMakeFiles/std_msgs_generate_messages_cpp.dir/depend:
-	cd /home/sitl2/sitl_ws/build/image_view && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl2/sitl_ws/src/image_pipeline/image_view /home/sitl2/sitl_ws/src/image_pipeline/image_view /home/sitl2/sitl_ws/build/image_view /home/sitl2/sitl_ws/build/image_view /home/sitl2/sitl_ws/build/image_view/CMakeFiles/std_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/image_view && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/image_pipeline/image_view /home/tesol/sitl_ws/src/image_pipeline/image_view /home/tesol/sitl_ws/build/image_view /home/tesol/sitl_ws/build/image_view /home/tesol/sitl_ws/build/image_view/CMakeFiles/std_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/std_msgs_generate_messages_cpp.dir/depend
 

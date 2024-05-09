@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/sitl2/sitl_ws/devel/.private/image_rotate/include/image_rotate/ImageRotateConfig.h"
-  "/home/sitl2/sitl_ws/devel/.private/image_rotate/lib/python3/dist-packages/image_rotate/cfg/ImageRotateConfig.py"
-  "/home/sitl2/sitl_ws/devel/.private/image_rotate/share/image_rotate/docs/ImageRotateConfig-usage.dox"
-  "/home/sitl2/sitl_ws/devel/.private/image_rotate/share/image_rotate/docs/ImageRotateConfig.dox"
-  "/home/sitl2/sitl_ws/devel/.private/image_rotate/share/image_rotate/docs/ImageRotateConfig.wikidoc"
+  "/home/tesol/sitl_ws/devel/.private/image_rotate/include/image_rotate/ImageRotateConfig.h"
+  "/home/tesol/sitl_ws/devel/.private/image_rotate/lib/python3/dist-packages/image_rotate/cfg/ImageRotateConfig.py"
+  "/home/tesol/sitl_ws/devel/.private/image_rotate/share/image_rotate/docs/ImageRotateConfig-usage.dox"
+  "/home/tesol/sitl_ws/devel/.private/image_rotate/share/image_rotate/docs/ImageRotateConfig.dox"
+  "/home/tesol/sitl_ws/devel/.private/image_rotate/share/image_rotate/docs/ImageRotateConfig.wikidoc"
   "CMakeFiles/image_rotate_gencfg"
 )
 

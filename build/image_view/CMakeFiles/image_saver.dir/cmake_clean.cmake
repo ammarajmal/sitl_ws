@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl2/sitl_ws/devel/.private/image_view/lib/image_view/image_saver"
-  "/home/sitl2/sitl_ws/devel/.private/image_view/lib/image_view/image_saver.pdb"
+  "/home/tesol/sitl_ws/devel/.private/image_view/lib/image_view/image_saver"
+  "/home/tesol/sitl_ws/devel/.private/image_view/lib/image_view/image_saver.pdb"
   "CMakeFiles/image_saver.dir/src/nodes/image_saver.cpp.o"
 )
 

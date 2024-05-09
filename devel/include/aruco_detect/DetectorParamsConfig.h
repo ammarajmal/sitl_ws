@@ -1,1 +1,1 @@
-/home/sitl2/sitl_ws/devel/.private/aruco_detect/include/aruco_detect/DetectorParamsConfig.h
+/home/tesol/sitl_ws/devel/.private/aruco_detect/include/aruco_detect/DetectorParamsConfig.h

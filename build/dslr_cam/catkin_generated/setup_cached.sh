@@ -7,9 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/sitl2/sitl_ws/devel/.private/dslr_cam:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/home/sitl2/sitl_ws/devel/.private/dslr_cam/lib:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="/home/sitl2/sitl_ws/devel/.private/dslr_cam/lib/pkgconfig:$PKG_CONFIG_PATH"
-export PWD='/home/sitl2/sitl_ws/build/dslr_cam'
-export ROSLISP_PACKAGE_DIRECTORIES="/home/sitl2/sitl_ws/devel/.private/dslr_cam/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/sitl2/sitl_ws/src/dslr_cam:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/tesol/sitl_ws/devel/.private/dslr_cam:$CMAKE_PREFIX_PATH"
+export PWD='/home/tesol/sitl_ws/build/dslr_cam'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/tesol/sitl_ws/devel/.private/dslr_cam/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/tesol/sitl_ws/src/dslr_cam:$ROS_PACKAGE_PATH"

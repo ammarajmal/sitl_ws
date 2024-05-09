@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl2/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info"
-  "/home/sitl2/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info.pdb"
+  "/home/tesol/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info"
+  "/home/tesol/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info.pdb"
   "CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o"
 )
 

@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/sitl2/sitl_ws/devel/.private/fast_cam/include/fast_cam/CameraSpecs.h"
-  "/home/sitl2/sitl_ws/devel/.private/fast_cam/include/fast_cam/GetCameraProperties.h"
-  "/home/sitl2/sitl_ws/devel/.private/fast_cam/include/fast_cam/SetGain.h"
+  "/home/tesol/sitl_ws/devel/.private/fast_cam/include/fast_cam/CameraSpecs.h"
+  "/home/tesol/sitl_ws/devel/.private/fast_cam/include/fast_cam/GetCameraProperties.h"
+  "/home/tesol/sitl_ws/devel/.private/fast_cam/include/fast_cam/SetGain.h"
   "CMakeFiles/fast_cam_generate_messages_cpp"
 )
 

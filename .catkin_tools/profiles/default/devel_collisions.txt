@@ -1,4 +1,5 @@
 /home/ammar/sitl_ws/devel/./cmake.lock 147
 /home/sitl3/sitl_ws/devel/./cmake.lock 879
 /home/sitl1/sitl_ws/devel/./cmake.lock 80
-/home/sitl2/sitl_ws/devel/./cmake.lock 42
+/home/sitl2/sitl_ws/devel/./cmake.lock 40
+/home/tesol/sitl_ws/devel/./cmake.lock 18

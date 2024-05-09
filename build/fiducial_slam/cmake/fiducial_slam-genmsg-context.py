@@ -1,7 +1,7 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
 messages_str = ""
-services_str = "/home/sitl2/sitl_ws/src/fiducials/fiducial_slam/srv/AddFiducial.srv"
+services_str = "/home/tesol/sitl_ws/src/fiducials/fiducial_slam/srv/AddFiducial.srv"
 pkg_name = "fiducial_slam"
 dependencies_str = "std_msgs"
 langs = "gencpp;geneus;genlisp;gennodejs;genpy"

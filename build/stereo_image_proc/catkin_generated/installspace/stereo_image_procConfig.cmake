@@ -67,14 +67,14 @@ set(stereo_image_proc_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(stereo_image_proc_SOURCE_PREFIX /home/sitl2/sitl_ws/src/image_pipeline/stereo_image_proc)
-  set(stereo_image_proc_DEVEL_PREFIX /home/sitl2/sitl_ws/devel/.private/stereo_image_proc)
+  set(stereo_image_proc_SOURCE_PREFIX /home/tesol/sitl_ws/src/image_pipeline/stereo_image_proc)
+  set(stereo_image_proc_DEVEL_PREFIX /home/tesol/sitl_ws/devel/.private/stereo_image_proc)
   set(stereo_image_proc_INSTALL_PREFIX "")
   set(stereo_image_proc_PREFIX ${stereo_image_proc_DEVEL_PREFIX})
 else()
   set(stereo_image_proc_SOURCE_PREFIX "")
   set(stereo_image_proc_DEVEL_PREFIX "")
-  set(stereo_image_proc_INSTALL_PREFIX /home/sitl2/sitl_ws/install)
+  set(stereo_image_proc_INSTALL_PREFIX /home/tesol/sitl_ws/install)
   set(stereo_image_proc_PREFIX ${stereo_image_proc_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/sitl2/sitl_ws/install/lib;/home/sitl2/sitl_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/tesol/sitl_ws/install/lib;/home/tesol/sitl_ws/devel/lib;/home/tesol/ros_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

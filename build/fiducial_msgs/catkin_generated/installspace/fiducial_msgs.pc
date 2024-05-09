@@ -1,4 +1,4 @@
-prefix=/home/sitl2/sitl_ws/install
+prefix=/home/tesol/sitl_ws/install
 
 Name: fiducial_msgs
 Description: Description of fiducial_msgs

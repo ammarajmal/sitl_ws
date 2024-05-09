@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl2/sitl_ws/src/vision_msgs
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/vision_msgs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl2/sitl_ws/build/vision_msgs
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/vision_msgs
 
 # Utility rule file for geometry_msgs_generate_messages_eus.
 
@@ -67,6 +67,6 @@ CMakeFiles/geometry_msgs_generate_messages_eus.dir/clean:
 .PHONY : CMakeFiles/geometry_msgs_generate_messages_eus.dir/clean
 
 CMakeFiles/geometry_msgs_generate_messages_eus.dir/depend:
-	cd /home/sitl2/sitl_ws/build/vision_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl2/sitl_ws/src/vision_msgs /home/sitl2/sitl_ws/src/vision_msgs /home/sitl2/sitl_ws/build/vision_msgs /home/sitl2/sitl_ws/build/vision_msgs /home/sitl2/sitl_ws/build/vision_msgs/CMakeFiles/geometry_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/vision_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/vision_msgs /home/tesol/sitl_ws/src/vision_msgs /home/tesol/sitl_ws/build/vision_msgs /home/tesol/sitl_ws/build/vision_msgs /home/tesol/sitl_ws/build/vision_msgs/CMakeFiles/geometry_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/geometry_msgs_generate_messages_eus.dir/depend
 

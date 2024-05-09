@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl2/sitl_ws/src/fiducials/fiducials
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/fiducials
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl2/sitl_ws/build/fiducials
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/fiducials
 
 # Utility rule file for clean_test_results.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/sitl2/sitl_ws/build/fiducials
 include CMakeFiles/clean_test_results.dir/progress.make
 
 CMakeFiles/clean_test_results:
-	/usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/sitl2/sitl_ws/build/fiducials/test_results
+	/usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/tesol/sitl_ws/build/fiducials/test_results
 
 clean_test_results: CMakeFiles/clean_test_results
 clean_test_results: CMakeFiles/clean_test_results.dir/build.make
@@ -71,6 +71,6 @@ CMakeFiles/clean_test_results.dir/clean:
 .PHONY : CMakeFiles/clean_test_results.dir/clean
 
 CMakeFiles/clean_test_results.dir/depend:
-	cd /home/sitl2/sitl_ws/build/fiducials && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl2/sitl_ws/src/fiducials/fiducials /home/sitl2/sitl_ws/src/fiducials/fiducials /home/sitl2/sitl_ws/build/fiducials /home/sitl2/sitl_ws/build/fiducials /home/sitl2/sitl_ws/build/fiducials/CMakeFiles/clean_test_results.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/fiducials && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/fiducials/fiducials /home/tesol/sitl_ws/src/fiducials/fiducials /home/tesol/sitl_ws/build/fiducials /home/tesol/sitl_ws/build/fiducials /home/tesol/sitl_ws/build/fiducials/CMakeFiles/clean_test_results.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/clean_test_results.dir/depend
 

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_slam/lib/python3/dist-packages/fiducial_slam/srv/_AddFiducial.py"
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_slam/lib/python3/dist-packages/fiducial_slam/srv/__init__.py"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_slam/lib/python3/dist-packages/fiducial_slam/srv/_AddFiducial.py"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_slam/lib/python3/dist-packages/fiducial_slam/srv/__init__.py"
   "CMakeFiles/fiducial_slam_generate_messages_py"
 )
 

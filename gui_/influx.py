@@ -30,7 +30,7 @@ def callback(data):
             .field("rot_w", transform.transform.rotation.w) \
             .field("image_error", transform.image_error) \
             .field("object_error", transform.object_error) \
-            .field("fiducial_area", transform.fiducial_area) 
+            .field("fiducial_area", transform.fiducial_area)
             # .time("timestamp", data.header.stamp.secs, write_precision=WritePrecision.S)
 
         write_api = client.write_api(write_options=WriteOptions(batch_size=500, flush_interval=10_000, jitter_interval=2_000, retry_interval=5_000, max_retries=5, max_retry_delay=30_000, exponential_base=2))

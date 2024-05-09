@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl2/sitl_ws/devel/.private/depth_image_proc/lib/libdepth_image_proc.pdb"
-  "/home/sitl2/sitl_ws/devel/.private/depth_image_proc/lib/libdepth_image_proc.so"
+  "/home/tesol/sitl_ws/devel/.private/depth_image_proc/lib/libdepth_image_proc.pdb"
+  "/home/tesol/sitl_ws/devel/.private/depth_image_proc/lib/libdepth_image_proc.so"
   "CMakeFiles/depth_image_proc.dir/src/nodelets/convert_metric.cpp.o"
   "CMakeFiles/depth_image_proc.dir/src/nodelets/crop_foremost.cpp.o"
   "CMakeFiles/depth_image_proc.dir/src/nodelets/disparity.cpp.o"

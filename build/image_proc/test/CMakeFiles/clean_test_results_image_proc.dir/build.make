@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl2/sitl_ws/src/image_pipeline/image_proc
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/image_pipeline/image_proc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl2/sitl_ws/build/image_proc
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/image_proc
 
 # Utility rule file for clean_test_results_image_proc.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/sitl2/sitl_ws/build/image_proc
 include test/CMakeFiles/clean_test_results_image_proc.dir/progress.make
 
 test/CMakeFiles/clean_test_results_image_proc:
-	cd /home/sitl2/sitl_ws/build/image_proc/test && /usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/sitl2/sitl_ws/build/image_proc/test_results/image_proc
+	cd /home/tesol/sitl_ws/build/image_proc/test && /usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/tesol/sitl_ws/build/image_proc/test_results/image_proc
 
 clean_test_results_image_proc: test/CMakeFiles/clean_test_results_image_proc
 clean_test_results_image_proc: test/CMakeFiles/clean_test_results_image_proc.dir/build.make
@@ -67,10 +67,10 @@ test/CMakeFiles/clean_test_results_image_proc.dir/build: clean_test_results_imag
 .PHONY : test/CMakeFiles/clean_test_results_image_proc.dir/build
 
 test/CMakeFiles/clean_test_results_image_proc.dir/clean:
-	cd /home/sitl2/sitl_ws/build/image_proc/test && $(CMAKE_COMMAND) -P CMakeFiles/clean_test_results_image_proc.dir/cmake_clean.cmake
+	cd /home/tesol/sitl_ws/build/image_proc/test && $(CMAKE_COMMAND) -P CMakeFiles/clean_test_results_image_proc.dir/cmake_clean.cmake
 .PHONY : test/CMakeFiles/clean_test_results_image_proc.dir/clean
 
 test/CMakeFiles/clean_test_results_image_proc.dir/depend:
-	cd /home/sitl2/sitl_ws/build/image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl2/sitl_ws/src/image_pipeline/image_proc /home/sitl2/sitl_ws/src/image_pipeline/image_proc/test /home/sitl2/sitl_ws/build/image_proc /home/sitl2/sitl_ws/build/image_proc/test /home/sitl2/sitl_ws/build/image_proc/test/CMakeFiles/clean_test_results_image_proc.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/image_pipeline/image_proc /home/tesol/sitl_ws/src/image_pipeline/image_proc/test /home/tesol/sitl_ws/build/image_proc /home/tesol/sitl_ws/build/image_proc/test /home/tesol/sitl_ws/build/image_proc/test/CMakeFiles/clean_test_results_image_proc.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : test/CMakeFiles/clean_test_results_image_proc.dir/depend
 

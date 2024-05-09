@@ -1,11 +1,11 @@
 file(REMOVE_RECURSE
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/Fiducial.lisp"
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialArray.lisp"
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialMapEntry.lisp"
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialMapEntryArray.lisp"
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialTransform.lisp"
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialTransformArray.lisp"
-  "/home/sitl2/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/srv/InitializeMap.lisp"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/Fiducial.lisp"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialArray.lisp"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialMapEntry.lisp"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialMapEntryArray.lisp"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialTransform.lisp"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/msg/FiducialTransformArray.lisp"
+  "/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/common-lisp/ros/fiducial_msgs/srv/InitializeMap.lisp"
   "CMakeFiles/fiducial_msgs_generate_messages_lisp"
 )
 

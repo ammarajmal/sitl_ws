@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl2/sitl_ws/devel/.private/image_view/lib/libimage_view.pdb"
-  "/home/sitl2/sitl_ws/devel/.private/image_view/lib/libimage_view.so"
+  "/home/tesol/sitl_ws/devel/.private/image_view/lib/libimage_view.pdb"
+  "/home/tesol/sitl_ws/devel/.private/image_view/lib/libimage_view.so"
   "CMakeFiles/image_view.dir/src/nodelets/disparity_nodelet.cpp.o"
   "CMakeFiles/image_view.dir/src/nodelets/image_nodelet.cpp.o"
   "CMakeFiles/image_view.dir/src/nodelets/window_thread.cpp.o"
