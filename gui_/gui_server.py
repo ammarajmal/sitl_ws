@@ -34,80 +34,87 @@ client = InfluxDBClient(url=URL, token=TOKEN, org=ORG, username=USERNAME, passwo
 class ServerGUI(customtkinter.CTk):
     def __init__(self, master=None):
         super().__init__(master)
-        self.title('InfluxDB Server')
+        self.title('VIDEO MEASUREMENT SYSTEM')
         self.geometry('740x400')
         self.resizable(False, False)
         self.create_widgets()
+        
+        
+        self.camera_status = {}
+        self.detection_status = {}
+        self.init_camera_status()
+        self.init_ros_node()
+    def init_camera_status(self):
+        print('Initializing Camera Status')
+    def init_ros_node(self):
+        print('Initializing ROS Node')
+        
+        
     def create_widgets(self):
+        self.create_title_frame()
         self.create_left_frame()
         self.create_middle_frame()
         self.create_right_frame()
-        
-        
+        self.exit_button = customtkinter.CTkButton(
+            self, text='Exit', command=self.quit, fg_color=themes['red'][1], font=('calibri', 14))
+        self.exit_button.place(relx=0.517, rely=0.93, anchor='center', relwidth=0.33)
+    def create_title_frame(self):
+        gap = 0.01
+        frame_width = 1-2*gap
+        frame_height = 0.1
+        self.title_frame = customtkinter.CTkFrame(self, border_width=1)
+        self.title_frame.place(relx=gap, rely=gap, relwidth=frame_width, relheight=frame_height)
+        self.title_frame_widgets()
+    def title_frame_widgets(self):
+        self.title_frame_label = customtkinter.CTkLabel(
+            self.title_frame, text='DATA INGESTION DASHBOARD', font=('calibri', 14))
+        self.title_frame_label.place(relx=0.35, rely=0.2)
     def create_left_frame(self):
-        gap = 0.005
-        frame_width = (1-(4*gap))/3
-        frame_height = 1-3*gap
+        gap = 0.01
+        frame_width = (1/3)-(4*gap)
+        frame_height = 0.8-5*gap
         self.left_frame = customtkinter.CTkFrame(self, border_width=1)
-        self.left_frame.place(relx=gap, rely=gap, relwidth=frame_width, relheight=frame_height)
-        self.create_left_top_frame()
-        self.create_left_bottom_frame()
-    def create_left_top_frame(self)-> None:
-        self.create_left_top_frame = customtkinter.CTkFrame(self.left_frame)
-        self.create_left_top_frame.place(
-            relx=0.005, rely=0.005, relwidth=1-0.01, relheight=0.1)
-        self.create_left_top_frame_label = customtkinter.CTkLabel(
-            self.create_left_top_frame, text='DATA INGESTION', font=('Arial', 18))
-        self.create_left_top_frame_label.place(relx=0.17, rely=0.32)
-    def create_left_bottom_frame(self):
-        self.create_left_bottom_frame = customtkinter.CTkFrame(self.left_frame)
-        self.create_left_bottom_frame.place(
-            relx=0.005, rely=0.105, relwidth=1-0.01, relheight=0.9)
-        self.create_left_bottom_frame_widgets()
-    def create_left_bottom_frame_widgets(self):
+        self.left_frame.place(relx=gap, rely=0.13, relwidth=frame_width, relheight=frame_height)
+        self.left_frame_widgets()
+        # self.left_frame()
+    def left_frame_widgets(self)-> None:
+        self.create_frame_label = customtkinter.CTkLabel(
+            self.left_frame, text='DATA INGESTION', font=('calibri', 14))
         self.camera_check = customtkinter.CTkButton(
-            self.create_left_bottom_frame,
+            self.left_frame,
             text='Check Camera',
             command=self.check_camera,
             fg_color=themes['blue'])
         self.detection_check = customtkinter.CTkButton(
-            self.create_left_bottom_frame,
+            self.left_frame,
             text='Check Detection',
             command=self.check_detection,
             fg_color=themes['blue'])
         self.server_start = customtkinter.CTkButton(
-            self.create_left_bottom_frame,
+            self.left_frame,
             text='Start Server',
             command=self.start_server,
             fg_color=themes['red'][1])
         self.server_stop = customtkinter.CTkButton(
-            self.create_left_bottom_frame,
+            self.left_frame,
             text='Stop Server',
             command=self.stop_server,
             fg_color=themes['red'][1])
-        self.camera_check.place(relx=0.5, rely=0.1, anchor='center')
-        self.detection_check.place(relx=0.5, rely=0.3, anchor='center')
+        self.create_frame_label.place(relx=0.5, rely=0.08, anchor='center')
+        self.camera_check.place(relx=0.5, rely=0.2, anchor='center')
+        self.detection_check.place(relx=0.5, rely=0.35, anchor='center')
         self.server_start.place(relx=0.5, rely=0.5, anchor='center')
-        self.server_stop.place(relx=0.5, rely=0.7, anchor='center')
-    def check_detection(self):
-        print('Checking Detection')
-    def start_server(self):
-        print('Starting Server')
-    def stop_server(self):
-        print('Stopping Server')
-    def check_camera(self):
-        print('Checking Camera')
-
+        self.server_stop.place(relx=0.5, rely=0.65, anchor='center')
     def create_middle_frame(self):
-        gap = 0.005
-        frame_width = (1-(4*gap))/3
-        frame_height = 1-3*gap
+        gap = 0.01
+        frame_width = (1/3)-(4*gap)
+        frame_height = 0.8-5*gap
         self.middle_frame = customtkinter.CTkFrame(self, border_width=1)
-        self.middle_frame.place(relx=(2*gap)+frame_width, rely=gap, relwidth=frame_width, relheight=frame_height)
+        self.middle_frame.place(relx=(2*gap)+frame_width, rely=0.13, relwidth=frame_width, relheight=frame_height)
         self.middle_frame_widgets()
     def middle_frame_widgets(self):
         self.middle_frame_label = customtkinter.CTkLabel(
-            self.middle_frame, text='EXPERIMENT SETUP', font=('Arial', 18))
+            self.middle_frame, text='EXPERIMENT SETUP', font=('calibri', 14))
         self.middle_frame_exp_label = customtkinter.CTkLabel(
             self.middle_frame, text='Experiment Name', font=('Arial', 13))
         self.middle_frame_exp_entry = customtkinter.CTkEntry(self.middle_frame)
@@ -146,12 +153,19 @@ class ServerGUI(customtkinter.CTk):
     def stop_data_recording(self):
         print('Stopping Data Recording')
     def create_right_frame(self):
-        gap = 0.005
-        frame_width = (1-(4*gap))/3
-        frame_height = 1-3*gap
+        gap = 0.01
+        frame_width = (1/3)-(4*gap)
+        frame_height = 0.8-5*gap
         self.right_frame = customtkinter.CTkFrame(self, border_width=1)
-        self.right_frame.place(relx=(3*gap)+(2*frame_width), rely=gap, relwidth=frame_width, relheight=frame_height)
-
+        self.right_frame.place(relx=(3*gap)+(2*frame_width), rely=0.13, relwidth=frame_width, relheight=frame_height)
+    def check_detection(self):
+        print('Checking Detection')
+    def start_server(self):
+        print('Starting Server')
+    def stop_server(self):
+        print('Stopping Server')
+    def check_camera(self):
+        print('Checking Camera')
     def start_server(self):
         rospy.init_node('influx', anonymous=True)
         rospy.Subscriber('/sony_cam1_detect/fiducial_transforms', FiducialTransformArray, self.callback)
