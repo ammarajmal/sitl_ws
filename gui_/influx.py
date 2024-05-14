@@ -7,18 +7,21 @@ from influxdb_client import InfluxDBClient, Point, WritePrecision, WriteOptions
 import os
 
 # InfluxDB details - Load from environment and config
-TOKEN = os.getenv('OMEN_TOKEN')
+TOKEN = "d0_6f7zPqAjKwb66A6oCgewm2UBB8-hyRFI3uoTOuZNAGEgn2mW5G11_kEllHZrhAcU0D7eI0Qt1Nc8mLAn3eQ=="
+# TOKEN = os.getenv('TES_TOKEN')
 ORG = 'CAU'
-BUCKET = 'SITL'
+BUCKET = 'TEST_BUCKET'
 URL = 'http://localhost:8086'
-USERNAME = 'ammar'
-PASSWORD = 'sitl1234'
+USERNAME = 'tesol'
+PASSWORD = '00000000'
 
 # Updated authentication setup
 client = InfluxDBClient(url=URL, token=TOKEN, org=ORG, username=USERNAME, password=PASSWORD)
 
 def callback(data):
     for transform in data.transforms:
+        print("Fiducial ID: ", transform.fiducial_id)
+        
         point = Point("Sony_Cam_Data") \
             .tag("fiducial_id", transform.fiducial_id) \
             .field("x", transform.transform.translation.x) \
@@ -30,8 +33,9 @@ def callback(data):
             .field("rot_w", transform.transform.rotation.w) \
             .field("image_error", transform.image_error) \
             .field("object_error", transform.object_error) \
-            .field("fiducial_area", transform.fiducial_area)
-            # .time("timestamp", data.header.stamp.secs, write_precision=WritePrecision.S)
+            .field("fiducial_area", transform.fiducial_area) \
+            .time(data.header.stamp.secs, write_precision=WritePrecision.S)
+            
 
         write_api = client.write_api(write_options=WriteOptions(batch_size=500, flush_interval=10_000, jitter_interval=2_000, retry_interval=5_000, max_retries=5, max_retry_delay=30_000, exponential_base=2))
         write_api.write(bucket=BUCKET, org=ORG, record=point)
