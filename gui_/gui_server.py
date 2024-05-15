@@ -4,13 +4,12 @@ import customtkinter
 import rospy
 import threading
 from fiducial_msgs.msg import FiducialTransformArray
-from geometry_msgs.msg import Quaternion
+from datetime import datetime
 from influxdb_client import InfluxDBClient, Point, WritePrecision, WriteOptions
 import subprocess
 import os
 import re
 import csv
-from datetime import datetime, timedelta
 
 themes = {'blue': ("#3B8ED0", "#1F6AA5"),
           'green': ("#2CC985", "#2FA572"),
@@ -53,12 +52,9 @@ class ServerGUI(customtkinter.CTk):
                 'detect_status': '-',
                 'detect_fps': 0
             }
+        self.start_camera_detection_check()
         self.create_widgets()
 
-        self.init_ros_node()
-
-    def init_ros_node(self):
-        print('Initializing ROS Node')
 
     def create_widgets(self):
         self.create_title_frame()
@@ -89,20 +85,19 @@ class ServerGUI(customtkinter.CTk):
         self.left_frame = customtkinter.CTkFrame(self, border_width=1)
         self.left_frame.place(relx=gap, rely=0.13, relwidth=frame_width, relheight=frame_height)
         self.left_frame_widgets()
-
     def left_frame_widgets(self)-> None:
         self.create_frame_label = customtkinter.CTkLabel(
             self.left_frame, text='DATA INGESTION', font=('calibri', 14))
-        self.camera_check = customtkinter.CTkButton(
-            self.left_frame,
-            text='Check Camera',
-            command=self.check_camera,
-            fg_color=themes['blue'])
-        self.detection_check = customtkinter.CTkButton(
-            self.left_frame,
-            text='Check Detection',
-            command=self.check_detection,
-            fg_color=themes['blue'])
+        # self.camera_check = customtkinter.CTkButton(
+        #     self.left_frame,
+        #     text='Check Camera',
+        #     command=self.check_camera,
+        #     fg_color=themes['blue'])
+        # self.detection_check = customtkinter.CTkButton(
+        #     self.left_frame,
+        #     text='Check Detection',
+        #     command=self.check_detection,
+        #     fg_color=themes['blue'])
         self.server_start = customtkinter.CTkButton(
             self.left_frame,
             text='Start Server',
@@ -114,10 +109,10 @@ class ServerGUI(customtkinter.CTk):
             command=self.stop_server,
             fg_color=themes['red'][1])
         self.create_frame_label.place(relx=0.5, rely=0.08, anchor='center')
-        self.camera_check.place(relx=0.5, rely=0.25, anchor='center')
-        self.detection_check.place(relx=0.5, rely=0.4, anchor='center')
-        self.server_start.place(relx=0.5, rely=0.6, anchor='center')
-        self.server_stop.place(relx=0.5, rely=0.75, anchor='center')
+        # self.camera_check.place(relx=0.5, rely=0.25, anchor='center')
+        # self.detection_check.place(relx=0.5, rely=0.4, anchor='center')
+        self.server_start.place(relx=0.5, rely=0.25, anchor='center')
+        self.server_stop.place(relx=0.5, rely=0.4, anchor='center')
 
     def create_middle_frame(self):
         gap = 0.01
@@ -224,29 +219,39 @@ class ServerGUI(customtkinter.CTk):
                 font=('calibri', 12))
             self.camera_status_labels[f'Camera {i}'].place(relx=0.07, rely=y_offset + i * 0.1)
             self.detection_status_labels[f'Camera {i}'].place(relx=0.07, rely=y_offset + (i+3) * 0.1)
-            self.database_status_label = customtkinter.CTkLabel(
-                self.right_frame,
-                text='Database Status: Not Connected',
-                font=('calibri', 12))
-            self.database_status_label.place(relx=0.5, rely=0.8, anchor='center')
+
+        self.camera_status_labels['Active Cameras'] = customtkinter.CTkLabel(
+            self.right_frame,
+            text='Active Cameras: 0',
+            font=('calibri', 12))
+        self.detection_status_labels['Active Detection Nodes'] = customtkinter.CTkLabel(
+            self.right_frame,
+            text='Active Detection Nodes: 0',
+            font=('calibri', 12))
+        self.camera_status_labels['Active Cameras'].place(relx=0.07, rely=0.75)
+        self.detection_status_labels['Active Detection Nodes'].place(relx=0.07, rely=0.85)
+        
+     
 
     def start_server(self):
-        rospy.init_node('influx', anonymous=True)
+        rospy.init_node('influx_node', anonymous=False)
         rospy.loginfo('Starting ROS Influx Server')
-        for i in range(1, 4):
-            topic = f'/sony_cam{i}/image_raw'
-            if rospy.get_published_topics()[0]:
-                self.camera_status[f'Camera {i}'] = "Running"
-            else:
-                self.camera_status[f'Camera {i}'] = "Idle"
-        self.update_status_labels()
+        for camera in self.camera_status:
+            print(f'Camaera: {camera}')
+            # rospy.Subscriber(
+            #     self.camera_status[camera]['detect_topic'],
+            #     FiducialTransformArray,
+            #     self.callback
+            # )
+            # print(f'Subscribed to {self.camera_status[camera]["detect_topic"]}')
+        
+
     def stop_server(self):
-        rospy.signal_shutdown('Server stopped')
-        for key in self.camera_status:
-            self.camera_status[key] = "Idle"
-        for key in self.detection_status:
-            self.detection_status[key] = "Idle"
-        self.update_status_labels()
+        # stop the ros influx node
+        rospy.signal_shutdown('Server Stopped')
+        rospy.loginfo('Stopping ROS Influx Server')
+        
+        
     def get_topic_frequency(self, topic):
         proc = subprocess.Popen(['rostopic', 'hz', topic],
                                 stdout=subprocess.PIPE,
@@ -275,37 +280,24 @@ class ServerGUI(customtkinter.CTk):
             return this_topic in [topic[0] for topic in all_topics]
         except Exception as e:
             return False
-    def check_camera(self):
-        for i in range(1, self.number_of_cameras + 1):
-            camera = self.camera_status[f'Camera {i}']
-            if self.topic_check(camera['topic']):
-                camera['status'] = "Running"
-                camera['cam_fps'] = self.get_topic_frequency(camera['topic'])
-            else:
-                camera['status'] = "Idle"
-                camera['cam_fps'] = 0
-        self.update_status_labels()
 
-    def check_detection(self):
-        for i in range(1, self.number_of_cameras + 1):
-            camera = self.camera_status[f'Camera {i}']
-            if self.topic_check(camera['detect_topic']):
-                camera['detect_status'] = "Running"
-                camera['detect_fps'] = self.get_topic_frequency(camera['detect_topic'])
-            else:
-                camera['detect_status'] = "Idle"
-                camera['detect_fps'] = 0
-        self.update_status_labels()
-
-    def update_status_labels(self):
+    def update_status_labels(self, active_cameras, active_detection_nodes):
         for camera, info in self.camera_status.items():
             self.camera_status_labels[camera].configure(
                 text=f'{camera}: {info["status"]} at {info["cam_fps"]} Hz')
             self.detection_status_labels[camera].configure(
                 text=f'Detection {camera.split()[1]}: {info["detect_status"]} at {info["detect_fps"]} Hz')
-            print(self.camera_status)
+        self.camera_status_labels['Active Cameras'].configure(
+            text=f'Active Cameras: {active_cameras}')
+        self.detection_status_labels['Active Detection Nodes'].configure(
+            text=f'Active Detection Nodes: {active_detection_nodes}')
+
+
 
     def callback(self, data):
+        print('Callback called')
+        print(f'Number of transforms: {len(data.transforms)}')
+        return
         for transform in data.transforms:
             if rospy.get_time() < self.end_time:
                 # Save data to influxdb
@@ -367,20 +359,44 @@ class ServerGUI(customtkinter.CTk):
             with open(file_name, mode='a') as file:
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
                 writer.writerow(data)
-    def start_listening(self):
-        for camera in self.camera_status:
-            rospy.Subscriber(
-                self.camera_status[camera]['detect_topic'],
-                FiducialTransformArray,
-                self.callback
-                )
-        rospy.spin()
+    def start_camera_detection_check(self):
+        camera_thread = threading.Thread(target=self.camera_detection_check_loop)
+        camera_thread.daemon = True
+        camera_thread.start()
+    def camera_detection_check_loop(self):
+        while True:
+            active_cameras = 0
+            active_detection_nodes = 0
+            for i in range(1, self.number_of_cameras + 1):
+                camera = self.camera_status[f'Camera {i}']
+                if self.topic_check(camera['topic']):
+                    camera['status'] = "Running"
+                    camera['cam_fps'] = self.get_topic_frequency(camera['topic'])
+                    active_cameras += 1
+                else:
+                    camera['status'] = "Idle"
+                    camera['cam_fps'] = 0
+
+                if self.topic_check(camera['detect_topic']):
+                    camera['detect_status'] = "Running"
+                    camera['detect_fps'] = self.get_topic_frequency(camera['detect_topic'])
+                    active_detection_nodes += 1
+                else:
+                    camera['detect_status'] = "Idle"
+                    camera['detect_fps'] = 0
+            self.update_status_labels(active_cameras, active_detection_nodes)
+            rospy.sleep(0.5)
+    
+
 
 
 
 if __name__ == "__main__":
     root = ServerGUI()
-    root.mainloop()
-    # root.start_listening()
-    print('Done.!')
+    try:
+        root.mainloop()
+    except Exception as e:
+        print(f'An error occurred: {e}')
+        # root.start_listening()
+        print('Done.!')
 
