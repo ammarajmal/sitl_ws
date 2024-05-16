@@ -21,14 +21,16 @@ customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme(COLOR_SELECT)
 
 # InfluxDB details
-TOKEN = os.getenv('')
-ORG = 'Chung-Ang University'
-BUCKET = 'SITL'
-URL = 'http://localhost:8086'
-USERNAME = 'tesol'
-PASSWORD = '00000000'
+TOKEN = os.environ.get("TES_TOKEN")
+ORG = "Chung-Ang University"
+BUCKET = 'TEST_BUCKET'
+URL = "http://localhost:8086"
+# USERNAME = 'tesol'
+# PASSWORD = '00000000'
 # Updated authentication setup
-client = InfluxDBClient(url=URL, token=TOKEN, org=ORG, username=USERNAME, password=PASSWORD)
+camera_data = {}
+
+client = InfluxDBClient(url=URL, token=TOKEN, org=ORG)
 
 class ServerGUI(customtkinter.CTk):
     def __init__(self, master=None):
@@ -43,6 +45,8 @@ class ServerGUI(customtkinter.CTk):
         self.timer_running = False
         self.experiment_name = ''
         self.end_time = None
+        self.camera_detection_thread = None
+        self.camera_thread = None
         for i in range(1, self.number_of_cameras+1):
             self.camera_status[f'Camera {i}'] = {
                 'status': '-',
@@ -52,7 +56,14 @@ class ServerGUI(customtkinter.CTk):
                 'detect_status': '-',
                 'detect_fps': 0
             }
+        self.camera_topics = {
+        "/sony_cam1_detect/fiducial_transforms": "Camera 1",
+        "/sony_cam2_detect/fiducial_transforms": "Camera 2",
+        "/sony_cam3_detect/fiducial_transforms": "Camera 3",
+        }
+        self.initialize_camera_data(self.camera_topics.values())
         self.start_camera_detection_check()
+        
         self.create_widgets()
 
 
@@ -88,16 +99,6 @@ class ServerGUI(customtkinter.CTk):
     def left_frame_widgets(self)-> None:
         self.create_frame_label = customtkinter.CTkLabel(
             self.left_frame, text='DATA INGESTION', font=('calibri', 14))
-        # self.camera_check = customtkinter.CTkButton(
-        #     self.left_frame,
-        #     text='Check Camera',
-        #     command=self.check_camera,
-        #     fg_color=themes['blue'])
-        # self.detection_check = customtkinter.CTkButton(
-        #     self.left_frame,
-        #     text='Check Detection',
-        #     command=self.check_detection,
-        #     fg_color=themes['blue'])
         self.server_start = customtkinter.CTkButton(
             self.left_frame,
             text='Start Server',
@@ -236,41 +237,182 @@ class ServerGUI(customtkinter.CTk):
     def start_server(self):
         rospy.init_node('influx_node', anonymous=False)
         rospy.loginfo('Starting ROS Influx Server')
-        for camera in self.camera_status:
-            print(f'Camaera: {camera}')
-            # rospy.Subscriber(
-            #     self.camera_status[camera]['detect_topic'],
-            #     FiducialTransformArray,
-            #     self.callback
-            # )
-            # print(f'Subscribed to {self.camera_status[camera]["detect_topic"]}')
+        # Subscribe to each camera detection topic
+        for _, info in self.camera_status.items():
+            rospy.Subscriber(info['detect_topic'], FiducialTransformArray, self.transform_callback)
+            rospy.loginfo(f"Subscribed to {info['detect_topic']}")
+        
+            
+    def transform_callback(self, data):
+        # Save frame_id, fiducial_id, translation, rotation, image_error, object_error, and fiducial_area into InfluxDB
+        for transform in data.transforms:
+            translation = transform.transform.translation
+            rotation = transform.transform.rotation
+            print(translation)
+            point = Point("fiducial_transforms") \
+                .tag("camera", data.header.frame_id) \
+                .field("fiducial_id", transform.fiducial_id) \
+                .field("translation_x", translation.x) \
+                .field("translation_y", translation.y) \
+                .field("translation_z", translation.z) \
+                .field("rotation_x", rotation.x) \
+                .field("rotation_y", rotation.y) \
+                .field("rotation_z", rotation.z) \
+                .field("rotation_w", rotation.w) \
+                .field("image_error", transform.image_error) \
+                .field("object_error", transform.object_error) \
+                .field("fiducial_area", transform.fiducial_area) \
+                .time(int(data.header.stamp.secs * 1e9 + data.header.stamp.nsecs), WritePrecision.NS)
+
+            write_api = client.write_api(write_options=WriteOptions(batch_size=500, flush_interval=10_000, jitter_interval=2_000, retry_interval=5_000))
+            write_api.write(bucket=BUCKET, org=ORG, record=point)
+
+
+        
+        return
+        # fiducial_id
+        # translation = transform.transform.translation
+        # rotation = transform.transform.rotation
+        # return
+        # camera_name = transform.header.frame_id
+        # if camera_name not in self.camera_status:
+        #     rospy.logwarn(f"Received data for unknown camera: {camera_name}")
+        #     return
+        # first_data = self.camera_status[camera_name]
+        # if first_data['first_translation_x'] is None:
+        #     print("First data point found for camera:", camera_name, 'at', translation.x, translation.y, translation.z)
+        #     first_data['first_translation_x'] = translation.x
+        #     first_data['first_translation_y'] = translation.y
+        #     first_data['first_translation_z'] = translation.z
+        # # Subtract the first data point
+        # normalized_translation_x = translation.x - first_data['first_translation_x']
+        # normalized_translation_y = translation.y - first_data['first_translation_y']
+        # normalized_translation_z = translation.z - first_data['first_translation_z']
+        # # Save normalized data to InfluxDB
+        # self.save_to_influxdb(camera_name, normalized_translation_x, normalized_translation_y, normalized_translation_z, rotation)
+        #     self.process_data(transform)
+        #     return
+        #     # Check if the experiment is still running
+        #     if rospy.get_time() < self.end_time:
+        #         # Save data to influxdb
+        #         self.save_to_influxdb(transform)
+        #         # Save data to CSV if required
+        #         if self.camera_status[data.header.frame_id]['save_to_csv']:
+        #             self.save_to_csv(transform)
+        #     else:
+        #         rospy.signal_shutdown('Experiment Ended')
+        #         self.stop_data_recording()
+    def process_data(self, transform):
+        print(transform)
+        translation = transform.transform.translation
+        rotation = transform.transform.rotation
+        return
+        camera_name = transform.header.frame_id
+        if camera_name not in self.camera_status:
+            rospy.logwarn(f"Received data for unknown camera: {camera_name}")
+            return
+        first_data = self.camera_status[camera_name]
+        if first_data['first_translation_x'] is None:
+            print("First data point found for camera:", camera_name, 'at', translation.x, translation.y, translation.z)
+            first_data['first_translation_x'] = translation.x
+            first_data['first_translation_y'] = translation.y
+            first_data['first_translation_z'] = translation.z
+        # Subtract the first data point
+        normalized_translation_x = translation.x - first_data['first_translation_x']
+        normalized_translation_y = translation.y - first_data['first_translation_y']
+        normalized_translation_z = translation.z - first_data['first_translation_z']
+        # Save normalized data to InfluxDB
+        self.save_to_influxdb(camera_name, normalized_translation_x, normalized_translation_y, normalized_translation_z, rotation)
+        
+    def save_to_influxdb(self, camera_name, translation_x, translation_y, translation_z, rotation):
+        point = Point("fiducial_transforms") \
+            .tag("camera", camera_name) \
+            .field("translation_x", translation_x) \
+            .field("translation_y", translation_y) \
+            .field("translation_z", translation_z) \
+            .field("rotation_x", rotation.x) \
+            .field("rotation_y", rotation.y) \
+            .field("rotation_z", rotation.z) \
+            .field("rotation_w", rotation.w) \
+            .time(int(rospy.Time.now().to_nsec()), WritePrecision.NS)
+        write_api = client.write_api(write_options=WriteOptions(batch_size=500, flush_interval=10_000, jitter_interval=2_000, retry_interval=5_000))
+        write_api.write(bucket=BUCKET, org=ORG, record=point)
+        
+    def save_to_csv(self, transform):
+        file_name = f'{self.experiment_name}_{transform.header.frame_id}.csv'
+        fieldnames = ['fiducial_id', 'experiment', 'translation_x', 'translation_y', 'translation_z',
+                      'rotation_x', 'rotation_y', 'rotation_z', 'rotation_w',
+                      'image_error', 'object_error', 'fiducial_area', 'timestamp']
+        data = {
+            'fiducial_id': transform.fiducial_id,
+            'experiment': self.experiment_name,
+            'translation_x': transform.transform.translation.x,
+            'translation_y': transform.transform.translation.y,
+            'translation_z': transform.transform.translation.z,
+            'rotation_x': transform.transform.rotation.x,
+            'rotation_y': transform.transform.rotation.y,
+            'rotation_z': transform.transform.rotation.z,
+            'rotation_w': transform.transform.rotation.w,
+            'image_error': transform.image_error,
+            'object_error': transform.object_error,
+            'fiducial_area': transform.fiducial_area,
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+        if not os.path.exists(file_name):
+            with open(file_name, mode='w') as file:
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerow(data)
+        else:
+            with open(file_name, mode='a') as file:
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writerow(data)
         
 
     def stop_server(self):
-        # stop the ros influx node
-        rospy.signal_shutdown('Server Stopped')
-        rospy.loginfo('Stopping ROS Influx Server')
+        # Stop the ros influx node
+        try:
+            rospy.signal_shutdown('Server Stopped')
+            rospy.loginfo('Stopping ROS Influx Server')
+            # Wait for the thread to finish
+            rospy.loginfo('Server Stopped Successfully')
+        except rospy.ROSException as e:
+            rospy.logerr(f'An error occurred: {e}')
         
-        
+        # for data in self.camera_status:
+        #     print(data)
+            # for transform in data.transforms:
+            #     self.process_data(transform)
+            #     # Check if the experiment is still running
+                        
+            # if rospy.get_time() < self.end_time:
+            #     # Save data to influxdb
+            #     self.save_to_influxdb(transform)
+            #     # Save data to CSV if required
+            #     if self.camera_status[data.header.frame_id]['save_to_csv']:
+            #         self.save_to_csv(transform)
+            # # else:
+            #     rospy.signal_shutdown('Experiment Ended')
+            #     self.stop_data_recording()        
+
     def get_topic_frequency(self, topic):
-        proc = subprocess.Popen(['rostopic', 'hz', topic],
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT)
-        rospy.sleep(0.5)  # wait a bit to get some output
+        proc = subprocess.Popen(['rostopic', 'hz', topic], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        rospy.sleep(0.5)  # Allow time to gather data
         proc.terminate()
+
         try:
             output, _ = proc.communicate(timeout=2)
+            # Decode the bytes to a string (assuming UTF-8 encoding)
             output = output.decode('utf-8')
         except subprocess.TimeoutExpired:
             proc.kill()
             output, _ = proc.communicate()
-        # extract frequency from output using regular expression
-        match = re.search(r'average rate: (.*)', output)
-        # match = re.search(r'average rate: ([\d\.]+)', output)
+            output = output.decode('utf-8')  # Decode in case of timeout too
+
+        # Now your regex will work on the string 'output'
+        match = re.search(r'average rate: ([\d\.]+)', output)
         if match:
-            # return float with 0 decimal places by truncating
-            return float(match.group(1)).__trunc__()
-            # return float(match.group(1))
+            return float(match.group(1)).__trunc__()  # Truncate to whole number
         else:
             return 0
 
@@ -294,20 +436,7 @@ class ServerGUI(customtkinter.CTk):
 
 
 
-    def callback(self, data):
-        print('Callback called')
-        print(f'Number of transforms: {len(data.transforms)}')
-        return
-        for transform in data.transforms:
-            if rospy.get_time() < self.end_time:
-                # Save data to influxdb
-                self.save_to_influxdb(transform)
-                # Save data to CSV if required
-                if self.camera_status[data.header.frame_id]['save_to_csv']:
-                    self.save_to_csv(transform)
-            # else:
-            #     rospy.signal_shutdown('Experiment Ended')
-            #     self.stop_data_recording()
+
     def save_to_influxdb(self, transform):
         translation = transform.transform.translation
         rotation = transform.transform.rotation
@@ -360,9 +489,9 @@ class ServerGUI(customtkinter.CTk):
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
                 writer.writerow(data)
     def start_camera_detection_check(self):
-        camera_thread = threading.Thread(target=self.camera_detection_check_loop)
-        camera_thread.daemon = True
-        camera_thread.start()
+        self.camera_thread = threading.Thread(target=self.camera_detection_check_loop)
+        self.camera_thread.daemon = True
+        self.camera_thread.start()
     def camera_detection_check_loop(self):
         while True:
             active_cameras = 0
@@ -386,9 +515,10 @@ class ServerGUI(customtkinter.CTk):
                     camera['detect_fps'] = 0
             self.update_status_labels(active_cameras, active_detection_nodes)
             rospy.sleep(0.5)
-    
-
-
+    def camera_topics(self):
+        
+            
+            
 
 
 if __name__ == "__main__":
