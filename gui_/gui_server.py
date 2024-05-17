@@ -40,10 +40,9 @@ class ServerGUI(customtkinter.CTk):
         self.resizable(False, False)
         self.number_of_cameras = 3
         self.csv_check = tk.StringVar(value="on")
-        self.experiment_name = ''
         self.camera_status = {}
         self.timer_running = False
-        self.experiment_name = ''
+        self.experiment_name = tk.StringVar(value='Test1')
         self.end_time = None
         self.camera_detection_thread = None
         self.camera_thread = None
@@ -56,14 +55,7 @@ class ServerGUI(customtkinter.CTk):
                 'detect_status': '-',
                 'detect_fps': 0
             }
-        self.camera_topics = {
-        "/sony_cam1_detect/fiducial_transforms": "Camera 1",
-        "/sony_cam2_detect/fiducial_transforms": "Camera 2",
-        "/sony_cam3_detect/fiducial_transforms": "Camera 3",
-        }
-        self.initialize_camera_data(self.camera_topics.values())
         self.start_camera_detection_check()
-        
         self.create_widgets()
 
 
@@ -128,11 +120,17 @@ class ServerGUI(customtkinter.CTk):
             self.middle_frame, text='EXPERIMENT SETUP', font=('calibri', 14))
         self.middle_frame_exp_label = customtkinter.CTkLabel(
             self.middle_frame, text='Experiment Name', font=('Arial', 13))
-        self.middle_frame_exp_entry = customtkinter.CTkEntry(self.middle_frame)
+        self.middle_frame_exp_entry = customtkinter.CTkEntry(self.middle_frame,
+                                                             textvariable=self.experiment_name)
         self.middle_frame_exp_duration_label = customtkinter.CTkLabel(
             self.middle_frame, text='Experiment Duration', font=('Arial', 13))
         self.middle_frame_exp_duration_entry = customtkinter.CTkEntry(self.middle_frame)
         self.middle_frame_exp_duration_entry.insert(0, '10')
+        self.middle_frame_update_exp_button = customtkinter.CTkButton(
+            self.middle_frame,
+            text='Update details',
+            command=self.update_experiment_details,
+            fg_color=themes['green'][1])
         self.middle_frame_csv_option_checkbox = customtkinter.CTkCheckBox(
             self.middle_frame,
             text='Save Data to CSV',
@@ -157,9 +155,10 @@ class ServerGUI(customtkinter.CTk):
         self.middle_frame_exp_entry.place(relx=0.65, rely=0.2, relwidth=0.3)
         self.middle_frame_exp_duration_label.place(relx=0.08, rely=0.31)
         self.middle_frame_exp_duration_entry.place(relx=0.65, rely=0.31, relwidth=0.3)
-        self.middle_frame_csv_option_checkbox.place(relx=0.25, rely=0.43)
-        self.middle_frame_start_data_recording.place(relx=0.5, rely=0.6, anchor='center')
-        self.middle_frame_stop_data_recording.place(relx=0.5, rely=0.75, anchor='center')
+        self.middle_frame_update_exp_button.place(relx=0.5, rely=0.48, anchor='center', relwidth=0.4)
+        self.middle_frame_csv_option_checkbox.place(relx=0.25, rely=0.56)
+        self.middle_frame_start_data_recording.place(relx=0.5, rely=0.72, anchor='center')
+        self.middle_frame_stop_data_recording.place(relx=0.5, rely=0.85, anchor='center')
 
     def csv_checkbox_event(self):
         print('checkbox toggled, current value:', self.csv_check.get())
@@ -515,12 +514,21 @@ class ServerGUI(customtkinter.CTk):
                     camera['detect_fps'] = 0
             self.update_status_labels(active_cameras, active_detection_nodes)
             rospy.sleep(0.5)
-    def camera_topics(self):
-        
-            
-            
 
-
+    def initialize_camera_data(self, camera_names):
+        for camera_name in camera_names:
+            camera_data[camera_name] = {
+                'first_translation_x': None,
+                'first_translation_y': None,
+                'first_translation_z': None
+            }
+    def update_experiment_details(self):
+        self.experiment_name = self.middle_frame_exp_entry.get()
+        duration = float(self.middle_frame_exp_duration_entry.get())
+        # self.start_experiment(self.experiment_name, duration, self.csv_check.get() == 'on')
+        print(f'Experiment Name: {self.experiment_name}, Duration: {duration} seconds')
+        print('Experiment details updated')
+            
 if __name__ == "__main__":
     root = ServerGUI()
     try:
