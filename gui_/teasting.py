@@ -83,11 +83,12 @@ def save_to_influxdb(camera_name, translation_x, translation_y, translation_z, r
 
 def save_influxdb_data_to_csv(start_time, end_time, experiment_name, camera_name):
     print(f'Saving data to CSV for experiment {experiment_name} and camera {camera_name}.')
-
+    start_time_ns = start_time.to_nsec()
+    end_time_ns = end_time.to_nsec()
     # Construct the Flux Query
     query = f'''
     from(bucket: "TEST_BUCKET")
-        |> range(start: -10m)  // Adjust the range as needed
+        |> range(start: {start_time_ns}, stop:{end_time_ns})  // Adjust the range as needed
         |> filter(fn: (r) => r["_measurement"] == "ind_fiducial_transforms")
         |> filter(fn: (r) => r["camera"] == "{camera_name}")
         |> filter(fn: (r) => r["experiment"] == "{experiment_name}")
@@ -98,41 +99,35 @@ def save_influxdb_data_to_csv(start_time, end_time, experiment_name, camera_name
     # Execute the Query
     try:
         tables = query_api.query(org=org, query=query)
+        dataframe = []
+        for table in tables:
+            records = []
+            for record in table.records[1:]:
+                records.append(record.values) # Get the values from Flux Record
+            # Determine the actual column names from the first record
+            column_names = list(records[0].keys())
+            df = pd.DataFrame(records, columns=column_names)
+            dataframe.append(df)
+        combined_df = pd.concat(dataframe, ignore_index=True)
+        # Dispaly the Dataframe for validation
+        print(combined_df.head())
+        
+        # Save to CSV
+        csv_filename = f"fiducial_transforms_{experiment_name}_{camera_name}_{start_time}_{end_time}.csv"  # Enhanced filename
+        combined_df.to_csv(csv_filename, index=False)  # Save without row indices
+        print(f"Data saved to {csv_filename}")
     except Exception as e:
         print(f"Query failed: {e}")
         print("No data returned from the query.")
         return
     finally:
-        print("Data read successfully.")
-    dataframe = []
-    for table in tables:
-        records = []
-        for record in table.records[1:]:
-            records.append(record.values) # Get the values from Flux Record
-        # Determine the actual column names from the first record
-        column_names = list(records[0].keys())
-        df = pd.DataFrame(records, columns=column_names)
-        dataframe.append(df)
-    combined_df = pd.concat(dataframe, ignore_index=True)
-    # Dispaly the Dataframe for validation
-    print(combined_df.head())
-    
-    # Save to CSV
-    csv_filename = f"fiducial_transforms_{experiment_name}_{camera_name}_{start_time}_{end_time}.csv"  # Enhanced filename
-    combined_df.to_csv(csv_filename, index=False)  # Save without row indices
-    print(f"Data saved to {csv_filename}")
-
-
-
-    print(f"Data saved to influxdb_data.csv")
+        print("function completed.")
 
 
 def subscribe_to_camera_topics(camera_topics, duration):
     global start_time_, end_time_
     start_time = rospy.Time.now()
     end_time = start_time + duration
-    start_time_ = start_time
-    end_time_ = end_time
     # print(datetime.fromtimestamp(start_time.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
     # print(datetime.fromtimestamp(end_time.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
 
@@ -162,7 +157,7 @@ def main_loop():
     st, en = subscribe_to_camera_topics(camera_topics, duration)
     # print(datetime.fromtimestamp(st.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
     # print(datetime.fromtimestamp(en.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
-    save_influxdb_data_to_csv(st, en, experiment_name, camera_name=f"{c_name}1")
+    save_influxdb_data_to_csv(st, en, experiment_name, camera_name=f"{c_name}2")
     print("Time's up!")
 
 
@@ -170,6 +165,4 @@ if __name__ == "__main__":
     main_loop()
     print('After the main loop')
 
-    print(datetime.fromtimestamp(start_time_.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
-    print(datetime.fromtimestamp(end_time_.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
     
