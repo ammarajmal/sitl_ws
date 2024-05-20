@@ -2,19 +2,28 @@
 import rospy
 import csv
 import os
+import pandas as pd
 import time
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client.client.flux_table import FluxRecord
 from fiducial_msgs.msg import FiducialTransformArray
 from functools import partial
+from datetime import datetime
 
-dur = 60
+
+dur = 5
+start_time_ = None
+end_time_ = None
+c_name = 'Sony'
 # InfluxDB 2.0 setup
 token = os.environ.get("TES_TOKEN")
 org = "Chung-Ang University"
 url = "http://localhost:8086"
-write_client = InfluxDBClient(url=url, token=token, org=org)
-write_api = write_client.write_api(write_options=SYNCHRONOUS)
+client = InfluxDBClient(url=url, token=token, org=org)
+query_api = client.query_api()
+
+write_api = client.write_api(write_options=SYNCHRONOUS)
 experiment_name = "test1"
 camera_data = {}
 
@@ -33,7 +42,7 @@ def camera_callback(start_time, end_time, camera_name, data):
         rospy.logwarn(f"Received data for unknown camera: {camera_name}")
         return
     first_data = camera_data[camera_name]
-    # print(camera_data["Camera 1"].transforms[0].transform.translation.x)
+    
     for transform in data.transforms:
         translation = transform.transform.translation
         rotation = transform.transform.rotation
@@ -68,43 +77,99 @@ def save_to_influxdb(camera_name, translation_x, translation_y, translation_z, r
         .field("fiducial_area", data.transforms[0].fiducial_area) \
         .field("time_cam", data.header.stamp.to_nsec()) \
         .time(rospy.Time.now().to_nsec(), WritePrecision.NS)
+    # print(f"Writing data to InfluxDB: {point.to_line_protocol()}")
     write_api.write(bucket="TEST_BUCKET", record=point)
     
 
-def save_influxdb_data_to_csv(start_time, end_time):
-    with open("influxdb_data.csv", mode="w") as file:
-        writer = csv.writer(file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        query = f'from(bucket: "TEST_BUCKET") |> range(start: {int(start_time.to_sec())}s, stop: {int(end_time.to_sec())}s) |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")'
-        result = write_client.query_api().query_data_frame(org=org, query=query)
-        for table in result:
-            for record in table.records:
-                writer.writerow([record.get_field(), record.get_value(), record.get_time()])
+def save_influxdb_data_to_csv(start_time, end_time, experiment_name, camera_name):
+    print(f'Saving data to CSV for experiment {experiment_name} and camera {camera_name}.')
+
+    # Construct the Flux Query
+    query = f'''
+    from(bucket: "TEST_BUCKET")
+        |> range(start: -10m)  // Adjust the range as needed
+        |> filter(fn: (r) => r["_measurement"] == "ind_fiducial_transforms")
+        |> filter(fn: (r) => r["camera"] == "{camera_name}")
+        |> filter(fn: (r) => r["experiment"] == "{experiment_name}")
+        |> pivot(rowKey: ["_time", "camera"], columnKey: ["_field"], valueColumn: "_value")
+
+    '''
+
+    # Execute the Query
+    try:
+        tables = query_api.query(org=org, query=query)
+    except Exception as e:
+        print(f"Query failed: {e}")
+        print("No data returned from the query.")
+        return
+    finally:
+        print("Data read successfully.")
+    dataframe = []
+    for table in tables:
+        records = []
+        for record in table.records[1:]:
+            records.append(record.values) # Get the values from Flux Record
+        # Determine the actual column names from the first record
+        column_names = list(records[0].keys())
+        df = pd.DataFrame(records, columns=column_names)
+        dataframe.append(df)
+    combined_df = pd.concat(dataframe, ignore_index=True)
+    # Dispaly the Dataframe for validation
+    print(combined_df.head())
+    
+    # Save to CSV
+    csv_filename = f"fiducial_transforms_{experiment_name}_{camera_name}_{start_time}_{end_time}.csv"  # Enhanced filename
+    combined_df.to_csv(csv_filename, index=False)  # Save without row indices
+    print(f"Data saved to {csv_filename}")
+
+
+
+    print(f"Data saved to influxdb_data.csv")
 
 
 def subscribe_to_camera_topics(camera_topics, duration):
+    global start_time_, end_time_
     start_time = rospy.Time.now()
     end_time = start_time + duration
+    start_time_ = start_time
+    end_time_ = end_time
+    # print(datetime.fromtimestamp(start_time.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
+    # print(datetime.fromtimestamp(end_time.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
+
+    tim = (start_time, end_time)
     for camera_name, topic in camera_topics.items():
+        print(f"Subscribing to {topic} for {camera_name}")
         callback_with_params = partial(camera_callback, start_time, end_time, camera_name)
         rospy.Subscriber(topic,
                          FiducialTransformArray,
                          callback=callback_with_params)
     while rospy.Time.now() < end_time and not rospy.is_shutdown():
         rospy.sleep(1)
+    print("finally up.!")
+    return tim
+    # print(tim)
 
 
 def main_loop():
     rospy.init_node('data_processor', anonymous=False)
     camera_topics = {
-        "Camera 1": "/sony_cam1_detect/fiducial_transforms",
-        "Camera 2": "/sony_cam2_detect/fiducial_transforms",
-        "Camera 3": "/sony_cam3_detect/fiducial_transforms"
+        f"{c_name}1": "/sony_cam1_detect/fiducial_transforms",
+        f"{c_name}2": "/sony_cam2_detect/fiducial_transforms",
+        f"{c_name}3": "/sony_cam3_detect/fiducial_transforms"
     }
     initialize_camera_data(camera_topics.keys())
     duration = rospy.Duration(dur)  # 5 seconds
-    subscribe_to_camera_topics(camera_topics, duration)
+    st, en = subscribe_to_camera_topics(camera_topics, duration)
+    # print(datetime.fromtimestamp(st.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
+    # print(datetime.fromtimestamp(en.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
+    save_influxdb_data_to_csv(st, en, experiment_name, camera_name=f"{c_name}1")
     print("Time's up!")
 
 
 if __name__ == "__main__":
     main_loop()
+    print('After the main loop')
+
+    print(datetime.fromtimestamp(start_time_.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
+    print(datetime.fromtimestamp(end_time_.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
+    
