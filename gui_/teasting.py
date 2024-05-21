@@ -90,11 +90,12 @@ def save_influxdb_data_to_csv(start_time, end_time, experiment_name, camera_name
     from(bucket: "TEST_BUCKET")
         |> range(start: {start_time_ns}, stop:{end_time_ns})  // Adjust the range as needed
         |> filter(fn: (r) => r["_measurement"] == "ind_fiducial_transforms")
-        |> filter(fn: (r) => r["camera"] == "{camera_name}")
+        |> filter(fn: (r) => r["camera"] == "Sony1" or r["camera"] == "Sony2" or r["camera"] == "Sony3")
         |> filter(fn: (r) => r["experiment"] == "{experiment_name}")
         |> pivot(rowKey: ["_time", "camera"], columnKey: ["_field"], valueColumn: "_value")
 
     '''
+    print(query)
 
     # Execute the Query
     try:
@@ -113,7 +114,8 @@ def save_influxdb_data_to_csv(start_time, end_time, experiment_name, camera_name
         print(combined_df.head())
         
         # Save to CSV
-        csv_filename = f"fiducial_transforms_{experiment_name}_{camera_name}_{start_time}_{end_time}.csv"  # Enhanced filename
+        timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
+        csv_filename = f"fiducial_transforms_{experiment_name}_{timestamp_str}.csv"  # Enhanced filename
         combined_df.to_csv(csv_filename, index=False)  # Save without row indices
         print(f"Data saved to {csv_filename}")
     except Exception as e:
@@ -157,7 +159,10 @@ def main_loop():
     st, en = subscribe_to_camera_topics(camera_topics, duration)
     # print(datetime.fromtimestamp(st.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
     # print(datetime.fromtimestamp(en.to_sec()).strftime('%Y-%m-%d %H:%M:%S'))
-    save_influxdb_data_to_csv(st, en, experiment_name, camera_name=f"{c_name}2")
+    camera_names = list(camera_topics.keys())
+    print(camera_names)
+    # camera_names=f"{c_name}2"
+    save_influxdb_data_to_csv(st, en, experiment_name, camera_name=camera_names)
     print("Time's up!")
 
 
