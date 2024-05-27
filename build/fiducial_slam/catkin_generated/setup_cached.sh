@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/tesol/sitl_ws/devel/.private/fiducial_slam:$CMAKE_PREFIX_PATH"
-export PWD='/home/tesol/sitl_ws/build/fiducial_slam'
-export ROSLISP_PACKAGE_DIRECTORIES="/home/tesol/sitl_ws/devel/.private/fiducial_slam/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/tesol/sitl_ws/src/fiducials/fiducial_slam:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/sitl1/sitl_ws/devel/.private/fiducial_slam:$CMAKE_PREFIX_PATH"
+export PWD='/home/sitl1/sitl_ws/build/fiducial_slam'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/sitl1/sitl_ws/devel/.private/fiducial_slam/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/sitl1/sitl_ws/src/fiducials/fiducial_slam:$ROS_PACKAGE_PATH"

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/tesol/sitl_ws/devel/.private/fiducial_slam/lib/fiducial_slam/auto_init_403_test"
-  "/home/tesol/sitl_ws/devel/.private/fiducial_slam/lib/fiducial_slam/auto_init_403_test.pdb"
+  "/home/sitl1/sitl_ws/devel/.private/fiducial_slam/lib/fiducial_slam/auto_init_403_test"
+  "/home/sitl1/sitl_ws/devel/.private/fiducial_slam/lib/fiducial_slam/auto_init_403_test.pdb"
   "CMakeFiles/auto_init_403_test.dir/test/auto_init_403_test.cpp.o"
 )
 

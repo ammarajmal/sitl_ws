@@ -1,6 +1,6 @@
 # CMake generated Testfile for 
-# Source directory: /home/tesol/sitl_ws/src/fiducials/fiducials
-# Build directory: /home/tesol/sitl_ws/build/fiducials
+# Source directory: /home/sitl1/sitl_ws/src/fiducials/fiducials
+# Build directory: /home/sitl1/sitl_ws/build/fiducials
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.

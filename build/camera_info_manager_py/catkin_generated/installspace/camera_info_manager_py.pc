@@ -1,4 +1,4 @@
-prefix=/home/tesol/sitl_ws/install
+prefix=/home/sitl1/sitl_ws/install
 
 Name: camera_info_manager_py
 Description: Description of camera_info_manager_py

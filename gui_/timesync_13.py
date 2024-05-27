@@ -9,7 +9,7 @@ import time
 import subprocess
 class TimeSyncChecker:
     def __init__(self):
-        self.timer = 10 # 10 seconds
+        self.timer = 30 # 10 seconds
         self.last_timestamp_cam1 = None
         self.last_timestamp_cam3 = None
         rospy.init_node('timesync_checker', anonymous=False)
@@ -18,8 +18,9 @@ class TimeSyncChecker:
         sub_cam1 = message_filters.Subscriber("/sony_cam1_detect/fiducial_transforms", FiducialTransformArray)
         sub_cam3 = message_filters.Subscriber("/sony_cam3_detect/fiducial_transforms", FiducialTransformArray)
         # ts = message_filters.TimeSynchronizer([sub_cam1, sub_cam3], 10)
-        ts = message_filters.ApproximateTimeSynchronizer([sub_cam1, sub_cam3], 10, slop=0.4)  # slop = 0.01 seconds (10 ms)
-
+        threshold = 0.01  # seconds
+        ts = message_filters.ApproximateTimeSynchronizer([sub_cam1, sub_cam3], 10, slop=threshold)  # slop = 0.01 seconds (10 ms)
+        rospy.loginfo("ApproximateTimeSynchronizer slop: %.2f seconds", threshold)
         ts.registerCallback(self.callback)
 
         self.start_time = time.time()
@@ -38,6 +39,7 @@ class TimeSyncChecker:
             ax.grid(True)
 
     def callback(self, msg1, msg2):
+        rospy.loginfo("Received messages from Camera 1 and Camera 3")
         unsynced_time_diff = abs(msg1.header.stamp - msg2.header.stamp).to_sec()
         rospy.loginfo("Unsynchronized time difference: %.6f seconds", unsynced_time_diff)
         self.unsynced_data.append({'time': time.time(), 'time_diff': unsynced_time_diff})
@@ -62,8 +64,8 @@ class TimeSyncChecker:
         df_synced = pd.DataFrame(self.synced_data)
 
         # Save data to CSV files
-        df_unsynced.to_csv("unsynced_time_differences.csv", index=False)
-        df_synced.to_csv("synced_time_differences.csv", index=False)
+        df_unsynced.to_csv("unsynced_time_differences_Camera13_timeDiff_27_0_01ii.csv", index=False)
+        df_synced.to_csv("synced_time_differences_Camera13_timeDiff_27_0_01ii.csv", index=False)
 
         # Shift time values to start from 0
         df_unsynced['time'] -= df_unsynced['time'].iloc[0]
@@ -88,10 +90,10 @@ class TimeSyncChecker:
         self.fig.canvas.flush_events()
 
         # Save the figure after the timer duration
-        plt.savefig("Camera13_timeDiff.png")
+        plt.savefig("Camera13_timeDiff_27_0_01ii.png")
 
         # Open the plot image
-        subprocess.Popen(["xdg-open", "Camera13_timeDiff.png"])  
+        subprocess.Popen(["xdg-open", "Camera13_timeDiff_27_0_01ii.png"])  
 
 if __name__ == '__main__':
     try:

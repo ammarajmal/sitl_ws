@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/fiducials
+CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fiducials/fiducials
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/fiducials
+CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/fiducials
 
 # Utility rule file for _catkin_empty_exported_target.
 
@@ -67,6 +67,6 @@ CMakeFiles/_catkin_empty_exported_target.dir/clean:
 .PHONY : CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 CMakeFiles/_catkin_empty_exported_target.dir/depend:
-	cd /home/tesol/sitl_ws/build/fiducials && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/fiducials/fiducials /home/tesol/sitl_ws/src/fiducials/fiducials /home/tesol/sitl_ws/build/fiducials /home/tesol/sitl_ws/build/fiducials /home/tesol/sitl_ws/build/fiducials/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl1/sitl_ws/build/fiducials && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fiducials/fiducials /home/sitl1/sitl_ws/src/fiducials/fiducials /home/sitl1/sitl_ws/build/fiducials /home/sitl1/sitl_ws/build/fiducials /home/sitl1/sitl_ws/build/fiducials/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/_catkin_empty_exported_target.dir/depend
 

@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/aruco_detect
+CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fiducials/aruco_detect
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/aruco_detect
+CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/aruco_detect
 
 # Utility rule file for sensor_msgs_generate_messages_eus.
 
@@ -67,6 +67,6 @@ CMakeFiles/sensor_msgs_generate_messages_eus.dir/clean:
 .PHONY : CMakeFiles/sensor_msgs_generate_messages_eus.dir/clean
 
 CMakeFiles/sensor_msgs_generate_messages_eus.dir/depend:
-	cd /home/tesol/sitl_ws/build/aruco_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/fiducials/aruco_detect /home/tesol/sitl_ws/src/fiducials/aruco_detect /home/tesol/sitl_ws/build/aruco_detect /home/tesol/sitl_ws/build/aruco_detect /home/tesol/sitl_ws/build/aruco_detect/CMakeFiles/sensor_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl1/sitl_ws/build/aruco_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fiducials/aruco_detect /home/sitl1/sitl_ws/src/fiducials/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect/CMakeFiles/sensor_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/sensor_msgs_generate_messages_eus.dir/depend
 

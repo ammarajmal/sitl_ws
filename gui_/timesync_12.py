@@ -62,8 +62,8 @@ class TimeSyncChecker:
         df_synced = pd.DataFrame(self.synced_data)
 
         # Save data to CSV files
-        df_unsynced.to_csv("unsynced_time_differences.csv", index=False)
-        df_synced.to_csv("synced_time_differences.csv", index=False)
+        df_unsynced.to_csv("unsynced_time_differences_Camera12_timeDiff_27ii.csv", index=False)
+        df_synced.to_csv("synced_time_differences_Camera12_timeDiff_27ii.csv", index=False)
 
         # Shift time values to start from 0
         df_unsynced['time'] -= df_unsynced['time'].iloc[0]
@@ -88,10 +88,10 @@ class TimeSyncChecker:
         self.fig.canvas.flush_events()
 
         # Save the figure after the timer duration
-        plt.savefig("Camera12_timeDiff.png")
+        plt.savefig("Camera12_timeDiff_27ii.png")
 
         # Open the plot image
-        subprocess.Popen(["xdg-open", "Camera12_timeDiff.png"])  
+        subprocess.Popen(["xdg-open", "Camera12_timeDiff_27ii.png"])  
 
 if __name__ == '__main__':
     try:

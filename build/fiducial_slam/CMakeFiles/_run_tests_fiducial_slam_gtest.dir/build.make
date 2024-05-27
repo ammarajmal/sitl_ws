@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/fiducial_slam
+CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fiducials/fiducial_slam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/fiducial_slam
+CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/fiducial_slam
 
 # Utility rule file for _run_tests_fiducial_slam_gtest.
 
@@ -67,6 +67,6 @@ CMakeFiles/_run_tests_fiducial_slam_gtest.dir/clean:
 .PHONY : CMakeFiles/_run_tests_fiducial_slam_gtest.dir/clean
 
 CMakeFiles/_run_tests_fiducial_slam_gtest.dir/depend:
-	cd /home/tesol/sitl_ws/build/fiducial_slam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/fiducials/fiducial_slam /home/tesol/sitl_ws/src/fiducials/fiducial_slam /home/tesol/sitl_ws/build/fiducial_slam /home/tesol/sitl_ws/build/fiducial_slam /home/tesol/sitl_ws/build/fiducial_slam/CMakeFiles/_run_tests_fiducial_slam_gtest.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl1/sitl_ws/build/fiducial_slam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fiducials/fiducial_slam /home/sitl1/sitl_ws/src/fiducials/fiducial_slam /home/sitl1/sitl_ws/build/fiducial_slam /home/sitl1/sitl_ws/build/fiducial_slam /home/sitl1/sitl_ws/build/fiducial_slam/CMakeFiles/_run_tests_fiducial_slam_gtest.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/_run_tests_fiducial_slam_gtest.dir/depend
 

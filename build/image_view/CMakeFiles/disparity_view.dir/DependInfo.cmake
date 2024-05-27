@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/tesol/sitl_ws/src/image_pipeline/image_view/src/nodes/disparity_view.cpp" "/home/tesol/sitl_ws/build/image_view/CMakeFiles/disparity_view.dir/src/nodes/disparity_view.cpp.o"
+  "/home/sitl1/sitl_ws/src/image_pipeline/image_view/src/nodes/disparity_view.cpp" "/home/sitl1/sitl_ws/build/image_view/CMakeFiles/disparity_view.dir/src/nodes/disparity_view.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,7 +17,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/tesol/sitl_ws/devel/.private/image_view/include"
+  "/home/sitl1/sitl_ws/devel/.private/image_view/include"
   "/opt/ros/noetic/include"
   "/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   "/usr/include/opencv4"

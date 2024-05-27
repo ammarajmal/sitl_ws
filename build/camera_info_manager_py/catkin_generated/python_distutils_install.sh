@@ -13,21 +13,21 @@ fi
 
 echo_and_run() { echo "+ $@" ; "$@" ; }
 
-echo_and_run cd "/home/tesol/sitl_ws/src/camera_info_manager_py"
+echo_and_run cd "/home/sitl1/sitl_ws/src/camera_info_manager_py"
 
 # ensure that Python install destination exists
-echo_and_run mkdir -p "$DESTDIR/home/tesol/sitl_ws/install/lib/python3/dist-packages"
+echo_and_run mkdir -p "$DESTDIR/home/sitl1/sitl_ws/install/lib/python3/dist-packages"
 
 # Note that PYTHONPATH is pulled from the environment to support installing
 # into one location when some dependencies were installed in another
 # location, #123.
 echo_and_run /usr/bin/env \
-    PYTHONPATH="/home/tesol/sitl_ws/install/lib/python3/dist-packages:/home/tesol/sitl_ws/build/camera_info_manager_py/lib/python3/dist-packages:$PYTHONPATH" \
-    CATKIN_BINARY_DIR="/home/tesol/sitl_ws/build/camera_info_manager_py" \
+    PYTHONPATH="/home/sitl1/sitl_ws/install/lib/python3/dist-packages:/home/sitl1/sitl_ws/build/camera_info_manager_py/lib/python3/dist-packages:$PYTHONPATH" \
+    CATKIN_BINARY_DIR="/home/sitl1/sitl_ws/build/camera_info_manager_py" \
     "/usr/bin/python3" \
-    "/home/tesol/sitl_ws/src/camera_info_manager_py/setup.py" \
+    "/home/sitl1/sitl_ws/src/camera_info_manager_py/setup.py" \
      \
-    build --build-base "/home/tesol/sitl_ws/build/camera_info_manager_py" \
+    build --build-base "/home/sitl1/sitl_ws/build/camera_info_manager_py" \
     install \
     --root="${DESTDIR-/}" \
-    --install-layout=deb --prefix="/home/tesol/sitl_ws/install" --install-scripts="/home/tesol/sitl_ws/install/bin"
+    --install-layout=deb --prefix="/home/sitl1/sitl_ws/install" --install-scripts="/home/sitl1/sitl_ws/install/bin"

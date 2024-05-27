@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/tesol/sitl_ws/devel/.private/fast_cam/share/gennodejs/ros/fast_cam/msg/CameraSpecs.js"
-  "/home/tesol/sitl_ws/devel/.private/fast_cam/share/gennodejs/ros/fast_cam/srv/GetCameraProperties.js"
-  "/home/tesol/sitl_ws/devel/.private/fast_cam/share/gennodejs/ros/fast_cam/srv/SetGain.js"
+  "/home/sitl1/sitl_ws/devel/.private/fast_cam/share/gennodejs/ros/fast_cam/msg/CameraSpecs.js"
+  "/home/sitl1/sitl_ws/devel/.private/fast_cam/share/gennodejs/ros/fast_cam/srv/GetCameraProperties.js"
+  "/home/sitl1/sitl_ws/devel/.private/fast_cam/share/gennodejs/ros/fast_cam/srv/SetGain.js"
   "CMakeFiles/fast_cam_generate_messages_nodejs"
 )
 

@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/fiducial_msgs
+CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fiducials/fiducial_msgs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/fiducial_msgs
+CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/fiducial_msgs
 
 # Utility rule file for doxygen.
 
@@ -67,6 +67,6 @@ CMakeFiles/doxygen.dir/clean:
 .PHONY : CMakeFiles/doxygen.dir/clean
 
 CMakeFiles/doxygen.dir/depend:
-	cd /home/tesol/sitl_ws/build/fiducial_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/fiducials/fiducial_msgs /home/tesol/sitl_ws/src/fiducials/fiducial_msgs /home/tesol/sitl_ws/build/fiducial_msgs /home/tesol/sitl_ws/build/fiducial_msgs /home/tesol/sitl_ws/build/fiducial_msgs/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl1/sitl_ws/build/fiducial_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fiducials/fiducial_msgs /home/sitl1/sitl_ws/src/fiducials/fiducial_msgs /home/sitl1/sitl_ws/build/fiducial_msgs /home/sitl1/sitl_ws/build/fiducial_msgs /home/sitl1/sitl_ws/build/fiducial_msgs/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/doxygen.dir/depend
 

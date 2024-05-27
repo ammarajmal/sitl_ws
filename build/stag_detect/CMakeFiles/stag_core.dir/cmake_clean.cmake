@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/tesol/sitl_ws/devel/.private/stag_detect/lib/libstag_core.pdb"
-  "/home/tesol/sitl_ws/devel/.private/stag_detect/lib/libstag_core.so"
+  "/home/sitl1/sitl_ws/devel/.private/stag_detect/lib/libstag_core.pdb"
+  "/home/sitl1/sitl_ws/devel/.private/stag_detect/lib/libstag_core.so"
   "CMakeFiles/stag_core.dir/src/stag/Decoder.cpp.o"
   "CMakeFiles/stag_core.dir/src/stag/Drawer.cpp.o"
   "CMakeFiles/stag_core.dir/src/stag/ED/ED.cpp.o"

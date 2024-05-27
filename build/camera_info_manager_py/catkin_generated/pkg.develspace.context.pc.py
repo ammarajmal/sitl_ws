@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "sensor_msgs".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "camera_info_manager_py"
-PROJECT_SPACE_DIR = "/home/tesol/sitl_ws/devel/.private/camera_info_manager_py"
+PROJECT_SPACE_DIR = "/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py"
 PROJECT_VERSION = "0.2.3"

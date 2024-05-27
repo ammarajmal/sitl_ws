@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/image_pipeline/camera_calibration
+CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/image_pipeline/camera_calibration
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/camera_calibration
+CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/camera_calibration
 
 # Utility rule file for clean_test_results_camera_calibration.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/camera_calibration
 include CMakeFiles/clean_test_results_camera_calibration.dir/progress.make
 
 CMakeFiles/clean_test_results_camera_calibration:
-	/usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/tesol/sitl_ws/build/camera_calibration/test_results/camera_calibration
+	/usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/sitl1/sitl_ws/build/camera_calibration/test_results/camera_calibration
 
 clean_test_results_camera_calibration: CMakeFiles/clean_test_results_camera_calibration
 clean_test_results_camera_calibration: CMakeFiles/clean_test_results_camera_calibration.dir/build.make
@@ -71,6 +71,6 @@ CMakeFiles/clean_test_results_camera_calibration.dir/clean:
 .PHONY : CMakeFiles/clean_test_results_camera_calibration.dir/clean
 
 CMakeFiles/clean_test_results_camera_calibration.dir/depend:
-	cd /home/tesol/sitl_ws/build/camera_calibration && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/image_pipeline/camera_calibration /home/tesol/sitl_ws/src/image_pipeline/camera_calibration /home/tesol/sitl_ws/build/camera_calibration /home/tesol/sitl_ws/build/camera_calibration /home/tesol/sitl_ws/build/camera_calibration/CMakeFiles/clean_test_results_camera_calibration.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl1/sitl_ws/build/camera_calibration && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/image_pipeline/camera_calibration /home/sitl1/sitl_ws/src/image_pipeline/camera_calibration /home/sitl1/sitl_ws/build/camera_calibration /home/sitl1/sitl_ws/build/camera_calibration /home/sitl1/sitl_ws/build/camera_calibration/CMakeFiles/clean_test_results_camera_calibration.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/clean_test_results_camera_calibration.dir/depend
 

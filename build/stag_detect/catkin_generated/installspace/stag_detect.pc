@@ -1,4 +1,4 @@
-prefix=/home/tesol/sitl_ws/install
+prefix=/home/sitl1/sitl_ws/install
 
 Name: stag_detect
 Description: Description of stag_detect

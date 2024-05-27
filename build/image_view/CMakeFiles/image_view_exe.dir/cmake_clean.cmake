@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/tesol/sitl_ws/devel/.private/image_view/lib/image_view/image_view"
-  "/home/tesol/sitl_ws/devel/.private/image_view/lib/image_view/image_view.pdb"
+  "/home/sitl1/sitl_ws/devel/.private/image_view/lib/image_view/image_view"
+  "/home/sitl1/sitl_ws/devel/.private/image_view/lib/image_view/image_view.pdb"
   "CMakeFiles/image_view_exe.dir/src/nodes/image_view.cpp.o"
 )
 

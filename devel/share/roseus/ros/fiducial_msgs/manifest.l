@@ -1,1 +1,1 @@
-/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/roseus/ros/fiducial_msgs/manifest.l
+/home/sitl1/sitl_ws/devel/.private/fiducial_msgs/share/roseus/ros/fiducial_msgs/manifest.l

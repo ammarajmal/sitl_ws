@@ -1,4 +1,4 @@
-prefix=/home/tesol/sitl_ws/install
+prefix=/home/sitl1/sitl_ws/install
 
 Name: catkin_tools_prebuild
 Description: Description of catkin_tools_prebuild

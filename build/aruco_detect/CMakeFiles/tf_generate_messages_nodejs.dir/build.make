@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/aruco_detect
+CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fiducials/aruco_detect
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/aruco_detect
+CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/aruco_detect
 
 # Utility rule file for tf_generate_messages_nodejs.
 
@@ -67,6 +67,6 @@ CMakeFiles/tf_generate_messages_nodejs.dir/clean:
 .PHONY : CMakeFiles/tf_generate_messages_nodejs.dir/clean
 
 CMakeFiles/tf_generate_messages_nodejs.dir/depend:
-	cd /home/tesol/sitl_ws/build/aruco_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/fiducials/aruco_detect /home/tesol/sitl_ws/src/fiducials/aruco_detect /home/tesol/sitl_ws/build/aruco_detect /home/tesol/sitl_ws/build/aruco_detect /home/tesol/sitl_ws/build/aruco_detect/CMakeFiles/tf_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl1/sitl_ws/build/aruco_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fiducials/aruco_detect /home/sitl1/sitl_ws/src/fiducials/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect/CMakeFiles/tf_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/tf_generate_messages_nodejs.dir/depend
 

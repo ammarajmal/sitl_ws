@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/python_ex
+CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/python_ex
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/python_ex
+CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/python_ex
 
 # Utility rule file for download_extra_data.
 
@@ -67,6 +67,6 @@ CMakeFiles/download_extra_data.dir/clean:
 .PHONY : CMakeFiles/download_extra_data.dir/clean
 
 CMakeFiles/download_extra_data.dir/depend:
-	cd /home/tesol/sitl_ws/build/python_ex && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/python_ex /home/tesol/sitl_ws/src/python_ex /home/tesol/sitl_ws/build/python_ex /home/tesol/sitl_ws/build/python_ex /home/tesol/sitl_ws/build/python_ex/CMakeFiles/download_extra_data.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sitl1/sitl_ws/build/python_ex && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/python_ex /home/sitl1/sitl_ws/src/python_ex /home/sitl1/sitl_ws/build/python_ex /home/sitl1/sitl_ws/build/python_ex /home/sitl1/sitl_ws/build/python_ex/CMakeFiles/download_extra_data.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/download_extra_data.dir/depend
 
