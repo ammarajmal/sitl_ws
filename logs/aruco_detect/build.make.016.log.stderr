@@ -1,0 +1,11 @@
+[01m[K/home/sitl1/sitl_ws/src/fiducials/aruco_detect/src/aruco_detect.cpp:[m[K In member function ‘[01m[Kvoid FiducialsNode::imageCallback(const ImageConstPtr&)[m[K’:
+[01m[K/home/sitl1/sitl_ws/src/fiducials/aruco_detect/src/aruco_detect.cpp:282:71:[m[K [01;31m[Kerror: [m[Kinvalid initialization of reference of type ‘[01m[Kconst cv::Ptr<cv::aruco::DetectorParameters>&[m[K’ from expression of type ‘[01m[Kstd::unique_ptr<cv::aruco::DetectorParameters>[m[K’
+  282 |         aruco::detectMarkers(cv_ptr->image, dictionary, corners, ids, [01;31m[KdetectorParams[m[K);
+      |                                                                       [01;31m[K^~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/sitl1/sitl_ws/src/fiducials/aruco_detect/src/aruco_detect.cpp:33[m[K:
+[01m[K/usr/include/opencv4/opencv2/aruco.hpp:222:81:[m[K [01;36m[Knote: [m[Kin passing argument 5 of ‘[01m[Kvoid cv::aruco::detectMarkers(cv::InputArray, const cv::Ptr<cv::aruco::Dictionary>&, cv::OutputArrayOfArrays, cv::OutputArray, const cv::Ptr<cv::aruco::DetectorParameters>&, cv::OutputArrayOfArrays, cv::InputArray, cv::InputArray)[m[K’
+  222 |                                 OutputArray ids, [01;36m[Kconst Ptr<DetectorParameters> &parameters = DetectorParameters::create()[m[K,
+      |                                                  [01;36m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/aruco_detect.dir/build.make:63: CMakeFiles/aruco_detect.dir/src/aruco_detect.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:579: CMakeFiles/aruco_detect.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

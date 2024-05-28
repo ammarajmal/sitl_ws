@@ -1,0 +1,7 @@
+[01m[K/home/sitl1/sitl_ws/src/fiducials/aruco_detect/src/aruco_detect.cpp:26:10:[m[K [01;31m[Kfatal error: [m[Karuco_detect/DetectorParamsConfig.h: No such file or directory
+   26 | #include [01;31m[K"aruco_detect/DetectorParamsConfig.h"[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/aruco_detect_node.dir/build.make:63: CMakeFiles/aruco_detect_node.dir/src/aruco_detect.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:261: CMakeFiles/aruco_detect_node.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

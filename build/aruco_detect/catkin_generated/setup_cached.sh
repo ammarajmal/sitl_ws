@@ -9,6 +9,7 @@
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/sitl1/sitl_ws/devel/.private/aruco_detect:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="/home/sitl1/sitl_ws/devel/.private/aruco_detect/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/sitl1/sitl_ws/devel/.private/aruco_detect/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/sitl1/sitl_ws/build/aruco_detect'
 export PYTHONPATH="/home/sitl1/sitl_ws/devel/.private/aruco_detect/lib/python3/dist-packages:$PYTHONPATH"
 export ROSLISP_PACKAGE_DIRECTORIES="/home/sitl1/sitl_ws/devel/.private/aruco_detect/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
