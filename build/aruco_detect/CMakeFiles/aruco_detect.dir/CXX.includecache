@@ -187,6 +187,10 @@ unistd.h
 -
 math.h
 -
+mutex
+-
+numeric
+-
 ros/ros.h
 -
 tf/transform_datatypes.h
