@@ -3,6 +3,8 @@
   **/logs/
   **/build/
 *.log
+**/cmake.lock
+
 bin/
 lib/
 msg_gen/

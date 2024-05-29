@@ -545,9 +545,6 @@ sensor_msgs_DIR:PATH=/opt/ros/noetic/share/sensor_msgs/cmake
 //The directory containing a CMake configuration file for std_msgs.
 std_msgs_DIR:PATH=/opt/ros/noetic/share/std_msgs/cmake
 
-//The directory containing a CMake configuration file for std_srvs.
-std_srvs_DIR:PATH=/opt/ros/noetic/share/std_srvs/cmake
-
 //The directory containing a CMake configuration file for tf2.
 tf2_DIR:PATH=/opt/ros/noetic/share/tf2/cmake
 
