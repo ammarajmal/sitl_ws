@@ -3,7 +3,8 @@ import cv2
 import numpy as np
 import glob
 import yaml
-
+# Number of successful images: 48
+# Total reprojection error: 0.07610157420833856
 # Load calibration data from ost.yaml
 with open('calibrationdata/ost.yaml') as file:
     calibration_data = yaml.safe_load(file)

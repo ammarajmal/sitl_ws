@@ -5,7 +5,7 @@ import glob
 import yaml
 # Given values
 marker_length = 0.02  # in meters
-distance_to_marker = 0.9217344332644879  # from the z translation component
+distance_to_marker = 1.0263737267020026  # from the z translation component
 
 # Load calibration data from ost.yaml
 with open('calibrationdata/ost.yaml') as file:
@@ -30,7 +30,7 @@ expected_area = s_image ** 2
 print(f"Expected fiducial area in image: {expected_area:.2f} pixels^2")
 
 # Detected fiducial area from the provided output
-detected_area = 1648.868366825744
+detected_area = 1646.2274196650842
 print(f"Detected fiducial area in image: {detected_area:.2f} pixels^2")
 
 # Calculate percentage error
