@@ -1,8 +1,8 @@
 <launch>
 
     <arg name="launch_nuc" default="sony_cam1" />
-    <arg name="cam1_device_id" default="_cam2" />
-    <arg name="cam2_device_id" default="_cam1" />
+    <arg name="cam1_device_id" default="_cam1" />
+    <arg name="cam2_device_id" default="_cam2" />
     <arg name="cam3_device_id" default="_cam3" />
 
     <group if = "$(eval launch_nuc == 'sony_cam1')">

@@ -9,6 +9,6 @@
           args="--size $(arg cb_size) --square $(arg cb_square)"
           output="screen">
         <remap from="image" to="$(arg camera_name)/image_raw"/>
-        <remap from="camera" to="$(arg camera_name)"/>
+        <remap from="left" to="$(arg camera_name)"/>
     </node>
 </launch>
