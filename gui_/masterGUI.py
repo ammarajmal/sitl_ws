@@ -260,10 +260,11 @@ class NodeGUI(customtkinter.CTk):
         print(f'Square size: {self.square_size}')
         if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is None:
             self._start_camera(nuc_number)
+            rospy.sleep(0.5)
         try:
             calib_launch_args = [
                 f"{self.calib_launch}",
-                f"camera_name:=sony_cam{nuc_number}",
+                f"camera:=sony_cam{nuc_number}",
                 f"board_size:={self.board_size}",
                 f"square_size:={self.square_size}"]
             calib_roslaunch_file = [(
