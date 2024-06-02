@@ -5,6 +5,9 @@
 # import subprocess
 
 import tkinter as tk
+from tkinter import messagebox
+import threading
+import time
 import customtkinter
 import subprocess
 import re
@@ -34,7 +37,9 @@ customtkinter.set_default_color_theme(COLOR_SELECT)
 class NodeGUI(customtkinter.CTk):
     def __init__(self) -> None:
         super().__init__()
-
+        self.stop_detect_event = threading.Event()
+        self.detection_thread = None
+        
         self.package = 'dslr_cam'
         self.image_width = "640"
         self.image_height = "480"
@@ -44,7 +49,7 @@ class NodeGUI(customtkinter.CTk):
         self.is_detection_active = False
         self.detection_rate_timeout = 5 # Timeout for detection rate calculation for rostopic hz
         # gui settings
-        self.title(f"Displacement Measurement Dashboard")
+        self.title("Displacement Measurement Dashboard")
         self.geometry("900x500")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self.destroy_routine)
@@ -58,7 +63,7 @@ class NodeGUI(customtkinter.CTk):
         self.launch_path = rospkg.RosPack().get_path(self.package) + '/launch/'
         self.detect_launch_path = rospkg.RosPack().get_path('aruco_detect') + '/launch/'
         self.uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
-        roslaunch.configure_logging(self.uuid)
+        # roslaunch.configure_logging(self.uuid)
         self.cam_launch = f'{self.launch_path}use.launch'
         self.view_launch = f"{self.launch_path}use_viewcamera.launch"
         self.calib_launch = f"{self.launch_path}calib.launch"
@@ -345,6 +350,7 @@ class NodeGUI(customtkinter.CTk):
         self.create_left_top_frame()
         self.create_left_center_frame()
         self.create_left_bottom_frame()
+        self.create_left_bottom2_frame()
         self.create_left_exit_button()
     def create_left_top_frame(self) -> None:
         """Start Camera and Detection"""
@@ -430,7 +436,7 @@ class NodeGUI(customtkinter.CTk):
         """Creates the bottom frame of the left frame"""
         self.left_bottom_frame = customtkinter.CTkFrame(self.left_frame)
         self.left_bottom_frame.place(
-            relx=0.10, rely=0.54, relwidth=0.8, relheight=0.18)
+            relx=0.10, rely=0.54, relwidth=0.8, relheight=0.15)
         self._create_left_bottom_frame_content()
     def _create_left_bottom_frame_content(self) -> None:
         """ Detection of the Marker """
@@ -449,17 +455,65 @@ class NodeGUI(customtkinter.CTk):
         self.left_bottom_frame_cam1_calib_button.place(relx=0.2, rely=0.65, anchor="center", relwidth=0.2)
         self.left_bottom_frame_cam2_calib_button.place(relx=0.5, rely=0.65, anchor="center", relwidth=0.2)
         self.left_bottom_frame_cam3_calib_button.place(relx=0.8, rely=0.65, anchor="center", relwidth=0.2)
-        # self.left_bottom_frame_detect_button = customtkinter.CTkButton(
-        #     self.left_bottom_frame, text="Start Detection", fg_color=themes[COLOR_SELECT][0],
-        #     command=lambda: self._detect_marker_button_event(1))
-        # self.left_bottom_frame_detect_button.place(
-        #     relx=0.5, rely=0.40, anchor="center")
-        
-        # self.left_bottom_frame_cam1_calib_button = customtkinter.CTkButton(
-        #     self.left_bottom_frame, text="  1  ", fg_color=themes[COLOR_SELECT][0],
-        #     command=self._start_camera_calibration(nuc_number=1))
-        # self.left_bottom_frame_cam1_calib_button.place(
-        #     relx=0.5, rely=0.7, anchor="center")
+    def create_left_bottom2_frame(self) -> None:
+        """Creates the bottom frame of the left frame"""
+        self.left_bottom2_frame = customtkinter.CTkFrame(self.left_frame)
+        self.left_bottom2_frame.place(
+            relx=0.10, rely=0.72, relwidth=0.8, relheight=0.14)
+        self._create_left_bottom2_frame_content()
+    def _create_left_bottom2_frame_content(self) -> None:
+        """ Detection of the Marker """
+        self.left_bottom2_frame_label = customtkinter.CTkLabel(
+            self.left_bottom2_frame, text="DETECT MARKER")
+        self.left_bottom2_frame_start_detect_button = customtkinter.CTkButton(
+            self.left_bottom2_frame, text="Start", fg_color=themes[COLOR_SELECT][0],
+            command=self._start_all_detection)
+        self.left_bottom2_frame_stop_detect_button = customtkinter.CTkButton(
+            self.left_bottom2_frame, text="Stop", fg_color=themes[COLOR_SELECT][0],
+            command=self._stop_all_detection)
+        self.left_bottom2_frame_label.place(relx=0.5, rely=0.25, anchor="center")
+        self.left_bottom2_frame_start_detect_button.place(relx=0.07, rely=0.45, relwidth=0.4)
+        self.left_bottom2_frame_stop_detect_button.place(relx=0.53, rely=0.45, relwidth=0.4)
+    def _start_all_detection(self) -> None:
+        """Starts the detection for all cameras"""
+        if self.detection_thread is None or not self.detection_thread.is_alive():
+            self.stop_detect_event.clear()
+            self.detection_thread = threading.Thread(target=self._detection_monitor)
+            self.detection_thread.start()
+            # Start the detection in the main thread
+            self._detect_marker(1)
+            self._detect_marker(2)
+            self._detect_marker(3)
+            print("Detection thread started")
+        else:
+            print("Detection already running")
+    def _detection_monitor(self) -> None:
+        """Monitors the detection process"""
+        while not self.stop_detect_event.is_set():
+            # Here you can add the code to monitor detection status or update the GUI
+            self.update_detection_rate(1)
+            self.update_detection_rate(2)
+            self.update_detection_rate(3)
+            self.stop_detect_event.wait(1)
+        print("Detection thread stopped")
+            
+    def _stop_all_detection(self) -> None:
+        """Stops the detection for all cameras"""
+        if self.detection_thread is not None and self.detection_thread.is_alive():
+            self.stop_detect_event.set()
+            self.detection_thread.join()
+            self._cleanup_processes(1, 'sony_cam1_detect_driver')
+            self._cleanup_processes(2, 'sony_cam2_detect_driver')
+            self._cleanup_processes(3, 'sony_cam3_detect_driver')
+            self.right_bottom_frame_camera_detect_status_result_label.configure(
+                text="IDLE", text_color='red')
+            self.right_bottom_frame_camera_detect_rate_result_label.configure(
+                text="-", text_color='white')
+            self.right_bottom_frame_camera_detect_result_result_label.configure(
+                text="Not Detected", text_color='red')
+
+    
+
     def _detect_marker_button_event(self, nuc_number: str) -> None:
         """Starts the marker detection node"""
         print("Detect Marker Button Clicked")
@@ -470,8 +524,8 @@ class NodeGUI(customtkinter.CTk):
             except KeyError:
                 print("Error: Detection driver not found.")
             else:
-                self.left_bottom_frame_detect_button.configure(
-                    text="Start Detection", fg_color=themes[COLOR_SELECT][0])
+                self.left_bottom2_frame_start_detect_button.configure(
+                    text="Start", fg_color=themes[COLOR_SELECT][0])
                 # Update the detection specific labels
                 self.right_bottom_frame_camera_detect_status_result_label.configure(
                     text="IDLE", text_color='red')
@@ -481,7 +535,7 @@ class NodeGUI(customtkinter.CTk):
                 return
             rospy.loginfo(f"Starting detection for camera {nuc_number}")
             self._detect_marker(nuc_number)
-            self.left_bottom_frame_detect_button.configure(
+            self.left_bottom2_frame_start_detect_button.configure(
                 text="Stop Detection", fg_color=themes['red'])
             # Update the detection specific labels
             self.right_bottom_frame_camera_detect_status_result_label.configure(
@@ -493,6 +547,10 @@ class NodeGUI(customtkinter.CTk):
         self.left_exit_button.place(relx=0.5, rely=0.90, anchor="center")
     def _detect_marker(self, nuc_number) -> None:
         """Start detection node and set up rate calculation."""
+        if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is None:
+            print(f"Camera {nuc_number} is not running, Please start the camera first")
+            return
+        
         try:
             detect_launch_args = [
                 f"{self.detect_launch}",
@@ -508,11 +566,10 @@ class NodeGUI(customtkinter.CTk):
             self.running_processes[f'sony_cam{nuc_number}_detect_driver'] = detect_driver
             rospy.loginfo("Detection started successfully")
             rospy.sleep(0.5)
-            # Start the detection rate updater
             self.is_detection_active = True
-            self.update_detection_rate(nuc_number)
         except roslaunch.RLException as e:
             print(f"Error: Failed to launch marker detection: {str(e)}")
+
             
     def _start_camera(self, nuc_number:str)-> None:
         cam_launch_args = [
@@ -837,7 +894,7 @@ class NodeGUI(customtkinter.CTk):
             self.right_bottom_frame_camera_detect_result_result_label.configure(
                 text="Not Detected", text_color='red')
 
-        self.after(self.update_interval, self.update_detection_rate(nuc_number))
+        # self.after(self.update_interval, self.update_detection_rate(nuc_number))
 
     def update_camera_fps(self, nuc_number) -> None:
         """Periodically update the camera FPS label."""
