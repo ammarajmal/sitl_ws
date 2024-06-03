@@ -1,17 +1,4 @@
-Symlinking /home/tesol/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig-version.cmake
-Symlinking /home/tesol/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig.cmake
-Symlinking /home/tesol/sitl_ws/devel/lib/pkgconfig/dslr_cam.pc
-Symlinking /home/tesol/sitl_ws/devel/lib/dslr_cam/dslr_cam_node
-Cleaning: (/home/ammar/sitl_ws/devel/.private/dslr_cam/cmake.lock, /home/ammar/sitl_ws/devel/./cmake.lock)
-Cleaning: (/home/ammar/sitl_ws/devel/.private/dslr_cam/share/dslr_cam/cmake/dslr_camConfig-version.cmake, /home/ammar/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig-version.cmake)
-Cleaning: (/home/ammar/sitl_ws/devel/.private/dslr_cam/share/dslr_cam/cmake/dslr_camConfig.cmake, /home/ammar/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig.cmake)
-Cleaning: (/home/ammar/sitl_ws/devel/.private/dslr_cam/lib/pkgconfig/dslr_cam.pc, /home/ammar/sitl_ws/devel/lib/pkgconfig/dslr_cam.pc)
-Cleaning: (/home/ammar/sitl_ws/devel/.private/dslr_cam/lib/dslr_cam/dslr_cam_node, /home/ammar/sitl_ws/devel/lib/dslr_cam/dslr_cam_node)
-Unlinking: /home/ammar/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig-version.cmake
-Already unlinked: {}
-Unlinking: /home/ammar/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig.cmake
-Already unlinked: {}
-Unlinking: /home/ammar/sitl_ws/devel/lib/pkgconfig/dslr_cam.pc
-Already unlinked: {}
-Unlinking: /home/ammar/sitl_ws/devel/lib/dslr_cam/dslr_cam_node
-Already unlinked: {}
+Linked: (/home/tesol/sitl_ws/devel/.private/dslr_cam/share/dslr_cam/cmake/dslr_camConfig-version.cmake, /home/tesol/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig-version.cmake)
+Linked: (/home/tesol/sitl_ws/devel/.private/dslr_cam/share/dslr_cam/cmake/dslr_camConfig.cmake, /home/tesol/sitl_ws/devel/share/dslr_cam/cmake/dslr_camConfig.cmake)
+Linked: (/home/tesol/sitl_ws/devel/.private/dslr_cam/lib/pkgconfig/dslr_cam.pc, /home/tesol/sitl_ws/devel/lib/pkgconfig/dslr_cam.pc)
+Linked: (/home/tesol/sitl_ws/devel/.private/dslr_cam/lib/dslr_cam/dslr_cam_node, /home/tesol/sitl_ws/devel/lib/dslr_cam/dslr_cam_node)

@@ -1,4 +1,1 @@
-[35m[1mScanning dependencies of target dslr_cam_node[0m
-[ 50%] [32mBuilding CXX object CMakeFiles/dslr_cam_node.dir/node/dslr_cam_node.cpp.o[0m
-[100%] [32m[1mLinking CXX executable /home/tesol/sitl_ws/devel/.private/dslr_cam/lib/dslr_cam/dslr_cam_node[0m
 [100%] Built target dslr_cam_node

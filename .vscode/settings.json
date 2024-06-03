@@ -64,5 +64,8 @@
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "cmake.sourceDirectory": "/home/sitl1/sitl_ws/src/aruco_ros/aruco/src/aruco"
+  "cmake.sourceDirectory": "/home/sitl1/sitl_ws/src/aruco_ros/aruco/src/aruco",
+  "files.associations": {
+    "vector": "cpp"
+  }
 }
