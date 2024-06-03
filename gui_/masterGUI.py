@@ -902,8 +902,8 @@ class NodeGUI(customtkinter.CTk):
         ats = message_filters.ApproximateTimeSynchronizer([sub1, sub2, sub3], queue_size=10, slop=0.1)
         ats.registerCallback(self.data_callback)
 
-        # Set a timer to stop data collection after 10 seconds
-        rospy.Timer(rospy.Duration(10), self.stop_data_collection, oneshot=True)
+        # Set a timer to stop data collection after 60 seconds
+        rospy.Timer(rospy.Duration(60), self.stop_data_collection, oneshot=True)
 
         # Create a list to store data
         self.collected_data = []
@@ -913,9 +913,9 @@ class NodeGUI(customtkinter.CTk):
         timestamp = rospy.Time.now()
         self.collected_data.append({
             'time': timestamp.to_sec(),
-            'cam1': {'timestamp': msg1.header.stamp.to_sec(), 'data': msg1},
-            'cam2': {'timestamp': msg2.header.stamp.to_sec(), 'data': msg2},
-            'cam3': {'timestamp': msg3.header.stamp.to_sec(), 'data': msg3}
+            'cam1': msg1,
+            'cam2': msg2,
+            'cam3': msg3
         })
 
     def stop_data_collection(self, event):
@@ -924,29 +924,53 @@ class NodeGUI(customtkinter.CTk):
 
         # Save data to CSV
         with open('collected_data.csv', 'w', newline='') as csvfile:
-            fieldnames = ['time', 'cam1_timestamp', 'cam1_data', 'cam2_timestamp', 'cam2_data', 'cam3_timestamp', 'cam3_data']
+            fieldnames = [
+                'time',
+                'cam1_fiducial_id', 'cam1_trans_x', 'cam1_trans_y', 'cam1_trans_z',
+                'cam1_rot_x', 'cam1_rot_y', 'cam1_rot_z', 'cam1_rot_w',
+                'cam2_fiducial_id', 'cam2_trans_x', 'cam2_trans_y', 'cam2_trans_z',
+                'cam2_rot_x', 'cam2_rot_y', 'cam2_rot_z', 'cam2_rot_w',
+                'cam3_fiducial_id', 'cam3_trans_x', 'cam3_trans_y', 'cam3_trans_z',
+                'cam3_rot_x', 'cam3_rot_y', 'cam3_rot_z', 'cam3_rot_w'
+            ]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             writer.writeheader()
             for data in self.collected_data:
-                writer.writerow({
-                    'time': data['time'],
-                    'cam1_timestamp': data['cam1']['timestamp'],
-                    'cam1_data': self.format_fiducial_data(data['cam1']['data']),
-                    'cam2_timestamp': data['cam2']['timestamp'],
-                    'cam2_data': self.format_fiducial_data(data['cam2']['data']),
-                    'cam3_timestamp': data['cam3']['timestamp'],
-                    'cam3_data': self.format_fiducial_data(data['cam3']['data']),
-                })
+                row = {'time': data['time']}
+                self.add_fiducial_data_to_row(data['cam1'], 'cam1', row)
+                self.add_fiducial_data_to_row(data['cam2'], 'cam2', row)
+                self.add_fiducial_data_to_row(data['cam3'], 'cam3', row)
+                writer.writerow(row)
 
         rospy.loginfo("Data saved to collected_data.csv")
+
+    def add_fiducial_data_to_row(self, msg, cam_prefix, row):
+        """Adds fiducial transform data to a CSV row."""
+        if msg.transforms:
+            tf = msg.transforms[0]  # Assuming there's at least one transform
+            row[f'{cam_prefix}_fiducial_id'] = tf.fiducial_id
+            row[f'{cam_prefix}_trans_x'] = tf.transform.translation.x
+            row[f'{cam_prefix}_trans_y'] = tf.transform.translation.y
+            row[f'{cam_prefix}_trans_z'] = tf.transform.translation.z
+            row[f'{cam_prefix}_rot_x'] = tf.transform.rotation.x
+            row[f'{cam_prefix}_rot_y'] = tf.transform.rotation.y
+            row[f'{cam_prefix}_rot_z'] = tf.transform.rotation.z
+            row[f'{cam_prefix}_rot_w'] = tf.transform.rotation.w
+        else:
+            row[f'{cam_prefix}_fiducial_id'] = ''
+            row[f'{cam_prefix}_trans_x'] = ''
+            row[f'{cam_prefix}_trans_y'] = ''
+            row[f'{cam_prefix}_trans_z'] = ''
+            row[f'{cam_prefix}_rot_x'] = ''
+            row[f'{cam_prefix}_rot_y'] = ''
+            row[f'{cam_prefix}_rot_z'] = ''
+            row[f'{cam_prefix}_rot_w'] = ''
 
     def format_fiducial_data(self, msg):
         """Formats FiducialTransformArray message for CSV."""
         return "; ".join([f"time: {msg.header.stamp.to_sec()}, id: {tf.fiducial_id}, trans: ({tf.transform.translation.x}, {tf.transform.translation.y}, {tf.transform.translation.z}), rot: ({tf.transform.rotation.x}, {tf.transform.rotation.y}, {tf.transform.rotation.z}, {tf.transform.rotation.w})"
                           for tf in msg.transforms])
-
-
 def get_ros_topic_frequency(topic):
     """Get the frequency of a ROS topic using 'rostopic hz' command."""
     process = subprocess.Popen(['rostopic', 'hz', topic], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
