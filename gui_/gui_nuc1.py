@@ -5,12 +5,8 @@
 # import subprocess
 
 import tkinter as tk
-import threading
 import customtkinter
 import subprocess
-import csv
-import message_filters
-from fiducial_msgs.msg import FiducialTransformArray
 import re
 import psutil
 import rospy
@@ -38,8 +34,10 @@ customtkinter.set_default_color_theme(COLOR_SELECT)
 class NodeGUI(customtkinter.CTk):
     def __init__(self) -> None:
         super().__init__()
-        
+
+        self.nuc_number = '1'
         self.package = 'dslr_cam'
+        self.node_name = f"sony_cam{self.nuc_number}"
         self.image_width = "640"
         self.image_height = "480"
         self.cam_resolution = f'{self.image_width}x{self.image_height}'
@@ -48,8 +46,8 @@ class NodeGUI(customtkinter.CTk):
         self.is_detection_active = False
         self.detection_rate_timeout = 5 # Timeout for detection rate calculation for rostopic hz
         # gui settings
-        self.title("Displacement Measurement Dashboard")
-        self.geometry("900x500")
+        self.title(f"CAMERA {self.nuc_number} Dashboard")
+        self.geometry("960x500")
         self.resizable(False, False)
         self.protocol("WM_DELETE_WINDOW", self.destroy_routine)
         # detection & calibration parameters
@@ -62,7 +60,7 @@ class NodeGUI(customtkinter.CTk):
         self.launch_path = rospkg.RosPack().get_path(self.package) + '/launch/'
         self.detect_launch_path = rospkg.RosPack().get_path('aruco_detect') + '/launch/'
         self.uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
-        # roslaunch.configure_logging(self.uuid)
+        roslaunch.configure_logging(self.uuid)
         self.cam_launch = f'{self.launch_path}use.launch'
         self.view_launch = f"{self.launch_path}use_viewcamera.launch"
         self.calib_launch = f"{self.launch_path}calib.launch"
@@ -99,7 +97,7 @@ class NodeGUI(customtkinter.CTk):
             self.right_bottom_frame, text="Camera Name:", text_color=label_color)
         self.right_bottom_frame_cam_name_label.place(relx=0.1, rely=0.05)
         self.right_bottom_frame_cam_name_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text=f'Sony Camera {1}', text_color=label_color)
+            self.right_bottom_frame, text=f'Sony Camera {self.nuc_number}', text_color=label_color)
         self.right_bottom_frame_cam_name_result_label.place(relx=0.6, rely=0.05)
 
         self.right_bottom_frame_camera_status_label = customtkinter.CTkLabel(
@@ -143,6 +141,11 @@ class NodeGUI(customtkinter.CTk):
         self.right_bottom_frame_camera_detect_result_result_label = customtkinter.CTkLabel(
             self.right_bottom_frame, text="None", text_color=label_color)
         self.right_bottom_frame_camera_detect_result_result_label.place(relx=0.6, rely=0.05 + label_height * 6)
+
+
+        
+
+        
     def create_right_top_frame(self) -> None:
         """ SYSTEM IDENTIFICATION """
         self.right_top_frame = customtkinter.CTkFrame(
@@ -155,6 +158,7 @@ class NodeGUI(customtkinter.CTk):
             self.right_top_frame, text="CAMERA INFORMATION",
             text_color='white')
         self.right_top_frame_label.place(relx=0.5, rely=0.5, anchor="center")
+        
     def create_middle_frame(self) -> None:
         """Creates the middle frame of the GUI"""
         self.middle_frame = tk.Frame(self, bg=themes[COLOR_SELECT][1])
@@ -162,9 +166,8 @@ class NodeGUI(customtkinter.CTk):
         self.create_middle_top_frame()
         self.create_middle_center_frame()
         self.create_middle_bottom_frame()
-        self.create_exit_button()
     def create_middle_top_frame(self) -> None:
-        """ Calibration & Detection Parameters Label """
+        """ Calibration & Detection Parameters Lable """
         self.middle_top_frame = customtkinter.CTkFrame(self.middle_frame)
         self.middle_top_frame.place(
             relx=0.06, rely=0.08, relwidth=0.8, relheight=0.08)
@@ -214,6 +217,7 @@ class NodeGUI(customtkinter.CTk):
             font=customtkinter.CTkFont(size=20, weight="bold"))
         self.middle_center_frame_calib_update_label.place(
             relx=0.8, rely=0.75, anchor="center")
+
     def _update_calib_params(self) -> None:
         """ Updates the calibration parameters """
         square_size_entry = self.middle_center_frame_square_size_entry.get()
@@ -237,52 +241,63 @@ class NodeGUI(customtkinter.CTk):
         print('Checkerboard parameters updated successfully')
         self.middle_center_frame_calib_update_label.configure(
             text="☑", text_color='green')
-    def _start_camera_calibration(self,nuc_number) -> None:
+    def _start_camera_calibration(self) -> None:
         """ Starts the camera calibration """
-        if self.running_processes.get(f'sony_cam{nuc_number}_calib_driver') is not None:    # Calib node running
-            rospy.loginfo("Calibration already running, Now stopping it")
-            if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is not None:  # Camera running
-                # Both camera and calibration are running, so stop both
+        if self.running_processes.get(f'{self.node_name}_calib_driver') is not None:    # Calib node running
+            rospy.loginfo(f"Calibration already running, Now stopping it")
+            if self.running_processes.get(f'{self.node_name}_cam_driver') is not None:  # Camera running
                 try:
-                    self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_cam_driver')
+                    self._cleanup_processes(f'{self.node_name}_cam_driver')
                 except KeyError:
                     print("Error: Could not stop camera.")
                 else:
-                    self.___start_cam_button_color_event(nuc_number, "IDLE")
+                    self.left_top_frame_start_cam_button.configure(
+                        text="Start Camera", fg_color=themes[COLOR_SELECT][0])
             try:
-                self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_calib_driver')
+                self._cleanup_processes(f'{self.node_name}_calib_driver')
             except KeyError:
                 print("Error: Calibration driver not found.")
             else:
-                self.___calib_button_color_event(nuc_number, "IDLE")
+                self.left_bottom_frame_calib_button.configure(
+                    text="Start Calibration", fg_color=themes[COLOR_SELECT][0])
         else:
-            rospy.loginfo(f"Starting calibration for camera {nuc_number}")
-            self._calibrate_camera(nuc_number)
-            self.___calib_button_color_event(nuc_number, "ACTIVE")
-    def _calibrate_camera(self, nuc_number) -> None:
+            rospy.loginfo(f"Starting calibration for camera {self.nuc_number}")
+            self._calibrate_camera()
+            self.left_bottom_frame_calib_button.configure(
+                text="Stop Calibration", fg_color=themes['red'])
+                
+    def _calibrate_camera(self) -> None:
         print("*** Starting Camera Calibration ***")
         print(f'Board size: {self.board_size}')
         print(f'Square size: {self.square_size}')
-        if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is None:
-            self._start_camera(nuc_number)
-            rospy.sleep(0.5)
+        if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
+            self._start_camera(self.nuc_number)
+        
         try:
-            calib_launch_args = [
-                f"{self.calib_launch}",
-                f"camera:=sony_cam{nuc_number}",
-                f"board_size:={self.board_size}",
-                f"square_size:={self.square_size}"]
-            calib_roslaunch_file = [(
-                roslaunch.rlutil.resolve_launch_arguments(calib_launch_args)[0],
-                calib_launch_args[1:])]
-            calib_driver = roslaunch.parent.ROSLaunchParent(
-                self.uuid, calib_roslaunch_file)
-            calib_driver.start()
-            self.running_processes[f'sony_cam{nuc_number}_calib_driver'] = calib_driver
-            rospy.loginfo("Calibration started successfully")
+            self.calib_process = roslaunch.parent.ROSLaunchParent(
+                self.uuid, [self.calib_launch])
+            self.calib_process.start()
+            self.running_processes[f'{self.node_name}_calib_driver'] = self.calib_process
+            rospy.loginfo(f"Calibration started successfully")
             rospy.sleep(0.5)
         except roslaunch.RLException as e:
             print(f"Error: Failed to launch camera calibration: {str(e)}")
+            
+        # calib_launch_args = [
+        #     f"{self.calib_launch}",
+        #     f"camera_name:={self.node_name}",
+        #     f"cb_size:={self.board_size}",
+        #     f"cb_square:={self.square_size}"]
+        # calib_roslaunch_file = [(
+        #     roslaunch.rlutil.resolve_launch_arguments(calib_launch_args)[0],
+        #     calib_launch_args[1:])]
+        # calib_driver = roslaunch.parent.ROSLaunchParent(
+        #     self.uuid, calib_roslaunch_file)
+        # calib_driver.start()
+        # self.running_processes[f'{self.node_name}_calib_driver'] = calib_driver
+        # rospy.loginfo(f"Calibration started successfully")
+        # rospy.sleep(0.5)
+        
     def create_middle_bottom_frame(self) -> None:
         """Creates the bottom frame of the middle frame"""
         self.middle_bottom_frame = customtkinter.CTkFrame(self.middle_frame)
@@ -343,216 +358,125 @@ class NodeGUI(customtkinter.CTk):
         print('Detection parameters updated successfully')
         self.middle_bottom_frame_marker_update_button_label.configure(
             text="☑", text_color='green')
+        
+        
     def create_left_frame(self) -> None:
         """Creates the left frame of the GUI"""
         self.left_frame = tk.Frame(self, bg=themes[COLOR_SELECT][1])
         self.left_frame.place(relx=0, rely=0, relwidth=0.33, relheight=1)
         self.create_left_top_frame()
-        self.create_left_center_frame()
         self.create_left_bottom_frame()
-        self.create_left_bottom2_frame()
-        self.create_left_record_bottom()
+        self.create_left_exit_button()
     def create_left_top_frame(self) -> None:
-        """Start Camera and Detection"""
+        """Creates the top frame of the left frame"""
         self.left_top_frame = customtkinter.CTkFrame(self.left_frame)
         self.left_top_frame.place(
-            relx=0.10, rely=0.08, relwidth=0.8, relheight=0.08)
+            relx=0.10, rely=0.08, relwidth=0.8, relheight=0.38)
         self.create_left_top_frame_content()
     def create_left_top_frame_content(self) -> None:
         """ Starting and Viewing Camera """
+        # Camera Start Stop and View
         self.left_top_frame_label = customtkinter.CTkLabel(
-            self.left_top_frame, text="START CAMERAS")
-        self.left_top_frame_label.place(relx=0.5, rely=0.5, anchor="center")
-    def create_left_center_frame(self) -> None:
-        self.left_center_frame = customtkinter.CTkFrame(self.left_frame)
-        self.left_center_frame.place(relx=0.10 , rely=0.20, relwidth=0.8, relheight=0.3)
-        self.create_left_center_frame_content()
-    def create_left_center_frame_content(self) -> None:
-        """ Camera Control """
-        self.left_top_frame_start_cam_label = customtkinter.CTkLabel(
-            self.left_center_frame, text="Start Camera")
-        self.left_top_frame_start_cam1_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  1  ",
-            command=lambda: self._start_cam_button_event(1), width=2)
-        self.left_top_frame_start_cam2_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  2  ",
-            command=lambda: self._start_cam_button_event(2), width=2)
-        self.left_top_frame_start_cam3_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  3  ",
-            command=lambda: self._start_cam_button_event(3), width=2)
-        self.left_top_frame_view_cam_label = customtkinter.CTkLabel(
-            self.left_center_frame, text="View Camera")
-        self.left_top_frame_view_cam1_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  1  ", fg_color='gray', width=2,
-            command=lambda: self._view_cam_button_event(1))
-        self.left_top_frame_view_cam2_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  2  ", fg_color='gray', width=2,
-            command=lambda: self._view_cam_button_event(2))
-        self.left_top_frame_view_cam3_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  3  ", fg_color='gray', width=2,
-            command=lambda: self._view_cam_button_event(3))
-        self.left_top_frame_start_view_label = customtkinter.CTkLabel(
-            self.left_center_frame, text="Start & View")
-        self.left_top_frame_start_view_cam1_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  1  ", border_width=2,
-            border_color=themes['red'][0], width=2,
-            command=lambda: self._startnview_cam_button_event(1))
-        self.left_top_frame_start_view_cam2_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  2  ", border_width=2,
-            border_color=themes['red'][0], width=2,
-            command=lambda: self._startnview_cam_button_event(2))
-        self.left_top_frame_start_view_cam3_button = customtkinter.CTkButton(
-            self.left_center_frame, text="  3  ", border_width=2,
-            border_color=themes['red'][0], width=2,
-            command=lambda: self._startnview_cam_button_event(3))
+            self.left_top_frame, text=f"START CAMERA")
+        self.left_top_frame_label.place(relx=0.5, rely=0.17, anchor="center")
 
-        self.left_top_frame_start_cam_label.place(
-            relx=0.06, rely=0.15)
-        self.left_top_frame_start_cam1_button.place(
-            relx=0.44, rely=0.15)
-        self.left_top_frame_start_cam2_button.place(
-            relx=0.61, rely=0.15)
-        self.left_top_frame_start_cam3_button.place(
-            relx=0.78, rely=0.15)
+        self.left_top_frame_start_cam_button = customtkinter.CTkButton(
+            self.left_top_frame, text="Start Camera",
+            command=lambda: self._start_cam_button_event(self.nuc_number))
+        self.left_top_frame_start_cam_button.place(
+            relx=0.5, rely=0.35, anchor="center")
 
-        self.left_top_frame_view_cam_label.place(
-            relx=0.06, rely=0.4)
-        self.left_top_frame_view_cam1_button.place(
-            relx=0.44, rely=0.4)
-        self.left_top_frame_view_cam2_button.place(
-            relx=0.61, rely=0.4)
-        self.left_top_frame_view_cam3_button.place(
-            relx=0.78, rely=0.4)
-        self.left_top_frame_start_view_label.place(
-            relx=0.06, rely=0.65)
-        self.left_top_frame_start_view_cam1_button.place(
-            relx=0.44, rely=0.65)
-        self.left_top_frame_start_view_cam2_button.place(
-            relx=0.61, rely=0.65)
-        self.left_top_frame_start_view_cam3_button.place(
-            relx=0.78, rely=0.65)
+        self.left_top_frame_start_cam_label_number = customtkinter.CTkLabel(
+            self.left_top_frame, text="①", font=customtkinter.CTkFont(size=20), text_color=themes[COLOR_SELECT][0])
+        self.left_top_frame_start_cam_label_number.place(
+            relx=0.1, rely=0.35, anchor="center")
+
+        self.left_top_frame_view_cam_button = customtkinter.CTkButton(
+            self.left_top_frame, text="View Camera", fg_color='gray',
+            command=lambda: self._view_cam_button_event(self.nuc_number))
+        self.left_top_frame_view_cam_button.place(
+            relx=0.5, rely=0.55, anchor="center")
+
+        self.left_top_frame_view_cam_label_number = customtkinter.CTkLabel(
+            self.left_top_frame, text="②", font=customtkinter.CTkFont(size=20), text_color=themes[COLOR_SELECT][0])
+        self.left_top_frame_view_cam_label_number.place(
+            relx=0.1, rely=0.55, anchor="center")
+
+        self.left_top_frame_start_view_cam_button = customtkinter.CTkButton(
+            self.left_top_frame, text="Start & View Camera", border_width=2,
+            border_color=themes['red'][0],
+            command=lambda: self._startnview_cam_button_event(self.nuc_number))
+        self.left_top_frame_start_view_cam_button.place(
+            relx=0.5, rely=0.80, anchor="center")
+
     def create_left_bottom_frame(self) -> None:
         """Creates the bottom frame of the left frame"""
         self.left_bottom_frame = customtkinter.CTkFrame(self.left_frame)
         self.left_bottom_frame.place(
-            relx=0.10, rely=0.54, relwidth=0.8, relheight=0.15)
+            relx=0.10, rely=0.50, relwidth=0.8, relheight=0.32)
         self._create_left_bottom_frame_content()
     def _create_left_bottom_frame_content(self) -> None:
         """ Detection of the Marker """
         self.left_bottom_frame_label = customtkinter.CTkLabel(
-            self.left_bottom_frame, text="CALIBRATE CAMERA")
-        self.left_bottom_frame_cam1_calib_button = customtkinter.CTkButton(
-            self.left_bottom_frame, text="1", fg_color=themes[COLOR_SELECT][0],
-            command=lambda: self._start_camera_calibration(1))
-        self.left_bottom_frame_cam2_calib_button = customtkinter.CTkButton(
-            self.left_bottom_frame, text="2", fg_color=themes[COLOR_SELECT][0],
-            command=lambda: self._start_camera_calibration(2))
-        self.left_bottom_frame_cam3_calib_button = customtkinter.CTkButton(
-            self.left_bottom_frame, text="3", fg_color=themes[COLOR_SELECT][0],
-            command=lambda: self._start_camera_calibration(3))
-        self.left_bottom_frame_label.place(relx=0.5, rely=0.25, anchor="center")
-        self.left_bottom_frame_cam1_calib_button.place(relx=0.2, rely=0.65, anchor="center", relwidth=0.2)
-        self.left_bottom_frame_cam2_calib_button.place(relx=0.5, rely=0.65, anchor="center", relwidth=0.2)
-        self.left_bottom_frame_cam3_calib_button.place(relx=0.8, rely=0.65, anchor="center", relwidth=0.2)
-    def create_left_bottom2_frame(self) -> None:
-        """Creates the bottom frame of the left frame"""
-        self.left_bottom2_frame = customtkinter.CTkFrame(self.left_frame)
-        self.left_bottom2_frame.place(
-            relx=0.10, rely=0.72, relwidth=0.8, relheight=0.14)
-        self._create_left_bottom2_frame_content()
-    def _create_left_bottom2_frame_content(self) -> None:
-        """ Detection of the Marker """
-        self.left_bottom2_frame_label = customtkinter.CTkLabel(
-            self.left_bottom2_frame, text="DETECT MARKER")
-        self.left_bottom2_frame_detect_cam1_button = customtkinter.CTkButton(
-            self.left_bottom2_frame, text="1", fg_color=themes[COLOR_SELECT][0],
-            command = lambda: self._detect_marker_button_event(1))
-        self.left_bottom2_frame_detect_cam2_button = customtkinter.CTkButton(
-            self.left_bottom2_frame, text="2", fg_color=themes[COLOR_SELECT][0],
-            command= lambda: self._detect_marker_button_event(2))
-        self.left_bottom2_frame_detect_cam3_button = customtkinter.CTkButton(
-            self.left_bottom2_frame, text="3", fg_color=themes[COLOR_SELECT][0],
-            command= lambda: self._detect_marker_button_event(3))
-        self.left_bottom2_frame_label.place(relx=0.5, rely=0.25 , anchor="center")
-        self.left_bottom2_frame_detect_cam1_button.place(relx=0.2, rely=0.65, anchor="center", relwidth=0.2)
-        self.left_bottom2_frame_detect_cam2_button.place(relx=0.5, rely=0.65, anchor="center", relwidth=0.2)
-        self.left_bottom2_frame_detect_cam3_button.place(relx=0.8, rely=0.65, anchor="center", relwidth=0.2)
-    def ___start_detect_button_color_event(self, nuc_number, status) -> None:
-        if nuc_number == 1:
-            if status == "ACTIVE":
-                self.left_bottom2_frame_detect_cam1_button.configure(
-                    fg_color='red')
-            else:
-                self.left_bottom2_frame_detect_cam1_button.configure(
-                    fg_color=themes[COLOR_SELECT][0])
-        elif nuc_number == 2:
-            if status == "ACTIVE":
-                self.left_bottom2_frame_detect_cam2_button.configure(
-                    fg_color='red')
-            else:
-                self.left_bottom2_frame_detect_cam2_button.configure(
-                    fg_color=themes[COLOR_SELECT][0])
-        elif nuc_number == 3:
-            if status == "ACTIVE":
-                self.left_bottom2_frame_detect_cam3_button.configure(
-                    fg_color='red')
-            else:
-                self.left_bottom2_frame_detect_cam3_button.configure(
-                    fg_color=themes[COLOR_SELECT][0])
-    def _detect_marker_button_event(self, nuc_number) -> None:
-        rospy.loginfo(f"Button for detection on camera {nuc_number} pressed")
-        if self.running_processes.get(f'sony_cam{nuc_number}_detect_driver') is not None: # i.e., detection is running
-            rospy.loginfo("Detection already running, Now stopping it")
+            self.left_bottom_frame, text=f"DETECT & CALIBRATE")
+        self.left_bottom_frame_label.place(relx=0.5, rely=0.17, anchor="center")
+        self.left_bottom_frame_detect_button = customtkinter.CTkButton(
+            self.left_bottom_frame, text="Start Detection", fg_color=themes[COLOR_SELECT][0],
+            command=lambda: self._detect_marker_button_event(self.nuc_number))
+        self.left_bottom_frame_detect_button.place(
+            relx=0.5, rely=0.40, anchor="center")
+        self.left_bottom_frame_detect_label_number = customtkinter.CTkLabel(
+            self.left_bottom_frame, text="③", font=customtkinter.CTkFont(size=20), text_color=themes[COLOR_SELECT][0])
+        self.left_bottom_frame_detect_label_number.place(
+            relx=0.1, rely=0.40, anchor="center")
+        self.left_bottom_frame_calib_button = customtkinter.CTkButton(
+            self.left_bottom_frame, text="Calibrate Camera", fg_color=themes[COLOR_SELECT][0],
+            command=self._start_camera_calibration)
+        self.left_bottom_frame_calib_button.place(
+            relx=0.5, rely=0.7, anchor="center")
+        self.left_bottom_frame_calib_label_number = customtkinter.CTkLabel(
+            self.left_bottom_frame, text="④", font=customtkinter.CTkFont(size=20), text_color=themes[COLOR_SELECT][0])
+        self.left_bottom_frame_calib_label_number.place(
+            relx=0.1, rely=0.7, anchor="center")
+    def _detect_marker_button_event(self, nuc_number: str) -> None:
+        """Starts the marker detection node"""
+        print("Detect Marker Button Clicked")
+        if self.running_processes.get(f'{self.node_name}_detect_driver') is not None:
+            rospy.loginfo(f"Detection already running, Now stopping it")
             try:
-                self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_detect_driver')
+                self._cleanup_processes(f'{self.node_name}_detect_driver')
             except KeyError:
                 print("Error: Detection driver not found.")
             else:
-                self.___start_detect_button_color_event(nuc_number, "IDLE")
-                rospy.loginfo("Detection stopped successfully")
-                # check if camera is running, then stop it
-                if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is not None:
-                    try:
-                        self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_cam_driver')
-                    except KeyError:
-                        print(f"Error: Camera driver not found for Camera {nuc_number}")
-                    else:
-                        self.___start_cam_button_color_event(nuc_number, "IDLE")
-                        rospy.loginfo("Camera stopped successfully")
+                self.left_bottom_frame_detect_button.configure(
+                    text="Start Detection", fg_color=themes[COLOR_SELECT][0])
+                # Update the detection specific labels
+                self.right_bottom_frame_camera_detect_status_result_label.configure(
+                    text="IDLE", text_color='red')
         else:
-            # Detection is not running, so start it
-            rospy.loginfo(f"checking if camera {nuc_number} is running, before starting detection")
-            if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is None: # i.e., camera is not running
+            if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
                 print(f"Camera {nuc_number} is not running, Please start the camera first")
                 return
             rospy.loginfo(f"Starting detection for camera {nuc_number}")
-            try:
-                rospy.sleep(0.5)
-                self._detect_marker(nuc_number)
-            except roslaunch.RLException as e:
-                print(f"Error: Failed to launch marker detection: {str(e)}")
-            else:
-                self.___start_detect_button_color_event(nuc_number, "ACTIVE")
-                rospy.loginfo("Detection started successfully")
-    def create_exit_button(self) -> None:
+            self._detect_marker()
+            self.left_bottom_frame_detect_button.configure(
+                text="Stop Detection", fg_color=themes['red'])
+            # Update the detection specific labels
+            self.right_bottom_frame_camera_detect_status_result_label.configure(
+                text="ACTIVE", text_color='yellow')
+
+            
+
+    def create_left_exit_button(self) -> None:
         """Creates the exit button of the left frame"""
-        self.left_exit_button = customtkinter.CTkButton(self.middle_frame, text="Exit Program", fg_color=themes["red"], command=self.destroy_routine)
+        self.left_exit_button = customtkinter.CTkButton(self.left_frame, text="Exit Program", fg_color=themes["red"], command=self.destroy_routine)
         self.left_exit_button.place(relx=0.5, rely=0.90, anchor="center")
-    def create_left_record_bottom(self) -> None:
-        """Creates the record button of the left frame"""
-        self.left_record_button = customtkinter.CTkButton(self.left_frame, text="Record", fg_color=themes["green"], command=self.collect_data)
-        self.left_record_button.place(relx=0.5, rely=0.90, anchor="center")
-    def _detect_marker(self, nuc_number) -> None:
-        rospy.loginfo(f"Starting detection for camera {nuc_number}")
-        rospy.loginfo(f"Marker Dimension: {self.marker_dim}")
-        rospy.loginfo(f"Marker Dictionary: {self.marker_dict}")
-        if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is None:
-            print(f"Camera {nuc_number} is not running, Please start the camera first")
-            return
+    def _detect_marker(self) -> None:
+        """Start detection node and set up rate calculation."""
         try:
             detect_launch_args = [
                 f"{self.detect_launch}",
-                f"launch_nuc:=sony_cam{nuc_number}",
+                f"launch_nuc:={self.node_name}",
                 f"fiducial_len:={self.marker_dim}",
                 f"dictionary:={self.marker_dict}"]
             detect_roslaunch_file = [(
@@ -561,69 +485,83 @@ class NodeGUI(customtkinter.CTk):
             detect_driver = roslaunch.parent.ROSLaunchParent(
                 self.uuid, detect_roslaunch_file)
             detect_driver.start()
-            self.running_processes[f'sony_cam{nuc_number}_detect_driver'] = detect_driver
-            rospy.loginfo("Detection started successfully")
+            self.running_processes[f'{self.node_name}_detect_driver'] = detect_driver
+            rospy.loginfo(f"Detection started successfully")
             rospy.sleep(0.5)
+            # Start the detection rate updater
             self.is_detection_active = True
+            self.update_detection_rate()
         except roslaunch.RLException as e:
             print(f"Error: Failed to launch marker detection: {str(e)}")
-    def _start_camera(self, nuc_number:str)-> None:
+            
+    def _start_camera(self, number:str)-> None:
         cam_launch_args = [
             f"{self.cam_launch}",
-            f"launch_nuc:=sony_cam{nuc_number}"]
+            f"launch_nuc:={self.node_name}"]
         cam_roslaunch_file = [(
             roslaunch.rlutil.resolve_launch_arguments(cam_launch_args)[0],
             cam_launch_args[1:])]
         cam_driver = roslaunch.parent.ROSLaunchParent(
             self.uuid, cam_roslaunch_file)
         cam_driver.start()
-        self.running_processes[f'sony_cam{nuc_number}_cam_driver'] = cam_driver
-        rospy.loginfo(f"Camera {nuc_number} started successfully")
+        self.running_processes[f'{self.node_name}_cam_driver'] = cam_driver
+        rospy.loginfo(f"Camera {number} started successfully")
         rospy.sleep(0.5)
-    def _view_camera(self, nuc_number:str)-> None:
+    def _view_camera(self, number:str)-> None:
         view_launch_args = [
             f"{self.view_launch}",
-            f"launch_nuc:=sony_cam{nuc_number}"]
+            f"launch_nuc:={self.node_name}"]
         view_roslaunch_file = [(
             roslaunch.rlutil.resolve_launch_arguments(view_launch_args)[0],
             view_launch_args[1:])]
         view_driver = roslaunch.parent.ROSLaunchParent(
             self.uuid, view_roslaunch_file)
         view_driver.start()
-        self.running_processes[f'sony_cam{nuc_number}_view_driver'] = view_driver
-        rospy.loginfo(f"Camera {nuc_number} view started successfully")
+        self.running_processes[f'{self.node_name}_view_driver'] = view_driver
+        rospy.loginfo(f"Camera {number} view started successfully")
         rospy.sleep(0.5)
+        
     def _start_cam_button_event(self, nuc_number: str) -> None:
+        self.start_cam = False
+        self.view_cam = False
+        self.start_view_cam = False
         try:
-            if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is not None: # i.e., camera is running
+            if self.running_processes.get(f'{self.node_name}_cam_driver') is not None: # i.e., camera is running
                 rospy.loginfo(f"Camera {nuc_number} already running, Now stopping it")
                 # Check and stop detection process if running
-                if self.running_processes.get(f'sony_cam{nuc_number}_detect_driver') is not None: # i.e., Detection is running
+                if self.running_processes.get(f'{self.node_name}_detect_driver') is not None: # i.e., Detection is running
                     rospy.loginfo(f"Stopping detection {nuc_number}")
                     try:
-                        self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_detect_driver')
+                        self._cleanup_processes(f'{self.node_name}_detect_driver')
                     except KeyError:
                         print("Error: Detection driver not found.")
                     else:
+                        self.left_bottom_frame_detect_button.configure(
+                            text="Start Detection", fg_color=themes[COLOR_SELECT][0])
                         # Update the detection specific labels
                         self.right_bottom_frame_camera_detect_status_result_label.configure(
                             text="IDLE", text_color='red')
+                        # self.right_bottom_frame_camera_detect_rate_result_label.configure(
+                        #     text='detection rate running', text_color='white')
                     # Check and stop view process if running
-                if self.running_processes.get(f'sony_cam{nuc_number}_view_driver') is not None: # i.e., view is running, so stop both
+                if self.running_processes.get(f'{self.node_name}_view_driver') is not None: # i.e., view is running, so stop both
                     rospy.loginfo(f"Stopping camera view {nuc_number}")
                     try:
-                        self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_view_driver')
+                        self._cleanup_processes(f'{self.node_name}_view_driver')
                     except KeyError:
                         print("Error: View driver not found.")
                     else:
                         try:
-                            self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_cam_driver')
+                            self._cleanup_processes(f'{self.node_name}_cam_driver')
                         except KeyError:
                             print("Error: Camera driver not found.")
                         else:
-                            self.___start_cam_button_color_event(nuc_number, "IDLE")
-                            self.___view_cam_button_color_event(nuc_number, "IDLE")
-                            self.___startnview_cam_button_color_event(nuc_number, "IDLE")
+                            self.left_top_frame_start_cam_button.configure(
+                                text="Start Camera", fg_color=themes['blue'])
+                            self.left_top_frame_view_cam_button.configure(
+                                text="View Camera", fg_color='gray')
+                            self.left_top_frame_start_view_cam_button.configure(
+                                text="Start & View Camera", fg_color=themes['blue'])
                             # Update the camera specific labels
                             self.right_bottom_frame_camera_status_result_label.configure(
                                 text="IDLE", text_color='red')
@@ -633,15 +571,26 @@ class NodeGUI(customtkinter.CTk):
                                 text='-', text_color='white')
                 else: # i.e., camera is running but view is not running, so only stop the camera
                     try:
-                        self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_cam_driver')
+                        self._cleanup_processes(f'{self.node_name}_cam_driver')
                     except KeyError:
                         print("Error: Camera driver not found.")
                     else:
-                        self.___start_cam_button_color_event(nuc_number, "IDLE")
+                        self.left_top_frame_start_cam_button.configure(
+                            text="Start Camera", fg_color=themes['blue'])
+                        # Update the camera status label
+                        self.right_bottom_frame_camera_status_result_label.configure(
+                            text="IDLE", text_color='red')
+                        self.right_bottom_frame_camera_resolution_result_label.configure(
+                            text='-', text_color='white')
+                        self.right_bottom_frame_camera_fps_result_label.configure(
+                            text='-', text_color='white')
+                        
+                        
             else: # i.e., camera is not running
                 rospy.loginfo(f"Camera {nuc_number} is not running, Now starting it")
                 self._start_camera(nuc_number)
-                self.___start_cam_button_color_event(nuc_number, "ACTIVE")
+                self.left_top_frame_start_cam_button.configure(
+                    text="Stop Camera", fg_color=themes['red'])
                 # Update the camera status label
                 self.right_bottom_frame_camera_status_result_label.configure(
                     text="ACTIVE", text_color='yellow')
@@ -652,116 +601,23 @@ class NodeGUI(customtkinter.CTk):
         except roslaunch.RLException as e:
             print('Error! Close GUI and try again after launching ROS.')
             print(f"Error: Failed to launch camera: {str(e)}")
-    def ___view_cam_button_color_event(self, nuc_number: str, status: str) -> None:
-        if nuc_number == 1:
-            if status == "ACTIVE":
-                self.left_top_frame_view_cam1_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_view_cam1_button.configure(
-                    fg_color='gray')
-        elif nuc_number == 2:
-            if status == "ACTIVE":
-                self.left_top_frame_view_cam2_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_view_cam2_button.configure(
-                    fg_color='gray')
-        elif nuc_number == 3:
-            if status == "ACTIVE":
-                self.left_top_frame_view_cam3_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_view_cam3_button.configure(
-                    fg_color='gray')
-    def ___start_cam_button_color_event(self, nuc_number, status) -> None:
-        if nuc_number == 1:
-            if status == "ACTIVE":
-                self.left_top_frame_start_cam1_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_start_cam1_button.configure(
-                    fg_color=themes['blue'])
-        elif nuc_number == 2:
-            if status == "ACTIVE":
-                self.left_top_frame_start_cam2_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_start_cam2_button.configure(
-                fg_color=themes['blue'])
-        elif nuc_number == 3:
-            if status == "ACTIVE":
-                self.left_top_frame_start_cam3_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_start_cam3_button.configure(
-                fg_color=themes['blue'])
-            
-            # Update the camera status label
-            # self.right_bottom_frame_camera_status_result_label.configure(
-            #     text="IDLE", text_color='red')
-            # self.right_bottom_frame_camera_resolution_result_label.configure(
-            #     text='-', text_color='white')
-            # self.right_bottom_frame_camera_fps_result_label.configure(
-            #     text='-', text_color='white')
-    def ___startnview_cam_button_color_event(self, nuc_number: str, status: str) -> None:
-        if nuc_number == 1:
-            if status == "ACTIVE":
-                self.left_top_frame_start_view_cam1_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_start_view_cam1_button.configure(
-                    fg_color=themes['blue'])
-        elif nuc_number == 2:
-            if status == "ACTIVE":
-                self.left_top_frame_start_view_cam2_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_start_view_cam2_button.configure(
-                    fg_color=themes['blue'])
-        elif nuc_number == 3:
-            if status == "ACTIVE":
-                self.left_top_frame_start_view_cam3_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_top_frame_start_view_cam3_button.configure(
-                    fg_color=themes['blue'])
-    def ___calib_button_color_event(self, nuc_number: str, status: str) -> None:
-        if nuc_number == 1:
-            if status == "ACTIVE":
-                self.left_bottom_frame_cam1_calib_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_bottom_frame_cam1_calib_button.configure(
-                    fg_color=themes[COLOR_SELECT][0])
-        elif nuc_number == 2:
-            if status == "ACTIVE":
-                self.left_bottom_frame_cam2_calib_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_bottom_frame_cam2_calib_button.configure(
-                    fg_color=themes[COLOR_SELECT][0])
-        elif nuc_number == 3:
-            if status == "ACTIVE":
-                self.left_bottom_frame_cam3_calib_button.configure(
-                    fg_color=themes['red'])
-            else:
-                self.left_bottom_frame_cam3_calib_button.configure(
-                    fg_color=themes[COLOR_SELECT][0])
     def _startnview_cam_button_event(self, nuc_number: str) -> None:
         print("View Camera Button Clicked")
-        if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is not None:
-            if self.running_processes.get(f'sony_cam{nuc_number}_view_driver') is not None:
+        if self.running_processes.get(f'{self.node_name}_cam_driver') is not None:
+            if self.running_processes.get(f'{self.node_name}_view_driver') is not None:
                 rospy.loginfo(f"Stopping camera {nuc_number} node and view")
                 try:
-                    self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_view_driver')
+                    self._cleanup_processes(f'{self.node_name}_view_driver')
                 except KeyError:
                     print("Error: View driver not found.")
                 else:
-                    self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_cam_driver')
-                    self.___startnview_cam_button_color_event(nuc_number, "IDLE")
-                    self.___start_cam_button_color_event(nuc_number, "IDLE")
-                    self.___view_cam_button_color_event(nuc_number, "IDLE")
+                    self._cleanup_processes(f'{self.node_name}_cam_driver')
+                    self.left_top_frame_start_view_cam_button.configure(
+                        text="Start & View Camera", fg_color=themes['blue'])
+                    self.left_top_frame_start_cam_button.configure(
+                        text="Start Camera", fg_color=themes['blue'])
+                    self.left_top_frame_view_cam_button.configure(
+                        text="View Camera", fg_color='gray')
                     # Update the camera status label
                     self.right_bottom_frame_camera_status_result_label.configure(
                         text="IDLE", text_color='red')
@@ -776,9 +632,12 @@ class NodeGUI(customtkinter.CTk):
                 except roslaunch.RLException as e:
                     print(f"Error: Failed to launch camera view: {str(e)}")
                 else:
-                    self.___startnview_cam_button_color_event(nuc_number, "ACTIVE")
-                    self.___view_cam_button_color_event(nuc_number, "ACTIVE")
-                    self.___start_cam_button_color_event(nuc_number, "ACTIVE")
+                    self.left_top_frame_start_view_cam_button.configure(
+                        text="Stop View & Camera", fg_color=themes['red'])
+                    self.left_top_frame_view_cam_button.configure(
+                        text="Stop View Camera", fg_color=themes['red'])
+                    self.left_top_frame_start_cam_button.configure(
+                        text="Stop Camera", fg_color=themes['red'])
                     # Update the camera status label
                     self.right_bottom_frame_camera_status_result_label.configure(
                         text="ACTIVE", text_color='yellow')
@@ -793,9 +652,12 @@ class NodeGUI(customtkinter.CTk):
             except roslaunch.RLException as e:
                 print(f"Error: Failed to launch camera view: {str(e)}")
             else:
-                self.___startnview_cam_button_color_event(nuc_number, "ACTIVE")
-                self.___view_cam_button_color_event(nuc_number, "ACTIVE")
-                self.___start_cam_button_color_event(nuc_number, "ACTIVE")
+                self.left_top_frame_start_view_cam_button.configure(
+                    text="Stop View & Camera", fg_color=themes['red'])
+                self.left_top_frame_view_cam_button.configure(
+                    text="Stop View Camera", fg_color=themes['red'])
+                self.left_top_frame_start_cam_button.configure(
+                    text="Stop Camera", fg_color=themes['red'])
                 # Update the camera status label
                 self.right_bottom_frame_camera_status_result_label.configure(
                     text="ACTIVE", text_color='yellow')
@@ -803,47 +665,52 @@ class NodeGUI(customtkinter.CTk):
                     text=self.cam_resolution, text_color='white')
                 self.right_bottom_frame_camera_fps_result_label.configure(
                     text=self.cam_fps, text_color='white')
+
     def _view_cam_button_event(self, nuc_number: str) -> None:
         """Starts the camera view node"""
-        if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is None:
+        if self.running_processes.get(f'{self.node_name}_cam_driver') is None:
             print(f"Camera {nuc_number} is not running, Please start the camera first")
             return
-        if self.running_processes.get(f'sony_cam{nuc_number}_view_driver') is None:
+        if self.running_processes.get(f'{self.node_name}_view_driver') is None:
             rospy.loginfo(f"Viewing camera {nuc_number}")
             try:
                 self._view_camera(nuc_number)
             except roslaunch.RLException as e:
                 print(f"Error: Failed to launch camera view: {str(e)}")
             else:
-                self.___view_cam_button_color_event(nuc_number, "ACTIVE")
+                self.left_top_frame_view_cam_button.configure(
+                    text="Stop View Camera", fg_color=themes['red'])
         else:
             rospy.loginfo(f"Stopping camera view {nuc_number}")
             try:
-                self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_view_driver')
+                self._cleanup_processes(f'{self.node_name}_view_driver')
             except KeyError:
                 print("Error: View driver not found.")
             else:
-                self.___view_cam_button_color_event(nuc_number, "IDLE")
+                self.left_top_frame_view_cam_button.configure(
+                    text="View Camera", fg_color=themes['blue'])
     def destroy_routine(self) -> None:
         """destroys the GUI and quits the program"""
         self.destroy()
         self.quit()
-    def _cleanup_processes(self, nuc_number, node_process:str) -> None:
+    def _cleanup_processes(self, node_process:str) -> None:
         """ Cleans up the processes """
         try:
             self.running_processes[node_process].shutdown()
             del self.running_processes[node_process]
             # Check if it's the detection node being cleaned up
-            if node_process == f'sony_cam{nuc_number}_detect_driver':
+            if node_process == f'{self.node_name}_detect_driver':
                 self.is_detection_active = False
         except KeyError:
             print(f"Error: {node_process} not found in running processes.")
         else:
             print(f"{node_process} stopped successfully.")
             rospy.sleep(0.5)
-    def update_detection_rate(self, nuc_number) -> None:
+
+        
+    def update_detection_rate(self) -> None:
         """Periodically update the detection rate and result labels."""
-        detect_topic = f"/sony_cam{nuc_number}_detect/fiducial_transforms"
+        detect_topic = f"/{self.node_name}_detect/fiducial_transforms"
         if self.is_detection_active:
             frequency = get_ros_topic_frequency(detect_topic)
             if frequency is not None:
@@ -862,20 +729,12 @@ class NodeGUI(customtkinter.CTk):
             self.right_bottom_frame_camera_detect_result_result_label.configure(
                 text="Not Detected", text_color='red')
 
-        # self.after(self.update_interval, self.update_detection_rate(nuc_number))
-    def _detection_monitor(self) -> None:
-        """Monitors the detection process"""
-        while not self.stop_detect_event.is_set():
-            # Here you can add the code to monitor detection status or update the GUI
-            self.update_detection_rate(1)
-            self.update_detection_rate(2)
-            self.update_detection_rate(3)
-            self.stop_detect_event.wait(1)
-        print("Detection thread stopped")
-    def update_camera_fps(self, nuc_number) -> None:
+        self.after(self.update_interval, self.update_detection_rate)
+
+    def update_camera_fps(self) -> None:
         """Periodically update the camera FPS label."""
-        camera_topic = f"/sony_cam{nuc_number}/image_raw"
-        if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is not None:
+        camera_topic = f"/{self.node_name}/image_raw"
+        if self.running_processes.get(f'{self.node_name}_cam_driver') is not None:
             frequency = get_ros_topic_frequency(camera_topic)
             if frequency is not None:
                 self.right_bottom_frame_camera_fps_result_label.configure(
@@ -887,66 +746,11 @@ class NodeGUI(customtkinter.CTk):
             self.right_bottom_frame_camera_fps_result_label.configure(
                 text="-", text_color='white')
 
-        self.after(self.update_interval, self.update_camera_fps(nuc_number))
-    # New methods for data collection
-    def collect_data(self) -> None:
-        """Collects data from the three cameras and saves to a CSV file."""
-        rospy.loginfo("Starting data collection")
+        self.after(self.update_interval, self.update_camera_fps)
 
-        # Create subscribers
-        sub1 = message_filters.Subscriber('/sony_cam1_detect/fiducial_transforms', FiducialTransformArray)
-        sub2 = message_filters.Subscriber('/sony_cam2_detect/fiducial_transforms', FiducialTransformArray)
-        sub3 = message_filters.Subscriber('/sony_cam3_detect/fiducial_transforms', FiducialTransformArray)
-
-        # Approximate time synchronizer
-        ats = message_filters.ApproximateTimeSynchronizer([sub1, sub2, sub3], queue_size=10, slop=0.1)
-        ats.registerCallback(self.data_callback)
-
-        # Set a timer to stop data collection after 10 seconds
-        rospy.Timer(rospy.Duration(10), self.stop_data_collection, oneshot=True)
-
-        # Create a list to store data
-        self.collected_data = []
-
-    def data_callback(self, msg1, msg2, msg3):
-        """Callback function to handle synchronized data from the three cameras."""
-        timestamp = rospy.Time.now()
-        self.collected_data.append({
-            'time': timestamp.to_sec(),
-            'cam1': {'timestamp': msg1.header.stamp.to_sec(), 'data': msg1},
-            'cam2': {'timestamp': msg2.header.stamp.to_sec(), 'data': msg2},
-            'cam3': {'timestamp': msg3.header.stamp.to_sec(), 'data': msg3}
-        })
-
-    def stop_data_collection(self, event):
-        """Stops data collection and saves data to a CSV file."""
-        rospy.loginfo("Stopping data collection")
-
-        # Save data to CSV
-        with open('collected_data.csv', 'w', newline='') as csvfile:
-            fieldnames = ['time', 'cam1_timestamp', 'cam1_data', 'cam2_timestamp', 'cam2_data', 'cam3_timestamp', 'cam3_data']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-            writer.writeheader()
-            for data in self.collected_data:
-                writer.writerow({
-                    'time': data['time'],
-                    'cam1_timestamp': data['cam1']['timestamp'],
-                    'cam1_data': self.format_fiducial_data(data['cam1']['data']),
-                    'cam2_timestamp': data['cam2']['timestamp'],
-                    'cam2_data': self.format_fiducial_data(data['cam2']['data']),
-                    'cam3_timestamp': data['cam3']['timestamp'],
-                    'cam3_data': self.format_fiducial_data(data['cam3']['data']),
-                })
-
-        rospy.loginfo("Data saved to collected_data.csv")
-
-    def format_fiducial_data(self, msg):
-        """Formats FiducialTransformArray message for CSV."""
-        return "; ".join([f"time: {msg.header.stamp.to_sec()}, id: {tf.fiducial_id}, trans: ({tf.transform.translation.x}, {tf.transform.translation.y}, {tf.transform.translation.z}), rot: ({tf.transform.rotation.x}, {tf.transform.rotation.y}, {tf.transform.rotation.z}, {tf.transform.rotation.w})"
-                          for tf in msg.transforms])
-
-
+        
+        
+        
 def get_ros_topic_frequency(topic):
     """Get the frequency of a ROS topic using 'rostopic hz' command."""
     process = subprocess.Popen(['rostopic', 'hz', topic], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -974,7 +778,6 @@ def get_ros_topic_frequency(topic):
 def check_cpu_load():
     return psutil.cpu_percent(interval=1)
 if __name__ == "__main__":
-    rospy.init_node("masterGUI", anonymous=False)
     root = NodeGUI()
     root.mainloop()
     print("Color theme: ", COLOR_SELECT)
