@@ -38,7 +38,11 @@ customtkinter.set_default_color_theme(COLOR_SELECT)
 class NodeGUI(customtkinter.CTk):
     def __init__(self) -> None:
         super().__init__()
-        self.experiment_duration = 5 # in seconds        
+        self.sub1 = None
+        self.sub2 = None
+        self.sub3 = None
+        self.ats = None
+        self.experiment_duration = 10 # in seconds        
         self.package = 'dslr_cam'
         self.image_width = "640"
         self.image_height = "480"
@@ -46,6 +50,8 @@ class NodeGUI(customtkinter.CTk):
         self.cam_fps = "60"
         self.update_interval = 1000  # in milliseconds
         self.is_detection_active = False
+        self.data_collection_active = False  # Add this in the __init__ method
+        self.data_collection_active = False  # Add this in the __init__ method
         self.detection_rate_timeout = 5 # Timeout for detection rate calculation for rostopic hz
         # gui settings
         self.title("Displacement Measurement Dashboard")
@@ -895,53 +901,42 @@ class NodeGUI(customtkinter.CTk):
         for i in range(1, 4):
             if self.running_processes.get(f'sony_cam{i}_detect_driver') is not None:
                 running_cameras.append(f"sony_cam{i}")
-                
-        # cam1_detect_flag = self.running_processes.get(f'sony_cam1_detect_driver')
-        # cam2_detect_flag = self.running_processes.get(f'sony_cam2_detect_driver')
-        # cam3_detect_flag = self.running_processes.get(f'sony_cam3_detect_driver')
-        # running_cameras = [cam for cam in [cam1_detect_flag, cam2_detect_flag, cam3_detect_flag] if cam is not None]
+
         if len(running_cameras) == 0:
             rospy.logerr("No detection nodes running. Please start detection nodes before collecting data.")
             return
-        elif len(running_cameras) == 1:
+        if len(running_cameras) == 1:
             print("Exactly one camera is running.")
             print(f"{running_cameras[0]} is running.")
-            return
+            
         elif len(running_cameras) == 2:
             print("Exactly two cameras are running.")
             print(f"{running_cameras[0]} and {running_cameras[1]} are running.")
-            return
+            
         else:
             print("All cameras are running.")
             print(f"{running_cameras[0]}, {running_cameras[1]} and {running_cameras[2]} are running.")
-            return
-        
-        
-        
-            
-            
         """Collects data from the three cameras and saves to a CSV file."""
-        rospy.loginfo("Starting data collection")
-
+        rospy.loginfo(f"Collecting data for {self.experiment_duration} seconds")
         # Create subscribers
-        sub1 = message_filters.Subscriber('/sony_cam1_detect/fiducial_transforms', FiducialTransformArray)
-        sub2 = message_filters.Subscriber('/sony_cam2_detect/fiducial_transforms', FiducialTransformArray)
-        sub3 = message_filters.Subscriber('/sony_cam3_detect/fiducial_transforms', FiducialTransformArray)
-        
-        
-
+        self.sub1 = message_filters.Subscriber('/sony_cam1_detect/fiducial_transforms', FiducialTransformArray)
+        self.sub2 = message_filters.Subscriber('/sony_cam2_detect/fiducial_transforms', FiducialTransformArray)
+        self.sub3 = message_filters.Subscriber('/sony_cam3_detect/fiducial_transforms', FiducialTransformArray)
         # Approximate time synchronizer
-        ats = message_filters.ApproximateTimeSynchronizer([sub1, sub2, sub3], queue_size=10, slop=0.1)
-        ats.registerCallback(self.data_callback)
-
-        # Set a timer to stop data collection after 60 seconds
+        self.ats = message_filters.ApproximateTimeSynchronizer([self.sub1, self.sub2, self.sub3], queue_size=10, slop=0.1)
+        self.ats.registerCallback(self.data_callback)
+        # Set the data collection flag to active and start the timer
+        self.data_collection_active = True
         rospy.Timer(rospy.Duration(self.experiment_duration), self.stop_data_collection, oneshot=True)
-
         # Create a list to store data
         self.collected_data = []
 
     def data_callback(self, msg1, msg2, msg3):
         """Callback function to handle synchronized data from the three cameras."""
+        if not self.data_collection_active:
+            return
+        if not self.data_collection_active:
+            return
         timestamp = rospy.Time.now()
         self.collected_data.append({
             'time': timestamp.to_sec(),
@@ -949,10 +944,24 @@ class NodeGUI(customtkinter.CTk):
             'cam2': msg2,
             'cam3': msg3
         })
-        print(f"Data collected at {timestamp.to_sec()}")
+        # print(f"Data collected at {timestamp.to_sec()}")
 
     def stop_data_collection(self, event):
         """Stops data collection and saves data to a CSV file."""
+        rospy.loginfo("Stopping data collection")
+        self.data_collection_active = False
+
+        # Unregister the subscribers to stop receiving messages
+        self.sub1.unregister()
+        self.sub2.unregister()
+        self.sub3.unregister()
+        rospy.loginfo("Stopping data collection")
+        self.data_collection_active = False
+
+        # Unregister the subscribers to stop receiving messages
+        self.sub1.unregister()
+        self.sub2.unregister()
+        self.sub3.unregister()
         rospy.loginfo("Stopping data collection")
 
         # Save data to CSV
