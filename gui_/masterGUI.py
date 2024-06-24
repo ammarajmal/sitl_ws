@@ -3,7 +3,8 @@
 
 
 # import subprocess
-
+import os
+import datetime
 import tkinter as tk
 import threading
 import customtkinter
@@ -42,7 +43,11 @@ class NodeGUI(customtkinter.CTk):
         self.sub2 = None
         self.sub3 = None
         self.ats = None
-        self.experiment_duration = 10 # in seconds        
+        self.experiment_duration = 60 # in seconds
+        self.experiment_name = "Exp 1"
+        self.file_name = "data.csv"
+        self.exp_name_var = tk.StringVar(self, self.experiment_name)
+        self.exp_dur_var = tk.StringVar(self, self.experiment_duration)
         self.package = 'dslr_cam'
         self.image_width = "640"
         self.image_height = "480"
@@ -98,30 +103,27 @@ class NodeGUI(customtkinter.CTk):
         self.create_right_bottom_frame_content()
     def create_right_bottom_frame_content(self) -> None:
         """ Camera Information """
-        label_height = 0.13  # This determines the vertical space each label set uses
+        label_height = 0.10  # This determines the vertical space each label set uses
         label_color = 'white'  # Set the text color for all labels
+        
+        self.right_bottom_frame_exp_name_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Experiment Name:", text_color=label_color)
+        self.right_bottom_frame_exp_name_label.place(relx=0.1, rely=0.05)
+        self.right_bottom_frame_exp_name_entry = customtkinter.CTkEntry(
+            self.right_bottom_frame, textvariable= self.exp_name_var, text_color='gray')
+        self.right_bottom_frame_exp_name_entry.place(relx=0.6, rely=0.05, relwidth=0.25)
+        self.right_bottom_frame_exp_duration_label = customtkinter.CTkLabel(
+            self.right_bottom_frame, text="Experiment Duration:", text_color=label_color)
+        self.right_bottom_frame_exp_duration_label.place(relx=0.1, rely=0.05 + label_height * 1)
+        self.right_bottom_frame_exp_duration_entry = customtkinter.CTkEntry(
+            self.right_bottom_frame, textvariable=self.exp_dur_var, text_color="gray")
+        self.right_bottom_frame_exp_duration_entry.place(relx=0.6, rely=0.05 + label_height * 1, relwidth=0.25)
 
-        self.right_bottom_frame_cam_name_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Camera Name:", text_color=label_color)
-        self.right_bottom_frame_cam_name_label.place(relx=0.1, rely=0.05)
-        self.right_bottom_frame_cam_name_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text=f'Sony Camera {1}', text_color=label_color)
-        self.right_bottom_frame_cam_name_result_label.place(relx=0.6, rely=0.05)
-
-        self.right_bottom_frame_camera_status_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Camera Status:", text_color=label_color)
-        self.right_bottom_frame_camera_status_label.place(relx=0.1, rely=0.05 + label_height * 1)
-        self.right_bottom_frame_camera_status_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="IDLE", text_color='red')  # Keep specific status colors if needed
-        self.right_bottom_frame_camera_status_result_label.place(relx=0.6, rely=0.05 + label_height * 1)
-
-        self.right_bottom_frame_camera_resolution_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Camera Resolution:", text_color=label_color)
-        self.right_bottom_frame_camera_resolution_label.place(relx=0.1, rely=0.05 + label_height * 2)
-        self.right_bottom_frame_camera_resolution_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text='-', text_color=label_color)
-        self.right_bottom_frame_camera_resolution_result_label.place(relx=0.6, rely=0.05 + label_height * 2)
-
+        self.right_bottom_frame_record_button = customtkinter.CTkButton(
+            self.right_bottom_frame, text="Record", fg_color=themes["green"], command=self.collect_data)
+        self.right_bottom_frame_record_button.place(relx=0.5, rely=0.05 + (label_height+0.03) * 2, anchor="center")
+        
+        
         self.right_bottom_frame_camera_fps_label = customtkinter.CTkLabel(
             self.right_bottom_frame, text="Camera FPS:", text_color=label_color)
         self.right_bottom_frame_camera_fps_label.place(relx=0.1, rely=0.05 + label_height * 3)
@@ -630,13 +632,7 @@ class NodeGUI(customtkinter.CTk):
                             self.___start_cam_button_color_event(nuc_number, "IDLE")
                             self.___view_cam_button_color_event(nuc_number, "IDLE")
                             self.___startnview_cam_button_color_event(nuc_number, "IDLE")
-                            # Update the camera specific labels
-                            self.right_bottom_frame_camera_status_result_label.configure(
-                                text="IDLE", text_color='red')
-                            self.right_bottom_frame_camera_resolution_result_label.configure(
-                                text='-', text_color='white')
-                            self.right_bottom_frame_camera_fps_result_label.configure(
-                                text='-', text_color='white')
+                            
                 else: # i.e., camera is running but view is not running, so only stop the camera
                     try:
                         self._cleanup_processes(nuc_number, f'sony_cam{nuc_number}_cam_driver')
@@ -648,13 +644,7 @@ class NodeGUI(customtkinter.CTk):
                 rospy.loginfo(f"Camera {nuc_number} is not running, Now starting it")
                 self._start_camera(nuc_number)
                 self.___start_cam_button_color_event(nuc_number, "ACTIVE")
-                # Update the camera status label
-                self.right_bottom_frame_camera_status_result_label.configure(
-                    text="ACTIVE", text_color='yellow')
-                self.right_bottom_frame_camera_resolution_result_label.configure(
-                    text=self.cam_resolution, text_color='white')
-                self.right_bottom_frame_camera_fps_result_label.configure(
-                    text=self.cam_fps, text_color='white')
+
         except roslaunch.RLException as e:
             print('Error! Close GUI and try again after launching ROS.')
             print(f"Error: Failed to launch camera: {str(e)}")
@@ -702,14 +692,7 @@ class NodeGUI(customtkinter.CTk):
             else:
                 self.left_top_frame_start_cam3_button.configure(
                 fg_color=themes['blue'])
-            
-            # Update the camera status label
-            # self.right_bottom_frame_camera_status_result_label.configure(
-            #     text="IDLE", text_color='red')
-            # self.right_bottom_frame_camera_resolution_result_label.configure(
-            #     text='-', text_color='white')
-            # self.right_bottom_frame_camera_fps_result_label.configure(
-            #     text='-', text_color='white')
+
     def ___startnview_cam_button_color_event(self, nuc_number: str, status: str) -> None:
         if nuc_number == 1:
             if status == "ACTIVE":
@@ -768,13 +751,7 @@ class NodeGUI(customtkinter.CTk):
                     self.___startnview_cam_button_color_event(nuc_number, "IDLE")
                     self.___start_cam_button_color_event(nuc_number, "IDLE")
                     self.___view_cam_button_color_event(nuc_number, "IDLE")
-                    # Update the camera status label
-                    self.right_bottom_frame_camera_status_result_label.configure(
-                        text="IDLE", text_color='red')
-                    self.right_bottom_frame_camera_resolution_result_label.configure(
-                        text='-', text_color='white')
-                    self.right_bottom_frame_camera_fps_result_label.configure(
-                        text='-', text_color='white')
+
             else:
                 rospy.loginfo(f"Viewing camera {nuc_number}")
                 try:
@@ -785,13 +762,7 @@ class NodeGUI(customtkinter.CTk):
                     self.___startnview_cam_button_color_event(nuc_number, "ACTIVE")
                     self.___view_cam_button_color_event(nuc_number, "ACTIVE")
                     self.___start_cam_button_color_event(nuc_number, "ACTIVE")
-                    # Update the camera status label
-                    self.right_bottom_frame_camera_status_result_label.configure(
-                        text="ACTIVE", text_color='yellow')
-                    self.right_bottom_frame_camera_resolution_result_label.configure(
-                        text=self.cam_resolution, text_color='white')
-                    self.right_bottom_frame_camera_fps_result_label.configure(
-                        text=self.cam_fps, text_color='white')
+
         else:
             try:
                 self._start_camera(nuc_number)
@@ -802,13 +773,7 @@ class NodeGUI(customtkinter.CTk):
                 self.___startnview_cam_button_color_event(nuc_number, "ACTIVE")
                 self.___view_cam_button_color_event(nuc_number, "ACTIVE")
                 self.___start_cam_button_color_event(nuc_number, "ACTIVE")
-                # Update the camera status label
-                self.right_bottom_frame_camera_status_result_label.configure(
-                    text="ACTIVE", text_color='yellow')
-                self.right_bottom_frame_camera_resolution_result_label.configure(
-                    text=self.cam_resolution, text_color='white')
-                self.right_bottom_frame_camera_fps_result_label.configure(
-                    text=self.cam_fps, text_color='white')
+
     def _view_cam_button_event(self, nuc_number: str) -> None:
         """Starts the camera view node"""
         if self.running_processes.get(f'sony_cam{nuc_number}_cam_driver') is None:
@@ -896,6 +861,20 @@ class NodeGUI(customtkinter.CTk):
         self.after(self.update_interval, self.update_camera_fps(nuc_number))
     # New methods for data collection
     def collect_data(self) -> None:
+        """Collects data from the three cameras and saves to a CSV file."""
+        # Update the experiment name and duration
+        if self.right_bottom_frame_exp_name_entry.get() is not None:
+            self.experiment_name = self.right_bottom_frame_exp_name_entry.get()
+        if self.right_bottom_frame_exp_duration_entry.get() is not None:
+            self.experiment_duration = int(self.right_bottom_frame_exp_duration_entry.get())
+        # File name for data collection
+        # save current time in cur_time from rospy and convert it to seconds
+        cur_time = rospy.get_time()
+        cur_time = datetime.datetime.fromtimestamp(cur_time).strftime('%Y-%m-%d_%H-%M-%S')
+        cwd = os.getcwd()
+        print('Current working directory:', cwd)
+        self.file_name = f"Data_{self.experiment_name}_{self.experiment_duration}s_{cur_time}.csv"
+        print(f"Saving in file: {self.file_name}")
         # Identify the running cameras
         running_cameras = []
         for i in range(1, 4):
@@ -916,8 +895,9 @@ class NodeGUI(customtkinter.CTk):
         else:
             print("All cameras are running.")
             print(f"{running_cameras[0]}, {running_cameras[1]} and {running_cameras[2]} are running.")
-        """Collects data from the three cameras and saves to a CSV file."""
-        rospy.loginfo(f"Collecting data for {self.experiment_duration} seconds")
+        rospy.loginfo(f"Collecting data for Experiment: {self.experiment_name} for {self.experiment_duration} seconds")
+        
+        
         # Create subscribers
         self.sub1 = message_filters.Subscriber('/sony_cam1_detect/fiducial_transforms', FiducialTransformArray)
         self.sub2 = message_filters.Subscriber('/sony_cam2_detect/fiducial_transforms', FiducialTransformArray)
@@ -965,7 +945,7 @@ class NodeGUI(customtkinter.CTk):
         rospy.loginfo("Stopping data collection")
 
         # Save data to CSV
-        with open('collected_data.csv', 'w', newline='') as csvfile:
+        with open(self.file_name, 'w', newline='') as csvfile:
             fieldnames = [
                 'time',
                 'cam1_fiducial_id', 'cam1_trans_x', 'cam1_trans_y', 'cam1_trans_z',
