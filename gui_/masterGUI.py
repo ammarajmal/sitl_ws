@@ -6,7 +6,12 @@
 import os
 import datetime
 import tkinter as tk
-import threading
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import correlate
+from matplotlib.ticker import MaxNLocator
+
 import customtkinter
 import subprocess
 import csv
@@ -123,20 +128,27 @@ class NodeGUI(customtkinter.CTk):
             self.right_bottom_frame, text="Record", fg_color=themes["green"], command=self.collect_data)
         self.right_bottom_frame_record_button.place(relx=0.5, rely=0.05 + (label_height+0.03) * 2, anchor="center")
         
+        self.right_bottom_frame_plot_button = customtkinter.CTkButton(
+            self.right_bottom_frame, text="Plot-NO", fg_color=themes["green"], command=(lambda: self.plot_data(False)))
+        self.right_bottom_frame_plot_button.place(relx=0.3, rely=0.05 + (label_height+0.03) * 3, anchor="center")
+        self.right_bottom_frame_plot_button = customtkinter.CTkButton(
+            self.right_bottom_frame, text="Plot-O", fg_color=themes["green"], command=lambda: self.plot_data(True))
+        self.right_bottom_frame_plot_button.place(relx=0.7, rely=0.05 + (label_height+0.03) * 3, anchor="center")
         
-        self.right_bottom_frame_camera_fps_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Camera FPS:", text_color=label_color)
-        self.right_bottom_frame_camera_fps_label.place(relx=0.1, rely=0.05 + label_height * 3)
-        self.right_bottom_frame_camera_fps_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="-", text_color=label_color)
-        self.right_bottom_frame_camera_fps_result_label.place(relx=0.6, rely=0.05 + label_height * 3)
+        
+        # self.right_bottom_frame_camera_fps_label = customtkinter.CTkLabel(
+        #     self.right_bottom_frame, text="Camera FPS:", text_color=label_color)
+        # self.right_bottom_frame_camera_fps_label.place(relx=0.1, rely=0.05 + label_height * 3)
+        # self.right_bottom_frame_camera_fps_result_label = customtkinter.CTkLabel(
+        #     self.right_bottom_frame, text="-", text_color=label_color)
+        # self.right_bottom_frame_camera_fps_result_label.place(relx=0.6, rely=0.05 + label_height * 3)
 
-        self.right_bottom_frame_camera_detect_status_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Detection Status:", text_color=label_color)
-        self.right_bottom_frame_camera_detect_status_label.place(relx=0.1, rely=0.05 + label_height * 4)
-        self.right_bottom_frame_camera_detect_status_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="IDLE", text_color='red')
-        self.right_bottom_frame_camera_detect_status_result_label.place(relx=0.6, rely=0.05 + label_height * 4)
+        # self.right_bottom_frame_camera_detect_status_label = customtkinter.CTkLabel(
+        #     self.right_bottom_frame, text="Detection Status:", text_color=label_color)
+        # self.right_bottom_frame_camera_detect_status_label.place(relx=0.1, rely=0.05 + label_height * 4)
+        # self.right_bottom_frame_camera_detect_status_result_label = customtkinter.CTkLabel(
+        #     self.right_bottom_frame, text="IDLE", text_color='red')
+        # self.right_bottom_frame_camera_detect_status_result_label.place(relx=0.6, rely=0.05 + label_height * 4)
 
         self.right_bottom_frame_camera_detect_rate_label = customtkinter.CTkLabel(
             self.right_bottom_frame, text="Detection Rate:", text_color=label_color)
@@ -222,6 +234,96 @@ class NodeGUI(customtkinter.CTk):
             font=customtkinter.CTkFont(size=20, weight="bold"))
         self.middle_center_frame_calib_update_label.place(
             relx=0.8, rely=0.75, anchor="center")
+    def plot_data(self, overlap) -> None:
+        """Plots the data"""
+        print(f"Experiment Name: {self.experiment_name}")
+        print(f"Experiment Duration: {self.experiment_duration}")
+        print(f"File Name: {self.file_name}")
+        
+        data = pd.read_csv(self.file_name)
+        # now get the cam1_trans_x,cam2_trans_x, and cam3_trans_x from the data
+        cam1_trans_x = data['cam1_trans_z']
+        cam2_trans_x = data['cam2_trans_z']
+        cam3_trans_x = data['cam3_trans_z']
+
+        # Aligning the data with zero by subtracting the first data point
+        cam1_trans_x_aligned = cam1_trans_x - cam1_trans_x.iloc[0]
+        cam2_trans_x_aligned = cam2_trans_x - cam2_trans_x.iloc[0]
+        cam3_trans_x_aligned = cam3_trans_x - cam3_trans_x.iloc[0]
+        if not overlap:
+            # Creating a figure with 4 subplots (1 row for comparison, 3 rows for individual cameras)
+            fig, axs = plt.subplots(4, 1, figsize=(20, 36))  # Increase the figure size for better clarity
+            # Main comparison plot
+            axs[0].plot(cam1_trans_x_aligned, label='Camera 1', color='red')
+            axs[0].plot(cam2_trans_x_aligned, label='Camera 2', color='orange')
+            axs[0].plot(cam3_trans_x_aligned, label='Camera 3', color='green')
+            axs[0].set_title(f'Displacement Comparison of Three Cameras - {self.experiment_name}')
+            axs[0].set_ylabel('Displacement (mm)')
+            axs[0].legend()
+            axs[0].grid(True, which='both', linestyle='--', color='gray')
+
+            # Individual camera plots
+            cameras = [cam1_trans_x_aligned, cam2_trans_x_aligned, cam3_trans_x_aligned]
+            colors = ['red', 'orange', 'green']
+            for i in range(3):
+                axs[i+1].plot(cameras[i], color=colors[i])
+                axs[i+1].set_title(f'Camera {i+1} Displacement')
+                axs[i+1].set_ylabel('Displacement (mm)')
+                axs[i+1].set_xlabel('Time (s)')
+                axs[i+1].grid(True, which='both', linestyle='--', color='gray')
+
+            # Adjust tick labels on y-axis to show millimeters and x-axis to show seconds
+            for ax in axs:
+                ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+                ax.set_yticklabels(['{:.2f}'.format(x * 1000) for x in ax.get_yticks()])
+                ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+                ax.set_xticklabels(['{:.0f}'.format(x/60) for x in ax.get_xticks()])
+                # INCREASE VERTICAL SPACE BETWEEN SUBPLOTS
+            plt.subplots_adjust(hspace=0.5)
+            # Save the figure
+            # change the csv extension from .csv to .png
+            file_name_png = self.file_name.replace('.csv', '.png')
+            fig.savefig(file_name_png)
+            # plt.tight_layout()
+            plt.show()
+        else:
+            # Overlapping plot
+            # Plotting the comparisons with the specified colors and aligned LDV data for all three cameras
+            fig, ax = plt.subplots(figsize=(14, 8))
+
+            ax.plot(cam1_trans_x_aligned, label='Camera 1', color='red')
+            ax.plot(cam2_trans_x_aligned, label='Camera 2', color='orange')
+            ax.plot(cam3_trans_x_aligned, label='Camera 3', color='green')
+
+
+            # Set y-axis to show millimeters
+            ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+            ax.set_yticklabels(['{:.2f}'.format(x * 1000) for x in ax.get_yticks()])
+
+            # Set x-axis to show seconds
+            ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+            ax.set_xticklabels(['{:.0f}'.format(x/60) for x in ax.get_xticks()])
+
+
+            ax.set_ylabel('Displacement (mm)')
+            ax.set_xlabel('Time (s)')
+            ax.legend()
+
+            ax.grid(True, which='both', linestyle='--', color='gray')
+            ax.set_title('Displacement Comparison of Three Cameras')
+
+
+            plt.tight_layout()
+
+            ax.grid(True, which='both', linestyle='--', color='gray')
+            ax.set_title(f'Displacement Comparison of Three Cameras - {self.experiment_name}')
+            plt.show()
+            file_name_png = self.file_name.replace('.csv', '_0_.png')
+            fig.savefig(file_name_png)
+
+
+
+        
     def _update_calib_params(self) -> None:
         """ Updates the calibration parameters """
         square_size_entry = self.middle_center_frame_square_size_entry.get()
@@ -873,7 +975,10 @@ class NodeGUI(customtkinter.CTk):
         cur_time = datetime.datetime.fromtimestamp(cur_time).strftime('%Y-%m-%d_%H-%M-%S')
         cwd = os.getcwd()
         print('Current working directory:', cwd)
+        cwd = os.path.join(cwd, 'data/data analysis/')
+        
         self.file_name = f"Data_{self.experiment_name}_{self.experiment_duration}s_{cur_time}.csv"
+        self.file_name = os.path.join(cwd, self.file_name)
         print(f"Saving in file: {self.file_name}")
         # Identify the running cameras
         running_cameras = []
@@ -1019,6 +1124,7 @@ def get_ros_topic_frequency(topic):
         return None
 def check_cpu_load():
     return psutil.cpu_percent(interval=1)
+
 if __name__ == "__main__":
     rospy.init_node("masterGUI", anonymous=False)
     root = NodeGUI()
