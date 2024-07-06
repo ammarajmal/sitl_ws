@@ -7,9 +7,8 @@ import os
 import datetime
 import tkinter as tk
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-from scipy.signal import correlate
+
 from matplotlib.ticker import MaxNLocator
 
 import customtkinter
@@ -51,6 +50,9 @@ class NodeGUI(customtkinter.CTk):
         self.experiment_duration = 60 # in seconds
         self.experiment_name = "Exp 1"
         self.file_name = "data.csv"
+        self.first_cam = None
+        self.second_cam = None
+        self.third_cam = None
         self.exp_name_var = tk.StringVar(self, self.experiment_name)
         self.exp_dur_var = tk.StringVar(self, self.experiment_duration)
         self.package = 'dslr_cam'
@@ -129,12 +131,33 @@ class NodeGUI(customtkinter.CTk):
         self.right_bottom_frame_record_button.place(relx=0.5, rely=0.05 + (label_height+0.03) * 2, anchor="center")
         
         self.right_bottom_frame_plot_button = customtkinter.CTkButton(
-            self.right_bottom_frame, text="Plot-NO", fg_color=themes["green"], command=(lambda: self.plot_data(False)))
-        self.right_bottom_frame_plot_button.place(relx=0.3, rely=0.05 + (label_height+0.03) * 3, anchor="center")
+            self.right_bottom_frame, text="3 Plot-NO", fg_color=themes["blue"][1], command=(lambda: self.plot_data(False)))
+        self.right_bottom_frame_plot_button.place(relx=0.3, rely=0.05 + (label_height+0.03) * 3, anchor="center", relwidth=0.3)
         self.right_bottom_frame_plot_button = customtkinter.CTkButton(
-            self.right_bottom_frame, text="Plot-O", fg_color=themes["green"], command=lambda: self.plot_data(True))
-        self.right_bottom_frame_plot_button.place(relx=0.7, rely=0.05 + (label_height+0.03) * 3, anchor="center")
+            self.right_bottom_frame, text="3 Plot-O", fg_color=themes['blue'][1], command=lambda: self.plot_data(True))
+        self.right_bottom_frame_plot_button.place(relx=0.7, rely=0.05 + (label_height+0.03) * 3, anchor="center", relwidth=0.3)
         
+        self.right_bottom_cam1_button = customtkinter.CTkButton(
+            self.right_bottom_frame, text="Cam1z", fg_color=themes[COLOR_SELECT][1],
+            command=lambda: self.plot_single_data(1, 'z'))
+        self.right_bottom_cam2_button = customtkinter.CTkButton(
+            self.right_bottom_frame, text="Cam2z", fg_color=themes[COLOR_SELECT][1],
+            command=lambda: self.plot_single_data(2, 'z'))
+        self.right_bottom_cam3_button = customtkinter.CTkButton(
+            self.right_bottom_frame, text="Cam3z", fg_color=themes[COLOR_SELECT][1],
+            command=lambda: self.plot_single_data(3, 'z'))
+        self.right_bottom_cam1_button.place(relx=0.18, rely=0.05 + (label_height+0.03) * 4, anchor="center", relwidth=0.3)
+        self.right_bottom_cam2_button.place(relx=0.5, rely=0.05 + (label_height+0.03) * 4, anchor="center", relwidth=0.3)
+        self.right_bottom_cam3_button.place(relx=0.82, rely=0.05 + (label_height+0.03) * 4, anchor="center", relwidth=0.3)
+    def _record_camera(self, cam_number) -> None:
+        """ Records the camera data """
+        if cam_number == 1:
+            self.first_cam = 'cam1'
+        elif cam_number == 2:
+            self.second_cam = 'cam2'
+        elif cam_number == 3:
+            self.third_cam = 'cam3'
+        print(f"Recording camera {cam_number} data")
         
         # self.right_bottom_frame_camera_fps_label = customtkinter.CTkLabel(
         #     self.right_bottom_frame, text="Camera FPS:", text_color=label_color)
@@ -150,19 +173,19 @@ class NodeGUI(customtkinter.CTk):
         #     self.right_bottom_frame, text="IDLE", text_color='red')
         # self.right_bottom_frame_camera_detect_status_result_label.place(relx=0.6, rely=0.05 + label_height * 4)
 
-        self.right_bottom_frame_camera_detect_rate_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Detection Rate:", text_color=label_color)
-        self.right_bottom_frame_camera_detect_rate_label.place(relx=0.1, rely=0.05 + label_height * 5)
-        self.right_bottom_frame_camera_detect_rate_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="-", text_color=label_color)
-        self.right_bottom_frame_camera_detect_rate_result_label.place(relx=0.6, rely=0.05 + label_height * 5)
+        # self.right_bottom_frame_camera_detect_rate_label = customtkinter.CTkLabel(
+        #     self.right_bottom_frame, text="Detection Rate:", text_color=label_color)
+        # self.right_bottom_frame_camera_detect_rate_label.place(relx=0.1, rely=0.05 + label_height * 5)
+        # self.right_bottom_frame_camera_detect_rate_result_label = customtkinter.CTkLabel(
+        #     self.right_bottom_frame, text="-", text_color=label_color)
+        # self.right_bottom_frame_camera_detect_rate_result_label.place(relx=0.6, rely=0.05 + label_height * 5)
 
-        self.right_bottom_frame_camera_detect_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="Detection Result:", text_color=label_color)
-        self.right_bottom_frame_camera_detect_result_label.place(relx=0.1, rely=0.05 + label_height * 6)
-        self.right_bottom_frame_camera_detect_result_result_label = customtkinter.CTkLabel(
-            self.right_bottom_frame, text="None", text_color=label_color)
-        self.right_bottom_frame_camera_detect_result_result_label.place(relx=0.6, rely=0.05 + label_height * 6)
+        # self.right_bottom_frame_camera_detect_result_label = customtkinter.CTkLabel(
+        #     self.right_bottom_frame, text="Detection Result:", text_color=label_color)
+        # self.right_bottom_frame_camera_detect_result_label.place(relx=0.1, rely=0.05 + label_height * 6)
+        # self.right_bottom_frame_camera_detect_result_result_label = customtkinter.CTkLabel(
+        #     self.right_bottom_frame, text="None", text_color=label_color)
+        # self.right_bottom_frame_camera_detect_result_result_label.place(relx=0.6, rely=0.05 + label_height * 6)
     def create_right_top_frame(self) -> None:
         """ SYSTEM IDENTIFICATION """
         self.right_top_frame = customtkinter.CTkFrame(
@@ -320,10 +343,48 @@ class NodeGUI(customtkinter.CTk):
             plt.show()
             file_name_png = self.file_name.replace('.csv', '_0_.png')
             fig.savefig(file_name_png)
-
-
-
+    def plot_single_data(self, num, dim) -> None:
+        """Plots the data"""
+        print(f"Experiment Name: {self.experiment_name}")
+        print(f"Experiment Duration: {self.experiment_duration}")
+        print(f"File Name: {self.file_name}")
         
+        data = pd.read_csv(self.file_name)
+        # now get the cam1_trans_x,cam2_trans_x, and cam3_trans_x from the data
+        cam_trans = data[f'cam{num}_trans_{dim}']
+        # cam2_trans = data['cam2_trans_{dim}']
+        # cam3_trans = data['cam3_trans_{dim}']
+
+        # Aligning the data with zero by subtracting the first data point
+        cam_trans_aligned = cam_trans - cam_trans.iloc[0]
+        fig, ax = plt.subplots(figsize=(14, 8))
+
+        ax.plot(cam_trans_aligned, label='Camera 1', color='red')
+
+        # Set y-axis to show millimeters
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.set_yticklabels(['{:.2f}'.format(x * 1000) for x in ax.get_yticks()])
+
+        # Set x-axis to show seconds
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.set_xticklabels(['{:.0f}'.format(x/60) for x in ax.get_xticks()])
+
+
+        ax.set_ylabel('Displacement (mm)')
+        ax.set_xlabel('Time (s)')
+        ax.legend()
+
+        ax.grid(True, which='both', linestyle='--', color='gray')
+        ax.set_title('Displacement Comparison of Three Cameras')
+
+
+        plt.tight_layout()
+
+        ax.grid(True, which='both', linestyle='--', color='gray')
+        ax.set_title(f'Displacement Camera {num} - {self.experiment_name}')
+        plt.show()
+        file_name_png = self.file_name.replace('.csv', '_0_.png')
+        fig.savefig(file_name_png)
     def _update_calib_params(self) -> None:
         """ Updates the calibration parameters """
         square_size_entry = self.middle_center_frame_square_size_entry.get()
@@ -461,7 +522,7 @@ class NodeGUI(customtkinter.CTk):
         self.create_left_center_frame()
         self.create_left_bottom_frame()
         self.create_left_bottom2_frame()
-        self.create_left_record_bottom()
+        
     def create_left_top_frame(self) -> None:
         """Start Camera and Detection"""
         self.left_top_frame = customtkinter.CTkFrame(self.left_frame)
@@ -648,10 +709,6 @@ class NodeGUI(customtkinter.CTk):
         """Creates the exit button of the left frame"""
         self.left_exit_button = customtkinter.CTkButton(self.middle_frame, text="Exit Program", fg_color=themes["red"], command=self.destroy_routine)
         self.left_exit_button.place(relx=0.5, rely=0.90, anchor="center")
-    def create_left_record_bottom(self) -> None:
-        """Creates the record button of the left frame"""
-        self.left_record_button = customtkinter.CTkButton(self.left_frame, text="Record", fg_color=themes["green"], command=self.collect_data)
-        self.left_record_button.place(relx=0.5, rely=0.90, anchor="center")
     def _detect_marker(self, nuc_number) -> None:
         rospy.loginfo(f"Starting detection for camera {nuc_number}")
         rospy.loginfo(f"Marker Dimension: {self.marker_dim}")
@@ -974,12 +1031,12 @@ class NodeGUI(customtkinter.CTk):
         cur_time = rospy.get_time()
         cur_time = datetime.datetime.fromtimestamp(cur_time).strftime('%Y-%m-%d_%H-%M-%S')
         cwd = os.getcwd()
-        print('Current working directory:', cwd)
+        # print('Current working directory:', cwd)
         cwd = os.path.join(cwd, 'data/data analysis/')
         
         self.file_name = f"Data_{self.experiment_name}_{self.experiment_duration}s_{cur_time}.csv"
         self.file_name = os.path.join(cwd, self.file_name)
-        print(f"Saving in file: {self.file_name}")
+        # print(f"Saving in file: {self.file_name}")
         # Identify the running cameras
         running_cameras = []
         for i in range(1, 4):
@@ -992,34 +1049,44 @@ class NodeGUI(customtkinter.CTk):
         if len(running_cameras) == 1:
             print("Exactly one camera is running.")
             print(f"{running_cameras[0]} is running.")
+            return
             
-        elif len(running_cameras) == 2:
+        if len(running_cameras) == 2:
             print("Exactly two cameras are running.")
-            print(f"{running_cameras[0]} and {running_cameras[1]} are running.")
-            
-        else:
+            self.first_cam = running_cameras[0].split('_')[-1]
+            self.second_cam = running_cameras[1].split('_')[-1]
+            print(f"{self.first_cam} and {self.second_cam} are running.")
+            rospy.loginfo(f"Collecting data for Experiment: {self.experiment_name} for {self.experiment_duration} seconds")
+            # Create subscribers
+            self.sub1 = message_filters.Subscriber(f'/{self.first_cam}_detect/fiducial_transforms', FiducialTransformArray)
+            self.sub2 = message_filters.Subscriber(f'/{self.second_cam}_detect/fiducial_transforms', FiducialTransformArray)
+            # Approximate time synchronizer
+            self.ats = message_filters.ApproximateTimeSynchronizer([self.sub1, self.sub2], queue_size=10, slop=0.1)
+            self.ats.registerCallback(self.data_callback2)
+            # Set the data collection flag to active and start the timer
+            self.data_collection_active = True
+            rospy.Timer(rospy.Duration(self.experiment_duration), self.stop_data_collection2, oneshot=True)
+            # Create a list to store data
+            self.collected_data = []
+        if len(running_cameras) == 3:
             print("All cameras are running.")
             print(f"{running_cameras[0]}, {running_cameras[1]} and {running_cameras[2]} are running.")
-        rospy.loginfo(f"Collecting data for Experiment: {self.experiment_name} for {self.experiment_duration} seconds")
-        
-        
-        # Create subscribers
-        self.sub1 = message_filters.Subscriber('/sony_cam1_detect/fiducial_transforms', FiducialTransformArray)
-        self.sub2 = message_filters.Subscriber('/sony_cam2_detect/fiducial_transforms', FiducialTransformArray)
-        self.sub3 = message_filters.Subscriber('/sony_cam3_detect/fiducial_transforms', FiducialTransformArray)
-        # Approximate time synchronizer
-        self.ats = message_filters.ApproximateTimeSynchronizer([self.sub1, self.sub2, self.sub3], queue_size=10, slop=0.1)
-        self.ats.registerCallback(self.data_callback)
-        # Set the data collection flag to active and start the timer
-        self.data_collection_active = True
-        rospy.Timer(rospy.Duration(self.experiment_duration), self.stop_data_collection, oneshot=True)
-        # Create a list to store data
-        self.collected_data = []
+            rospy.loginfo(f"Collecting data for Experiment: {self.experiment_name} for {self.experiment_duration} seconds")
+            # Create subscribers
+            self.sub1 = message_filters.Subscriber('/sony_cam1_detect/fiducial_transforms', FiducialTransformArray)
+            self.sub2 = message_filters.Subscriber('/sony_cam2_detect/fiducial_transforms', FiducialTransformArray)
+            self.sub3 = message_filters.Subscriber('/sony_cam3_detect/fiducial_transforms', FiducialTransformArray)
+            # Approximate time synchronizer
+            self.ats = message_filters.ApproximateTimeSynchronizer([self.sub1, self.sub2, self.sub3], queue_size=10, slop=0.1)
+            self.ats.registerCallback(self.data_callback3)
+            # Set the data collection flag to active and start the timer
+            self.data_collection_active = True
+            rospy.Timer(rospy.Duration(self.experiment_duration), self.stop_data_collection3, oneshot=True)
+            # Create a list to store data
+            self.collected_data = []
 
-    def data_callback(self, msg1, msg2, msg3):
+    def data_callback3(self, msg1, msg2, msg3):
         """Callback function to handle synchronized data from the three cameras."""
-        if not self.data_collection_active:
-            return
         if not self.data_collection_active:
             return
         timestamp = rospy.Time.now()
@@ -1029,25 +1096,25 @@ class NodeGUI(customtkinter.CTk):
             'cam2': msg2,
             'cam3': msg3
         })
-        # print(f"Data collected at {timestamp.to_sec()}")
+    def data_callback2(self, msg1, msg2):
+        '''Callback function to handle synchronized data from the two cameras.'''
+        if not self.data_collection_active:
+            return
+        timestamp = rospy.Time.now()
+        self.collected_data.append({
+            'time': timestamp.to_sec(),
+            'cam1': msg1,
+            'cam2': msg2
+        })
 
-    def stop_data_collection(self, event):
-        """Stops data collection and saves data to a CSV file."""
-        rospy.loginfo("Stopping data collection")
+    def stop_data_collection3(self, event):
+        """THREE CAMS:Stops data collection and saves data to a CSV file."""
+        rospy.loginfo("THREE CAMS:Stopping data collection")
         self.data_collection_active = False
-
         # Unregister the subscribers to stop receiving messages
         self.sub1.unregister()
         self.sub2.unregister()
         self.sub3.unregister()
-        rospy.loginfo("Stopping data collection")
-        self.data_collection_active = False
-
-        # Unregister the subscribers to stop receiving messages
-        self.sub1.unregister()
-        self.sub2.unregister()
-        self.sub3.unregister()
-        rospy.loginfo("Stopping data collection")
 
         # Save data to CSV
         with open(self.file_name, 'w', newline='') as csvfile:
@@ -1071,7 +1138,46 @@ class NodeGUI(customtkinter.CTk):
                 writer.writerow(row)
 
         rospy.loginfo("Data saved to collected_data.csv")
+    def stop_data_collection2(self, event):
+        """Two CAMS: Stops data collection and saves data to a CSV file."""
+        rospy.loginfo("TwO CAMS:Stopping data collection")
+        self.data_collection_active = False
+        # Unregister the subscribers to stop receiving messages
+        self.sub1.unregister()
+        self.sub2.unregister()
+        
 
+        # Save data to CSV
+        with open(self.file_name, 'w', newline='') as csvfile:
+            fieldnames = [
+                'time',
+                f'{self.first_cam}_fiducial_id',
+                f'{self.first_cam}_trans_x',
+                f'{self.first_cam}_trans_y',
+                f'{self.first_cam}_trans_z',
+                f'{self.first_cam}_rot_x',
+                f'{self.first_cam}_rot_y',
+                f'{self.first_cam}_rot_z',
+                f'{self.first_cam}_rot_w',
+                f'{self.second_cam}_fiducial_id',
+                f'{self.second_cam}_trans_x',
+                f'{self.second_cam}_trans_y',
+                f'{self.second_cam}_trans_z',
+                f'{self.second_cam}_rot_x',
+                f'{self.second_cam}_rot_y',
+                f'{self.second_cam}_rot_z',
+                f'{self.second_cam}_rot_w'
+            ]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+            for data in self.collected_data:
+                row = {'time': data['time']}
+                self.add_fiducial_data_to_row(data[f'{self.first_cam}'], f'{self.first_cam}', row)
+                self.add_fiducial_data_to_row(data[f'{self.second_cam}'], f'{self.second_cam}', row)
+                writer.writerow(row)
+
+        rospy.loginfo(f"Data saved to {self.file_name}.csv")
     def add_fiducial_data_to_row(self, msg, cam_prefix, row):
         """Adds fiducial transform data to a CSV row."""
         if msg.transforms:
@@ -1093,11 +1199,72 @@ class NodeGUI(customtkinter.CTk):
             row[f'{cam_prefix}_rot_y'] = ''
             row[f'{cam_prefix}_rot_z'] = ''
             row[f'{cam_prefix}_rot_w'] = ''
+    def single_record_data(self, cam):
+        """Collects data from a single camera and saves to a CSV file."""
+        # checking if the camera is recording data
+        if self.running_processes.get(f'sony_cam{cam}_detect_driver') is None:
+            print(f"Camera {cam} is not running, Please start the camera first")
+            return
+        rospy.loginfo(f"Collecting data for Experiment: {self.experiment_name} for {self.experiment_duration} seconds")
+        # Update the experiment name and duration
+        if self.right_bottom_frame_exp_name_entry.get() is not None:
+            self.experiment_name = self.right_bottom_frame_exp_name_entry.get()
+        if self.right_bottom_frame_exp_duration_entry.get() is not None:
+            self.experiment_duration = int(self.right_bottom_frame_exp_duration_entry.get())
+        # File name for data collection
+        # save current time in cur_time from rospy and convert it to seconds
+        cur_time = rospy.get_time()
+        cur_time = datetime.datetime.fromtimestamp(cur_time).strftime('%Y-%m-%d_%H-%M-%S')
+        cwd = os.getcwd()
+        # print('Current working directory:', cwd)
+        cwd = os.path.join(cwd, 'data/data analysis/')
+        
+        self.file_name = f"Data_{self.experiment_name}_{self.experiment_duration}s_{cur_time}.csv"
+        self.file_name = os.path.join(cwd, self.file_name)
+        # Create subscribers
+        self.sub1 = message_filters.Subscriber(f'/sony_cam{cam}_detect/fiducial_transforms', FiducialTransformArray)
+        
+        # now recording the fiducial data into the csv file
+        self.collected_data = []
+        self.data_collection_active = True
+        rospy.Timer(rospy.Duration(self.experiment_duration), self.stop_single_data_collection, oneshot=True)
+        self.sub1.registerCallback(self.single_data_callback)
+    def single_data_callback(self, msg):
+        """Callback function to handle data from a single camera."""
+        if not self.data_collection_active:
+            return
+        timestamp = rospy.Time.now()
+        self.collected_data.append({
+            'time': timestamp.to_sec(),
+            'cam1': msg
+        })
+    def stop_single_data_collection(self, event):
+        """Stops data collection and saves data to a CSV file."""
+        rospy.loginfo("Stopping data collection")
+        self.data_collection_active = False
+        # Unregister the subscribers to stop receiving messages
+        self.sub1.unregister()
+        # Save data to CSV
+        with open(self.file_name, 'w', newline='') as csvfile:
+            fieldnames = [
+                'time',
+                'cam1_fiducial_id', 'cam1_trans_x', 'cam1_trans_y', 'cam1_trans_z',
+                'cam1_rot_x', 'cam1_rot_y', 'cam1_rot_z', 'cam1_rot_w'
+            ]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for data in self.collected_data:
+                row = {'time': data['time']}
+                self.add_fiducial_data_to_row(data['cam1'], 'cam1', row)
+                writer.writerow(row)
+        rospy.loginfo(f"Data saved to {self.file_name}.csv")
+        
 
-    def format_fiducial_data(self, msg):
-        """Formats FiducialTransformArray message for CSV."""
-        return "; ".join([f"time: {msg.header.stamp.to_sec()}, id: {tf.fiducial_id}, trans: ({tf.transform.translation.x}, {tf.transform.translation.y}, {tf.transform.translation.z}), rot: ({tf.transform.rotation.x}, {tf.transform.rotation.y}, {tf.transform.rotation.z}, {tf.transform.rotation.w})"
-                          for tf in msg.transforms])
+
+    # def format_fiducial_data(self, msg):
+    #     """Formats FiducialTransformArray message for CSV."""
+    #     return "; ".join([f"time: {msg.header.stamp.to_sec()}, id: {tf.fiducial_id}, trans: ({tf.transform.translation.x}, {tf.transform.translation.y}, {tf.transform.translation.z}), rot: ({tf.transform.rotation.x}, {tf.transform.rotation.y}, {tf.transform.rotation.z}, {tf.transform.rotation.w})"
+    #                       for tf in msg.transforms])
 def get_ros_topic_frequency(topic):
     """Get the frequency of a ROS topic using 'rostopic hz' command."""
     process = subprocess.Popen(['rostopic', 'hz', topic], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
