@@ -5,7 +5,7 @@ from scipy.signal import correlate
 from matplotlib.ticker import MaxNLocator
 
 # Load the camera data from the uploaded CSV file
-test_name = 'Beam Test 8i'
+test_name = 'Beam Test 7'
 file_path = 'Data_Exp 7_60s_2024-06-26_20-30-00.csv'
 data = pd.read_csv(file_path)
 # now get the cam1_trans_x,cam2_trans_x, and cam3_trans_x from the data
