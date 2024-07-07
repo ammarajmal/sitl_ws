@@ -11,5 +11,4 @@
 	branch = noetic
 [submodule "src/fiducials"]
 	path = src/fiducials
-	url =https://github.com/ammarajmal/fiducials
-
+	url = https://github.com/ammarajmal/fiducials
