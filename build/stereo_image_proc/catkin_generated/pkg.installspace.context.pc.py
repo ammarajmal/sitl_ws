@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "${prefix}/include".split(';') if "${prefix}/i
 PROJECT_CATKIN_DEPENDS = "image_geometry;image_proc;sensor_msgs;stereo_msgs".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "-lstereo_image_proc".split(';') if "-lstereo_image_proc" != "" else []
 PROJECT_NAME = "stereo_image_proc"
-PROJECT_SPACE_DIR = "/home/sitl1/sitl_ws/install"
+PROJECT_SPACE_DIR = "/home/ammar/sitl_ws/install"
 PROJECT_VERSION = "1.17.0"

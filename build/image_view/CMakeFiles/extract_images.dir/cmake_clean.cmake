@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/image_view/lib/image_view/extract_images"
-  "/home/sitl1/sitl_ws/devel/.private/image_view/lib/image_view/extract_images.pdb"
+  "/home/ammar/sitl_ws/devel/.private/image_view/lib/image_view/extract_images"
+  "/home/ammar/sitl_ws/devel/.private/image_view/lib/image_view/extract_images.pdb"
   "CMakeFiles/extract_images.dir/src/nodes/extract_images.cpp.o"
 )
 

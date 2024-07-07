@@ -1,4 +1,4 @@
-prefix=/home/sitl1/sitl_ws/install
+prefix=/home/ammar/sitl_ws/install
 
 Name: depth_image_proc
 Description: Description of depth_image_proc

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/sitl1/sitl_ws/devel/.private/vision_msgs/include/vision_msgs/BoundingBox2D.h
+/home/ammar/sitl_ws/devel/.private/vision_msgs/include/vision_msgs/BoundingBox2D.h
 string
 -
 vector
@@ -24,7 +24,7 @@ ros/message_operations.h
 geometry_msgs/Pose2D.h
 -
 
-/home/sitl1/sitl_ws/devel/.private/vision_msgs/include/vision_msgs/Detection2D.h
+/home/ammar/sitl_ws/devel/.private/vision_msgs/include/vision_msgs/Detection2D.h
 string
 -
 vector
@@ -48,7 +48,7 @@ vision_msgs/BoundingBox2D.h
 sensor_msgs/Image.h
 -
 
-/home/sitl1/sitl_ws/devel/.private/vision_msgs/include/vision_msgs/Detection2DArray.h
+/home/ammar/sitl_ws/devel/.private/vision_msgs/include/vision_msgs/Detection2DArray.h
 string
 -
 vector
@@ -68,7 +68,7 @@ std_msgs/Header.h
 vision_msgs/Detection2D.h
 -
 
-/home/sitl1/sitl_ws/devel/.private/vision_msgs/include/vision_msgs/ObjectHypothesisWithPose.h
+/home/ammar/sitl_ws/devel/.private/vision_msgs/include/vision_msgs/ObjectHypothesisWithPose.h
 string
 -
 vector
@@ -86,99 +86,99 @@ ros/message_operations.h
 geometry_msgs/PoseWithCovariance.h
 -
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/Decoder.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Decoder.h
 vector
 -
 bitset
 -
 stag/MarkerIDs.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/MarkerIDs.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/MarkerIDs.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/Drawer.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Drawer.h
 string
 -
 opencv2/opencv.hpp
 -
 stag/ED/EDLines.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EDLines.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EDLines.h
 stag/ED/EdgeMap.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EdgeMap.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EdgeMap.h
 stag/QuadDetector.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/QuadDetector.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/QuadDetector.h
 stag/Marker.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EDLines.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EDLines.h
 memory.h
 -
 stag/ED/EdgeMap.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
 stag/ED/LineSegment.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/LineSegment.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/LineSegment.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EdgeMap.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EdgeMap.h
 memory.h
 -
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/ED/LineSegment.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/LineSegment.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/EDInterface.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/EDInterface.h
 opencv2/opencv.hpp
 -
 stag/ED/EDLines.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EDLines.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EDLines.h
 stag/ED/EdgeMap.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EdgeMap.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EdgeMap.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/Marker.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Marker.h
 stag/Quad.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Quad.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Quad.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/MarkerIDs.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/MarkerIDs.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/PoseRefiner.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/PoseRefiner.h
 stag/EDInterface.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
 stag/Marker.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
 stag/EDInterface.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/Quad.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Quad.h
 vector
 -
 opencv2/opencv.hpp
 -
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/QuadDetector.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/QuadDetector.h
 vector
 -
 stag/EDInterface.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
 stag/Quad.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Quad.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Quad.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/Stag.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Stag.h
 stag/EDInterface.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
 stag/QuadDetector.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/QuadDetector.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/QuadDetector.h
 stag/Drawer.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Drawer.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Drawer.h
 stag/Marker.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
 stag/Decoder.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Decoder.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Decoder.h
 stag/PoseRefiner.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag/stag/PoseRefiner.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/PoseRefiner.h
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/common.hpp
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/common.hpp
 vector
 -
 opencv2/opencv.hpp
 -
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/instrument.hpp
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/instrument.hpp
 chrono
 -
 numeric
@@ -190,43 +190,43 @@ algorithm
 iostream
 -
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/stag_node.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/stag_node.h
 ros/ros.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/ros/ros.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/ros/ros.h
 cv_bridge/cv_bridge.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/cv_bridge/cv_bridge.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/cv_bridge/cv_bridge.h
 image_transport/image_transport.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/image_transport/image_transport.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/image_transport/image_transport.h
 camera_info_manager/camera_info_manager.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/camera_info_manager/camera_info_manager.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/camera_info_manager/camera_info_manager.h
 sensor_msgs/image_encodings.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/sensor_msgs/image_encodings.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/sensor_msgs/image_encodings.h
 geometry_msgs/PoseStamped.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/geometry_msgs/PoseStamped.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/geometry_msgs/PoseStamped.h
 vision_msgs/Detection2D.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/vision_msgs/Detection2D.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/vision_msgs/Detection2D.h
 stag/Stag.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/stag/Stag.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/stag/Stag.h
 stag_ros/structures.hpp
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/stag_ros/structures.hpp
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/stag_ros/structures.hpp
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/structures.hpp
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/structures.hpp
 opencv2/core/types.hpp
 -
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/include/stag_ros/utility.hpp
+/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/utility.hpp
 
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag_detect.cpp
+/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag_detect.cpp
 stag_ros/instrument.hpp
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag_ros/instrument.hpp
+/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag_ros/instrument.hpp
 stag_ros/stag_node.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag_ros/stag_node.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag_ros/stag_node.h
 stag_ros/utility.hpp
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag_ros/utility.hpp
+/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag_ros/utility.hpp
 stag/Marker.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag/Marker.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag_ros/stag/Marker.h
 tf/tf.h
-/home/sitl1/sitl_ws/src/fiducials/stag_detect/src/stag_ros/tf/tf.h
+/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag_ros/tf/tf.h
 tf/transform_datatypes.h
 -
 tf/transform_broadcaster.h

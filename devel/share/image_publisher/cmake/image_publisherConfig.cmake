@@ -1,1 +1,1 @@
-/home/sitl1/sitl_ws/devel/.private/image_publisher/share/image_publisher/cmake/image_publisherConfig.cmake
+/home/ammar/sitl_ws/devel/.private/image_publisher/share/image_publisher/cmake/image_publisherConfig.cmake

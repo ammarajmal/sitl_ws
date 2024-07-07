@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fiducials/fiducial_slam
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/fiducials/fiducial_slam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/fiducial_slam
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/fiducial_slam
 
 # Utility rule file for sensor_msgs_generate_messages_py.
 
@@ -67,6 +67,6 @@ CMakeFiles/sensor_msgs_generate_messages_py.dir/clean:
 .PHONY : CMakeFiles/sensor_msgs_generate_messages_py.dir/clean
 
 CMakeFiles/sensor_msgs_generate_messages_py.dir/depend:
-	cd /home/sitl1/sitl_ws/build/fiducial_slam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fiducials/fiducial_slam /home/sitl1/sitl_ws/src/fiducials/fiducial_slam /home/sitl1/sitl_ws/build/fiducial_slam /home/sitl1/sitl_ws/build/fiducial_slam /home/sitl1/sitl_ws/build/fiducial_slam/CMakeFiles/sensor_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/fiducial_slam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/fiducials/fiducial_slam /home/ammar/sitl_ws/src/fiducials/fiducial_slam /home/ammar/sitl_ws/build/fiducial_slam /home/ammar/sitl_ws/build/fiducial_slam /home/ammar/sitl_ws/build/fiducial_slam/CMakeFiles/sensor_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/sensor_msgs_generate_messages_py.dir/depend
 

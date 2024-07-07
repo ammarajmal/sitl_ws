@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/image_view/lib/image_view/disparity_view"
-  "/home/sitl1/sitl_ws/devel/.private/image_view/lib/image_view/disparity_view.pdb"
+  "/home/ammar/sitl_ws/devel/.private/image_view/lib/image_view/disparity_view"
+  "/home/ammar/sitl_ws/devel/.private/image_view/lib/image_view/disparity_view.pdb"
   "CMakeFiles/disparity_view.dir/src/nodes/disparity_view.cpp.o"
 )
 

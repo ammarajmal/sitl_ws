@@ -7,8 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/sitl1/sitl_ws/devel/.private/dslr_cam:$CMAKE_PREFIX_PATH"
-export PWD='/home/sitl1/sitl_ws/build/dslr_cam'
-export PYTHONPATH="/home/sitl1/sitl_ws/devel/lib/python3/dist-packages:$PYTHONPATH"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/sitl1/sitl_ws/devel/.private/dslr_cam/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/sitl1/sitl_ws/src/dslr_cam:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/ammar/sitl_ws/devel/.private/dslr_cam:$CMAKE_PREFIX_PATH"
+export PWD='/home/ammar/sitl_ws/build/dslr_cam'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/ammar/sitl_ws/devel/.private/dslr_cam/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/ammar/sitl_ws/src/dslr_cam:$ROS_PACKAGE_PATH"

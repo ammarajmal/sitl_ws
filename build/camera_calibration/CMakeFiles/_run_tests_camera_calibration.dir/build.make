@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/image_pipeline/camera_calibration
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/camera_calibration
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/camera_calibration
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/camera_calibration
 
 # Utility rule file for _run_tests_camera_calibration.
 
@@ -67,6 +67,6 @@ CMakeFiles/_run_tests_camera_calibration.dir/clean:
 .PHONY : CMakeFiles/_run_tests_camera_calibration.dir/clean
 
 CMakeFiles/_run_tests_camera_calibration.dir/depend:
-	cd /home/sitl1/sitl_ws/build/camera_calibration && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/image_pipeline/camera_calibration /home/sitl1/sitl_ws/src/image_pipeline/camera_calibration /home/sitl1/sitl_ws/build/camera_calibration /home/sitl1/sitl_ws/build/camera_calibration /home/sitl1/sitl_ws/build/camera_calibration/CMakeFiles/_run_tests_camera_calibration.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/camera_calibration && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/camera_calibration /home/ammar/sitl_ws/src/image_pipeline/camera_calibration /home/ammar/sitl_ws/build/camera_calibration /home/ammar/sitl_ws/build/camera_calibration /home/ammar/sitl_ws/build/camera_calibration/CMakeFiles/_run_tests_camera_calibration.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/_run_tests_camera_calibration.dir/depend
 

@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/image_pipeline/depth_image_proc
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/depth_image_proc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/depth_image_proc
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/depth_image_proc
 
 # Utility rule file for roscpp_generate_messages_lisp.
 
@@ -67,6 +67,6 @@ CMakeFiles/roscpp_generate_messages_lisp.dir/clean:
 .PHONY : CMakeFiles/roscpp_generate_messages_lisp.dir/clean
 
 CMakeFiles/roscpp_generate_messages_lisp.dir/depend:
-	cd /home/sitl1/sitl_ws/build/depth_image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/image_pipeline/depth_image_proc /home/sitl1/sitl_ws/src/image_pipeline/depth_image_proc /home/sitl1/sitl_ws/build/depth_image_proc /home/sitl1/sitl_ws/build/depth_image_proc /home/sitl1/sitl_ws/build/depth_image_proc/CMakeFiles/roscpp_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/depth_image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/depth_image_proc /home/ammar/sitl_ws/src/image_pipeline/depth_image_proc /home/ammar/sitl_ws/build/depth_image_proc /home/ammar/sitl_ws/build/depth_image_proc /home/ammar/sitl_ws/build/depth_image_proc/CMakeFiles/roscpp_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/roscpp_generate_messages_lisp.dir/depend
 

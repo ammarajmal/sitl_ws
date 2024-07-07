@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ammar/sitl_ws/devel/.private/disp_6dof/setup.sh

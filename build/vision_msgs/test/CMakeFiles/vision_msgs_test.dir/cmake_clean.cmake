@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/vision_msgs/lib/vision_msgs/vision_msgs_test"
-  "/home/sitl1/sitl_ws/devel/.private/vision_msgs/lib/vision_msgs/vision_msgs_test.pdb"
+  "/home/ammar/sitl_ws/devel/.private/vision_msgs/lib/vision_msgs/vision_msgs_test"
+  "/home/ammar/sitl_ws/devel/.private/vision_msgs/lib/vision_msgs/vision_msgs_test.pdb"
   "CMakeFiles/vision_msgs_test.dir/main.cpp.o"
 )
 

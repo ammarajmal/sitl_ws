@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/stag_detect/lib/stag_detect/stag_detect"
-  "/home/sitl1/sitl_ws/devel/.private/stag_detect/lib/stag_detect/stag_detect.pdb"
+  "/home/ammar/sitl_ws/devel/.private/stag_detect/lib/stag_detect/stag_detect"
+  "/home/ammar/sitl_ws/devel/.private/stag_detect/lib/stag_detect/stag_detect.pdb"
   "CMakeFiles/stag_detect.dir/src/stag_ros/stag_detect.cpp.o"
 )
 

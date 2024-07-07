@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fast_cam
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/fast_cam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/fast_cam
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/fast_cam
 
 # Utility rule file for geometry_msgs_generate_messages_py.
 
@@ -67,6 +67,6 @@ CMakeFiles/geometry_msgs_generate_messages_py.dir/clean:
 .PHONY : CMakeFiles/geometry_msgs_generate_messages_py.dir/clean
 
 CMakeFiles/geometry_msgs_generate_messages_py.dir/depend:
-	cd /home/sitl1/sitl_ws/build/fast_cam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fast_cam /home/sitl1/sitl_ws/src/fast_cam /home/sitl1/sitl_ws/build/fast_cam /home/sitl1/sitl_ws/build/fast_cam /home/sitl1/sitl_ws/build/fast_cam/CMakeFiles/geometry_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/fast_cam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/fast_cam /home/ammar/sitl_ws/src/fast_cam /home/ammar/sitl_ws/build/fast_cam /home/ammar/sitl_ws/build/fast_cam /home/ammar/sitl_ws/build/fast_cam/CMakeFiles/geometry_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/geometry_msgs_generate_messages_py.dir/depend
 

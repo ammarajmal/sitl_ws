@@ -7,7 +7,8 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/sitl1/sitl_ws/devel/.private/image_view:$CMAKE_PREFIX_PATH"
-export PWD='/home/sitl1/sitl_ws/build/image_view'
-export ROSLISP_PACKAGE_DIRECTORIES="/home/sitl1/sitl_ws/devel/.private/image_view/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/sitl1/sitl_ws/src/image_pipeline/image_view:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/ammar/sitl_ws/devel/.private/image_view:$CMAKE_PREFIX_PATH"
+export PWD='/home/ammar/sitl_ws/build/image_view'
+export PYTHONPATH="/home/ammar/sitl_ws/devel/lib/python3/dist-packages:$PYTHONPATH"
+export ROSLISP_PACKAGE_DIRECTORIES="/home/ammar/sitl_ws/devel/.private/image_view/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/ammar/sitl_ws/src/image_pipeline/image_view:$ROS_PACKAGE_PATH"

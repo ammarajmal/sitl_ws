@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/image_proc/lib/libimage_proc.pdb"
-  "/home/sitl1/sitl_ws/devel/.private/image_proc/lib/libimage_proc.so"
+  "/home/ammar/sitl_ws/devel/.private/image_proc/lib/libimage_proc.pdb"
+  "/home/ammar/sitl_ws/devel/.private/image_proc/lib/libimage_proc.so"
   "CMakeFiles/image_proc.dir/src/libimage_proc/advertisement_checker.cpp.o"
   "CMakeFiles/image_proc.dir/src/libimage_proc/processor.cpp.o"
   "CMakeFiles/image_proc.dir/src/nodelets/crop_decimate.cpp.o"

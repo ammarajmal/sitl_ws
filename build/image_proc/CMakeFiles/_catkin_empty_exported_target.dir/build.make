@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/image_pipeline/image_proc
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/image_proc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/image_proc
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/image_proc
 
 # Utility rule file for _catkin_empty_exported_target.
 
@@ -67,6 +67,6 @@ CMakeFiles/_catkin_empty_exported_target.dir/clean:
 .PHONY : CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 CMakeFiles/_catkin_empty_exported_target.dir/depend:
-	cd /home/sitl1/sitl_ws/build/image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/image_pipeline/image_proc /home/sitl1/sitl_ws/src/image_pipeline/image_proc /home/sitl1/sitl_ws/build/image_proc /home/sitl1/sitl_ws/build/image_proc /home/sitl1/sitl_ws/build/image_proc/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/image_proc /home/ammar/sitl_ws/src/image_pipeline/image_proc /home/ammar/sitl_ws/build/image_proc /home/ammar/sitl_ws/build/image_proc /home/ammar/sitl_ws/build/image_proc/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/_catkin_empty_exported_target.dir/depend
 

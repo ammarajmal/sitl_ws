@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/usr/src/googletest")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/sitl1/sitl_ws/build/depth_image_proc")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/ammar/sitl_ws/build/depth_image_proc")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

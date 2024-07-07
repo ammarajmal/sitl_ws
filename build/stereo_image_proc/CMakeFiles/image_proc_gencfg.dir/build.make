@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/image_pipeline/stereo_image_proc
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/stereo_image_proc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/stereo_image_proc
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/stereo_image_proc
 
 # Utility rule file for image_proc_gencfg.
 
@@ -67,6 +67,6 @@ CMakeFiles/image_proc_gencfg.dir/clean:
 .PHONY : CMakeFiles/image_proc_gencfg.dir/clean
 
 CMakeFiles/image_proc_gencfg.dir/depend:
-	cd /home/sitl1/sitl_ws/build/stereo_image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/image_pipeline/stereo_image_proc /home/sitl1/sitl_ws/src/image_pipeline/stereo_image_proc /home/sitl1/sitl_ws/build/stereo_image_proc /home/sitl1/sitl_ws/build/stereo_image_proc /home/sitl1/sitl_ws/build/stereo_image_proc/CMakeFiles/image_proc_gencfg.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/stereo_image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/stereo_image_proc /home/ammar/sitl_ws/src/image_pipeline/stereo_image_proc /home/ammar/sitl_ws/build/stereo_image_proc /home/ammar/sitl_ws/build/stereo_image_proc /home/ammar/sitl_ws/build/stereo_image_proc/CMakeFiles/image_proc_gencfg.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/image_proc_gencfg.dir/depend
 

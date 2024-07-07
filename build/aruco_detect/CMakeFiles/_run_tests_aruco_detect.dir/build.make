@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fiducials/aruco_detect
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/fiducials/aruco_detect
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/aruco_detect
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/aruco_detect
 
 # Utility rule file for _run_tests_aruco_detect.
 
@@ -67,6 +67,6 @@ CMakeFiles/_run_tests_aruco_detect.dir/clean:
 .PHONY : CMakeFiles/_run_tests_aruco_detect.dir/clean
 
 CMakeFiles/_run_tests_aruco_detect.dir/depend:
-	cd /home/sitl1/sitl_ws/build/aruco_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fiducials/aruco_detect /home/sitl1/sitl_ws/src/fiducials/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect /home/sitl1/sitl_ws/build/aruco_detect/CMakeFiles/_run_tests_aruco_detect.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/aruco_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/fiducials/aruco_detect /home/ammar/sitl_ws/src/fiducials/aruco_detect /home/ammar/sitl_ws/build/aruco_detect /home/ammar/sitl_ws/build/aruco_detect /home/ammar/sitl_ws/build/aruco_detect/CMakeFiles/_run_tests_aruco_detect.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/_run_tests_aruco_detect.dir/depend
 

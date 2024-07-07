@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/sitl1/sitl_ws/devel/.private/image_proc/setup.sh
+    local-name: /home/ammar/sitl_ws/devel/.private/image_proc/setup.sh

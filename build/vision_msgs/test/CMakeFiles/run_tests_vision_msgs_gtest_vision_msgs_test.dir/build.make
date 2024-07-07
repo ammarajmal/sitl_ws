@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/vision_msgs
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/vision_msgs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/vision_msgs
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/vision_msgs
 
 # Utility rule file for run_tests_vision_msgs_gtest_vision_msgs_test.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/vision_msgs
 include test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/progress.make
 
 test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test:
-	cd /home/sitl1/sitl_ws/build/vision_msgs/test && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/run_tests.py /home/sitl1/sitl_ws/build/vision_msgs/test_results/vision_msgs/gtest-vision_msgs_test.xml "/home/sitl1/sitl_ws/devel/.private/vision_msgs/lib/vision_msgs/vision_msgs_test --gtest_output=xml:/home/sitl1/sitl_ws/build/vision_msgs/test_results/vision_msgs/gtest-vision_msgs_test.xml"
+	cd /home/ammar/sitl_ws/build/vision_msgs/test && ../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/run_tests.py /home/ammar/sitl_ws/build/vision_msgs/test_results/vision_msgs/gtest-vision_msgs_test.xml "/home/ammar/sitl_ws/devel/.private/vision_msgs/lib/vision_msgs/vision_msgs_test --gtest_output=xml:/home/ammar/sitl_ws/build/vision_msgs/test_results/vision_msgs/gtest-vision_msgs_test.xml"
 
 run_tests_vision_msgs_gtest_vision_msgs_test: test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test
 run_tests_vision_msgs_gtest_vision_msgs_test: test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/build.make
@@ -67,10 +67,10 @@ test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/build: run_test
 .PHONY : test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/build
 
 test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/clean:
-	cd /home/sitl1/sitl_ws/build/vision_msgs/test && $(CMAKE_COMMAND) -P CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/cmake_clean.cmake
+	cd /home/ammar/sitl_ws/build/vision_msgs/test && $(CMAKE_COMMAND) -P CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/cmake_clean.cmake
 .PHONY : test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/clean
 
 test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/depend:
-	cd /home/sitl1/sitl_ws/build/vision_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/vision_msgs /home/sitl1/sitl_ws/src/vision_msgs/test /home/sitl1/sitl_ws/build/vision_msgs /home/sitl1/sitl_ws/build/vision_msgs/test /home/sitl1/sitl_ws/build/vision_msgs/test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/vision_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/vision_msgs /home/ammar/sitl_ws/src/vision_msgs/test /home/ammar/sitl_ws/build/vision_msgs /home/ammar/sitl_ws/build/vision_msgs/test /home/ammar/sitl_ws/build/vision_msgs/test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : test/CMakeFiles/run_tests_vision_msgs_gtest_vision_msgs_test.dir/depend
 

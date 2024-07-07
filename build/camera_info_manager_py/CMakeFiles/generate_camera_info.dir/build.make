@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/camera_info_manager_py
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/camera_info_manager_py
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/camera_info_manager_py
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/camera_info_manager_py
 
 # Include any dependencies generated for this target.
 include CMakeFiles/generate_camera_info.dir/depend.make
@@ -58,17 +58,17 @@ include CMakeFiles/generate_camera_info.dir/progress.make
 include CMakeFiles/generate_camera_info.dir/flags.make
 
 CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o: CMakeFiles/generate_camera_info.dir/flags.make
-CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o: /home/sitl1/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sitl1/sitl_ws/build/camera_info_manager_py/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o -c /home/sitl1/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp
+CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o: /home/ammar/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ammar/sitl_ws/build/camera_info_manager_py/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o -c /home/ammar/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp
 
 CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sitl1/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp > CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ammar/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp > CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.i
 
 CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sitl1/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp -o CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ammar/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp -o CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.s
 
 # Object files for target generate_camera_info
 generate_camera_info_OBJECTS = \
@@ -77,59 +77,59 @@ generate_camera_info_OBJECTS = \
 # External object files for target generate_camera_info
 generate_camera_info_EXTERNAL_OBJECTS =
 
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: CMakeFiles/generate_camera_info.dir/build.make
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp_serialization.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librostime.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcpp_common.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libpthread.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole_log4cxx.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole_backend_interface.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp_serialization.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libxmlrpcpp.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librostime.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcpp_common.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcamera_info_manager.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcamera_calibration_parsers.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libpthread.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole_log4cxx.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole_backend_interface.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libxmlrpcpp.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp_serialization.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librostime.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcpp_common.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcamera_info_manager.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcamera_calibration_parsers.so
-/home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: CMakeFiles/generate_camera_info.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sitl1/sitl_ws/build/camera_info_manager_py/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info"
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: CMakeFiles/generate_camera_info.dir/build.make
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp_serialization.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librostime.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcpp_common.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libpthread.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole_log4cxx.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole_backend_interface.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp_serialization.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libxmlrpcpp.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librostime.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcpp_common.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcamera_info_manager.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcamera_calibration_parsers.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libpthread.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole_log4cxx.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librosconsole_backend_interface.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/liblog4cxx.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libxmlrpcpp.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libroscpp_serialization.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/librostime.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcpp_common.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcamera_info_manager.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: /opt/ros/noetic/lib/libcamera_calibration_parsers.so
+/home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info: CMakeFiles/generate_camera_info.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ammar/sitl_ws/build/camera_info_manager_py/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/generate_camera_info.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/generate_camera_info.dir/build: /home/sitl1/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info
+CMakeFiles/generate_camera_info.dir/build: /home/ammar/sitl_ws/devel/.private/camera_info_manager_py/lib/camera_info_manager_py/generate_camera_info
 
 .PHONY : CMakeFiles/generate_camera_info.dir/build
 
@@ -138,6 +138,6 @@ CMakeFiles/generate_camera_info.dir/clean:
 .PHONY : CMakeFiles/generate_camera_info.dir/clean
 
 CMakeFiles/generate_camera_info.dir/depend:
-	cd /home/sitl1/sitl_ws/build/camera_info_manager_py && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/camera_info_manager_py /home/sitl1/sitl_ws/src/camera_info_manager_py /home/sitl1/sitl_ws/build/camera_info_manager_py /home/sitl1/sitl_ws/build/camera_info_manager_py /home/sitl1/sitl_ws/build/camera_info_manager_py/CMakeFiles/generate_camera_info.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/camera_info_manager_py && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/camera_info_manager_py /home/ammar/sitl_ws/src/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py/CMakeFiles/generate_camera_info.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/generate_camera_info.dir/depend
 

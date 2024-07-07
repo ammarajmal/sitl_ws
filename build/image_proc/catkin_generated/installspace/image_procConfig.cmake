@@ -67,14 +67,14 @@ set(image_proc_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(image_proc_SOURCE_PREFIX /home/sitl1/sitl_ws/src/image_pipeline/image_proc)
-  set(image_proc_DEVEL_PREFIX /home/sitl1/sitl_ws/devel/.private/image_proc)
+  set(image_proc_SOURCE_PREFIX /home/ammar/sitl_ws/src/image_pipeline/image_proc)
+  set(image_proc_DEVEL_PREFIX /home/ammar/sitl_ws/devel/.private/image_proc)
   set(image_proc_INSTALL_PREFIX "")
   set(image_proc_PREFIX ${image_proc_DEVEL_PREFIX})
 else()
   set(image_proc_SOURCE_PREFIX "")
   set(image_proc_DEVEL_PREFIX "")
-  set(image_proc_INSTALL_PREFIX /home/sitl1/sitl_ws/install)
+  set(image_proc_INSTALL_PREFIX /home/ammar/sitl_ws/install)
   set(image_proc_PREFIX ${image_proc_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/sitl1/sitl_ws/install/lib;/home/sitl1/sitl_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/ammar/sitl_ws/install/lib;/home/ammar/sitl_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

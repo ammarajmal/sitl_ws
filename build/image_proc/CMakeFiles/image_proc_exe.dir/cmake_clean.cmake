@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/image_proc/lib/image_proc/image_proc"
-  "/home/sitl1/sitl_ws/devel/.private/image_proc/lib/image_proc/image_proc.pdb"
+  "/home/ammar/sitl_ws/devel/.private/image_proc/lib/image_proc/image_proc"
+  "/home/ammar/sitl_ws/devel/.private/image_proc/lib/image_proc/image_proc.pdb"
   "CMakeFiles/image_proc_exe.dir/src/nodes/image_proc.cpp.o"
 )
 

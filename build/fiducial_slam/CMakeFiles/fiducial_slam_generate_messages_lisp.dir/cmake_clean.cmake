@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/fiducial_slam/share/common-lisp/ros/fiducial_slam/srv/AddFiducial.lisp"
+  "/home/ammar/sitl_ws/devel/.private/fiducial_slam/share/common-lisp/ros/fiducial_slam/srv/AddFiducial.lisp"
   "CMakeFiles/fiducial_slam_generate_messages_lisp"
 )
 

@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/aruco_detect/include/aruco_detect/DetectorParamsConfig.h"
-  "/home/sitl1/sitl_ws/devel/.private/aruco_detect/lib/python3/dist-packages/aruco_detect/cfg/DetectorParamsConfig.py"
-  "/home/sitl1/sitl_ws/devel/.private/aruco_detect/share/aruco_detect/docs/DetectorParamsConfig-usage.dox"
-  "/home/sitl1/sitl_ws/devel/.private/aruco_detect/share/aruco_detect/docs/DetectorParamsConfig.dox"
-  "/home/sitl1/sitl_ws/devel/.private/aruco_detect/share/aruco_detect/docs/DetectorParamsConfig.wikidoc"
+  "/home/ammar/sitl_ws/devel/.private/aruco_detect/include/aruco_detect/DetectorParamsConfig.h"
+  "/home/ammar/sitl_ws/devel/.private/aruco_detect/lib/python3/dist-packages/aruco_detect/cfg/DetectorParamsConfig.py"
+  "/home/ammar/sitl_ws/devel/.private/aruco_detect/share/aruco_detect/docs/DetectorParamsConfig-usage.dox"
+  "/home/ammar/sitl_ws/devel/.private/aruco_detect/share/aruco_detect/docs/DetectorParamsConfig.dox"
+  "/home/ammar/sitl_ws/devel/.private/aruco_detect/share/aruco_detect/docs/DetectorParamsConfig.wikidoc"
   "CMakeFiles/aruco_detect_gencfg"
 )
 

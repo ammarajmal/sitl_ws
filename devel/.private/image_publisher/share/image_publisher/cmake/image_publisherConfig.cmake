@@ -67,14 +67,14 @@ set(image_publisher_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(image_publisher_SOURCE_PREFIX /home/sitl1/sitl_ws/src/image_pipeline/image_publisher)
-  set(image_publisher_DEVEL_PREFIX /home/sitl1/sitl_ws/devel/.private/image_publisher)
+  set(image_publisher_SOURCE_PREFIX /home/ammar/sitl_ws/src/image_pipeline/image_publisher)
+  set(image_publisher_DEVEL_PREFIX /home/ammar/sitl_ws/devel/.private/image_publisher)
   set(image_publisher_INSTALL_PREFIX "")
   set(image_publisher_PREFIX ${image_publisher_DEVEL_PREFIX})
 else()
   set(image_publisher_SOURCE_PREFIX "")
   set(image_publisher_DEVEL_PREFIX "")
-  set(image_publisher_INSTALL_PREFIX /home/sitl1/sitl_ws/install)
+  set(image_publisher_INSTALL_PREFIX /home/ammar/sitl_ws/install)
   set(image_publisher_PREFIX ${image_publisher_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(image_publisher_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/sitl1/sitl_ws/devel/.private/image_publisher/include " STREQUAL " ")
+if(NOT "/home/ammar/sitl_ws/devel/.private/image_publisher/include " STREQUAL " ")
   set(image_publisher_INCLUDE_DIRS "")
-  set(_include_dirs "/home/sitl1/sitl_ws/devel/.private/image_publisher/include")
+  set(_include_dirs "/home/ammar/sitl_ws/devel/.private/image_publisher/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT "http://ros.org/wiki/image_publisher " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/sitl1/sitl_ws/devel/.private/image_publisher/include " STREQUAL " 
         message(FATAL_ERROR "Project 'image_publisher' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'image_publisher' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/sitl1/sitl_ws/src/image_pipeline/image_publisher/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'image_publisher' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/ammar/sitl_ws/src/image_pipeline/image_publisher/${idir}'.  ${_report}")
     endif()
     _list_append_unique(image_publisher_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/sitl1/sitl_ws/devel/.private/image_publisher/lib;/home/sitl1/sitl_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/ammar/sitl_ws/devel/.private/image_publisher/lib;/home/ammar/sitl_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

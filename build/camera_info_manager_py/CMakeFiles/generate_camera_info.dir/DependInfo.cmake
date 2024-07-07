@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sitl1/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp" "/home/sitl1/sitl_ws/build/camera_info_manager_py/CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o"
+  "/home/ammar/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp" "/home/ammar/sitl_ws/build/camera_info_manager_py/CMakeFiles/generate_camera_info.dir/tests/generate_camera_info.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,7 +17,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/sitl1/sitl_ws/src/camera_info_manager_py/include"
+  "/home/ammar/sitl_ws/src/camera_info_manager_py/include"
   "/opt/ros/noetic/include"
   )
 

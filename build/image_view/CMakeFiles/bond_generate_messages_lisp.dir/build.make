@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/image_pipeline/image_view
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/image_view
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/image_view
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/image_view
 
 # Utility rule file for bond_generate_messages_lisp.
 
@@ -67,6 +67,6 @@ CMakeFiles/bond_generate_messages_lisp.dir/clean:
 .PHONY : CMakeFiles/bond_generate_messages_lisp.dir/clean
 
 CMakeFiles/bond_generate_messages_lisp.dir/depend:
-	cd /home/sitl1/sitl_ws/build/image_view && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/image_pipeline/image_view /home/sitl1/sitl_ws/src/image_pipeline/image_view /home/sitl1/sitl_ws/build/image_view /home/sitl1/sitl_ws/build/image_view /home/sitl1/sitl_ws/build/image_view/CMakeFiles/bond_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/image_view && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/image_view /home/ammar/sitl_ws/src/image_pipeline/image_view /home/ammar/sitl_ws/build/image_view /home/ammar/sitl_ws/build/image_view /home/ammar/sitl_ws/build/image_view/CMakeFiles/bond_generate_messages_lisp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/bond_generate_messages_lisp.dir/depend
 

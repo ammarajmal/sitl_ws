@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/image_pipeline/image_publisher
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/image_publisher
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/image_publisher
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/image_publisher
 
 # Utility rule file for dynamic_reconfigure_generate_messages_py.
 
@@ -67,6 +67,6 @@ CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/clean:
 .PHONY : CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/clean
 
 CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/depend:
-	cd /home/sitl1/sitl_ws/build/image_publisher && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/image_pipeline/image_publisher /home/sitl1/sitl_ws/src/image_pipeline/image_publisher /home/sitl1/sitl_ws/build/image_publisher /home/sitl1/sitl_ws/build/image_publisher /home/sitl1/sitl_ws/build/image_publisher/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/image_publisher && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/image_publisher /home/ammar/sitl_ws/src/image_pipeline/image_publisher /home/ammar/sitl_ws/build/image_publisher /home/ammar/sitl_ws/build/image_publisher /home/ammar/sitl_ws/build/image_publisher/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/depend
 

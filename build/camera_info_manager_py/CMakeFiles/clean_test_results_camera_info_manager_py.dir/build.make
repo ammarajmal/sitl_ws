@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/camera_info_manager_py
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/camera_info_manager_py
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/camera_info_manager_py
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/camera_info_manager_py
 
 # Utility rule file for clean_test_results_camera_info_manager_py.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/camera_info_manager_py
 include CMakeFiles/clean_test_results_camera_info_manager_py.dir/progress.make
 
 CMakeFiles/clean_test_results_camera_info_manager_py:
-	/usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/sitl1/sitl_ws/build/camera_info_manager_py/test_results/camera_info_manager_py
+	/usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/ammar/sitl_ws/build/camera_info_manager_py/test_results/camera_info_manager_py
 
 clean_test_results_camera_info_manager_py: CMakeFiles/clean_test_results_camera_info_manager_py
 clean_test_results_camera_info_manager_py: CMakeFiles/clean_test_results_camera_info_manager_py.dir/build.make
@@ -71,6 +71,6 @@ CMakeFiles/clean_test_results_camera_info_manager_py.dir/clean:
 .PHONY : CMakeFiles/clean_test_results_camera_info_manager_py.dir/clean
 
 CMakeFiles/clean_test_results_camera_info_manager_py.dir/depend:
-	cd /home/sitl1/sitl_ws/build/camera_info_manager_py && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/camera_info_manager_py /home/sitl1/sitl_ws/src/camera_info_manager_py /home/sitl1/sitl_ws/build/camera_info_manager_py /home/sitl1/sitl_ws/build/camera_info_manager_py /home/sitl1/sitl_ws/build/camera_info_manager_py/CMakeFiles/clean_test_results_camera_info_manager_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/camera_info_manager_py && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/camera_info_manager_py /home/ammar/sitl_ws/src/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py/CMakeFiles/clean_test_results_camera_info_manager_py.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/clean_test_results_camera_info_manager_py.dir/depend
 

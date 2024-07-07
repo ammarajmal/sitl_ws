@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sitl1/sitl_ws/src/image_pipeline/image_view/src/nodelets/disparity_nodelet.cpp" "/home/sitl1/sitl_ws/build/image_view/CMakeFiles/image_view.dir/src/nodelets/disparity_nodelet.cpp.o"
-  "/home/sitl1/sitl_ws/src/image_pipeline/image_view/src/nodelets/image_nodelet.cpp" "/home/sitl1/sitl_ws/build/image_view/CMakeFiles/image_view.dir/src/nodelets/image_nodelet.cpp.o"
-  "/home/sitl1/sitl_ws/src/image_pipeline/image_view/src/nodelets/window_thread.cpp" "/home/sitl1/sitl_ws/build/image_view/CMakeFiles/image_view.dir/src/nodelets/window_thread.cpp.o"
+  "/home/ammar/sitl_ws/src/image_pipeline/image_view/src/nodelets/disparity_nodelet.cpp" "/home/ammar/sitl_ws/build/image_view/CMakeFiles/image_view.dir/src/nodelets/disparity_nodelet.cpp.o"
+  "/home/ammar/sitl_ws/src/image_pipeline/image_view/src/nodelets/image_nodelet.cpp" "/home/ammar/sitl_ws/build/image_view/CMakeFiles/image_view.dir/src/nodelets/image_nodelet.cpp.o"
+  "/home/ammar/sitl_ws/src/image_pipeline/image_view/src/nodelets/window_thread.cpp" "/home/ammar/sitl_ws/build/image_view/CMakeFiles/image_view.dir/src/nodelets/window_thread.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -23,7 +23,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/sitl1/sitl_ws/devel/.private/image_view/include"
+  "/home/ammar/sitl_ws/devel/.private/image_view/include"
   "/opt/ros/noetic/include"
   "/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   "/usr/include/opencv4"

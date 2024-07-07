@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "camera_calibration"
-PROJECT_SPACE_DIR = "/home/sitl1/sitl_ws/install"
+PROJECT_SPACE_DIR = "/home/ammar/sitl_ws/install"
 PROJECT_VERSION = "1.17.0"

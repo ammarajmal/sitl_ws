@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sitl1/sitl_ws/src/fiducials/fiducial_msgs
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/fiducials/fiducial_msgs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sitl1/sitl_ws/build/fiducial_msgs
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/fiducial_msgs
 
 # Utility rule file for fiducial_msgs_genpy.
 
@@ -67,6 +67,6 @@ CMakeFiles/fiducial_msgs_genpy.dir/clean:
 .PHONY : CMakeFiles/fiducial_msgs_genpy.dir/clean
 
 CMakeFiles/fiducial_msgs_genpy.dir/depend:
-	cd /home/sitl1/sitl_ws/build/fiducial_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sitl1/sitl_ws/src/fiducials/fiducial_msgs /home/sitl1/sitl_ws/src/fiducials/fiducial_msgs /home/sitl1/sitl_ws/build/fiducial_msgs /home/sitl1/sitl_ws/build/fiducial_msgs /home/sitl1/sitl_ws/build/fiducial_msgs/CMakeFiles/fiducial_msgs_genpy.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/fiducial_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/fiducials/fiducial_msgs /home/ammar/sitl_ws/src/fiducials/fiducial_msgs /home/ammar/sitl_ws/build/fiducial_msgs /home/ammar/sitl_ws/build/fiducial_msgs /home/ammar/sitl_ws/build/fiducial_msgs/CMakeFiles/fiducial_msgs_genpy.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/fiducial_msgs_genpy.dir/depend
 

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/sitl1/sitl_ws/src/image_pipeline/image_publisher/src/node/image_publisher.cpp
+/home/ammar/sitl_ws/src/image_pipeline/image_publisher/src/node/image_publisher.cpp
 ros/ros.h
 -
 nodelet/loader.h

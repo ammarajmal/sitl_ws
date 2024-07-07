@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/image_publisher/lib/image_publisher/image_publisher"
-  "/home/sitl1/sitl_ws/devel/.private/image_publisher/lib/image_publisher/image_publisher.pdb"
+  "/home/ammar/sitl_ws/devel/.private/image_publisher/lib/image_publisher/image_publisher"
+  "/home/ammar/sitl_ws/devel/.private/image_publisher/lib/image_publisher/image_publisher.pdb"
   "CMakeFiles/image_publisher_exe.dir/src/node/image_publisher.cpp.o"
 )
 

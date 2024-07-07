@@ -67,14 +67,14 @@ set(fiducial_slam_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(fiducial_slam_SOURCE_PREFIX /home/sitl1/sitl_ws/src/fiducials/fiducial_slam)
-  set(fiducial_slam_DEVEL_PREFIX /home/sitl1/sitl_ws/devel/.private/fiducial_slam)
+  set(fiducial_slam_SOURCE_PREFIX /home/ammar/sitl_ws/src/fiducials/fiducial_slam)
+  set(fiducial_slam_DEVEL_PREFIX /home/ammar/sitl_ws/devel/.private/fiducial_slam)
   set(fiducial_slam_INSTALL_PREFIX "")
   set(fiducial_slam_PREFIX ${fiducial_slam_DEVEL_PREFIX})
 else()
   set(fiducial_slam_SOURCE_PREFIX "")
   set(fiducial_slam_DEVEL_PREFIX "")
-  set(fiducial_slam_INSTALL_PREFIX /home/sitl1/sitl_ws/install)
+  set(fiducial_slam_INSTALL_PREFIX /home/ammar/sitl_ws/install)
   set(fiducial_slam_PREFIX ${fiducial_slam_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(fiducial_slam_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/sitl1/sitl_ws/devel/.private/fiducial_slam/include;/home/sitl1/sitl_ws/src/fiducials/fiducial_slam/include;/usr/include/opencv4 " STREQUAL " ")
+if(NOT "/home/ammar/sitl_ws/devel/.private/fiducial_slam/include;/home/ammar/sitl_ws/src/fiducials/fiducial_slam/include;/usr/include/opencv4 " STREQUAL " ")
   set(fiducial_slam_INCLUDE_DIRS "")
-  set(_include_dirs "/home/sitl1/sitl_ws/devel/.private/fiducial_slam/include;/home/sitl1/sitl_ws/src/fiducials/fiducial_slam/include;/usr/include/opencv4")
+  set(_include_dirs "/home/ammar/sitl_ws/devel/.private/fiducial_slam/include;/home/ammar/sitl_ws/src/fiducials/fiducial_slam/include;/usr/include/opencv4")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/sitl1/sitl_ws/devel/.private/fiducial_slam/include;/home/sitl1/sit
         message(FATAL_ERROR "Project 'fiducial_slam' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'fiducial_slam' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/sitl1/sitl_ws/src/fiducials/fiducial_slam/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'fiducial_slam' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/ammar/sitl_ws/src/fiducials/fiducial_slam/${idir}'.  ${_report}")
     endif()
     _list_append_unique(fiducial_slam_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/sitl1/sitl_ws/devel/.private/fiducial_slam/lib;/home/sitl1/sitl_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/ammar/sitl_ws/devel/.private/fiducial_slam/lib;/home/ammar/sitl_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

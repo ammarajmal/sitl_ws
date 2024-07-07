@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sitl1/sitl_ws/devel/.private/image_view/lib/image_view/stereo_view"
-  "/home/sitl1/sitl_ws/devel/.private/image_view/lib/image_view/stereo_view.pdb"
+  "/home/ammar/sitl_ws/devel/.private/image_view/lib/image_view/stereo_view"
+  "/home/ammar/sitl_ws/devel/.private/image_view/lib/image_view/stereo_view.pdb"
   "CMakeFiles/stereo_view.dir/src/nodes/stereo_view.cpp.o"
 )
 
