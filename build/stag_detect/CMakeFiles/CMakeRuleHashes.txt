@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+b4e27fb6be5cc18b6aed19ef7cdf9ef8 /home/tesol/sitl_ws/devel/.private/stag_detect/include/stag_detect/DetectorParamsConfig.h
+fed6ac82a56f9e53da6af81dd2717c50 CMakeFiles/clean_test_results
+129aab1c6690c919138d8e53b9b6765c CMakeFiles/stag_detect_gencfg

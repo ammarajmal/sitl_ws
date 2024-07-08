@@ -1,0 +1,6 @@
+devel_space: /home/tesol/sitl_ws/devel
+install: false
+install_space: /home/tesol/sitl_ws/install
+profile: default
+source_space: /home/tesol/sitl_ws/src
+workspace: /home/tesol/sitl_ws

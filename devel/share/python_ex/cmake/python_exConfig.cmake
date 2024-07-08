@@ -1,0 +1,1 @@
+/home/tesol/sitl_ws/devel/.private/python_ex/share/python_ex/cmake/python_exConfig.cmake

@@ -1,0 +1,1 @@
+/home/tesol/sitl_ws/devel/.private/fiducial_msgs/share/fiducial_msgs/cmake/fiducial_msgsConfig.cmake

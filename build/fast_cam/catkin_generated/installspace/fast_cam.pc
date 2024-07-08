@@ -1,0 +1,8 @@
+prefix=/home/tesol/sitl_ws/install
+
+Name: fast_cam
+Description: Description of fast_cam
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: rospy sensor_msgs message_runtime
