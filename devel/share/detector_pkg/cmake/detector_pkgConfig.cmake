@@ -1,0 +1,1 @@
+/home/ammar/sitl_ws/devel/.private/detector_pkg/share/detector_pkg/cmake/detector_pkgConfig.cmake

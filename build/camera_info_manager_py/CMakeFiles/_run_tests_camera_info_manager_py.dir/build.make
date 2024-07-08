@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/camera_info_manager_py
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/camera_info_manager_py
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/camera_info_manager_py
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/camera_info_manager_py
 
 # Utility rule file for _run_tests_camera_info_manager_py.
 
@@ -67,6 +67,6 @@ CMakeFiles/_run_tests_camera_info_manager_py.dir/clean:
 .PHONY : CMakeFiles/_run_tests_camera_info_manager_py.dir/clean
 
 CMakeFiles/_run_tests_camera_info_manager_py.dir/depend:
-	cd /home/tesol/sitl_ws/build/camera_info_manager_py && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/camera_info_manager_py /home/tesol/sitl_ws/src/camera_info_manager_py /home/tesol/sitl_ws/build/camera_info_manager_py /home/tesol/sitl_ws/build/camera_info_manager_py /home/tesol/sitl_ws/build/camera_info_manager_py/CMakeFiles/_run_tests_camera_info_manager_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/camera_info_manager_py && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/camera_info_manager_py /home/ammar/sitl_ws/src/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py /home/ammar/sitl_ws/build/camera_info_manager_py/CMakeFiles/_run_tests_camera_info_manager_py.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/_run_tests_camera_info_manager_py.dir/depend
 

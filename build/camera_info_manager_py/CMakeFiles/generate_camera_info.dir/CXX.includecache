@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/tesol/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp
+/home/ammar/sitl_ws/src/camera_info_manager_py/tests/generate_camera_info.cpp
 camera_info_manager/camera_info_manager.h
 -
 ros/ros.h

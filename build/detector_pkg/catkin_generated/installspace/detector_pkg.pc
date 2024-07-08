@@ -1,0 +1,8 @@
+prefix=/home/ammar/sitl_ws/install
+
+Name: detector_pkg
+Description: Description of detector_pkg
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

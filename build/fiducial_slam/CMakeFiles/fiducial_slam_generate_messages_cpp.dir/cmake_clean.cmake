@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/tesol/sitl_ws/devel/.private/fiducial_slam/include/fiducial_slam/AddFiducial.h"
+  "/home/ammar/sitl_ws/devel/.private/fiducial_slam/include/fiducial_slam/AddFiducial.h"
   "CMakeFiles/fiducial_slam_generate_messages_cpp"
 )
 

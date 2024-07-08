@@ -1,6 +1,7 @@
 <launch>
 
-    <arg name="launch_nuc" default="sony_cam1" />
+    <arg name="launch_nuc" default="sony_cam3" />
+    
     <arg name="cam1_device_id" default="_cam1" />
     <arg name="cam2_device_id" default="_cam2" />
     <arg name="cam3_device_id" default="_cam3" />
@@ -22,7 +23,8 @@
     <group if = "$(eval launch_nuc == 'sony_cam3')">
         <include file="$(find dslr_cam)/launch/camera.launch">
             <arg name="camera_name" value="$(arg launch_nuc)" />
-            <arg name="camera_id" value="$(arg cam3_device_id)" />
+            <!-- <arg name="camera_id" value="$(arg cam3_device_id)" /> -->
+            <arg name="camera_id" value="3" />
         </include>
     </group>
 </launch>

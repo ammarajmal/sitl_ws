@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/stag_detect
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/fiducials/stag_detect
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/stag_detect
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/stag_detect
 
 # Utility rule file for geometry_msgs_generate_messages_cpp.
 
@@ -67,6 +67,6 @@ CMakeFiles/geometry_msgs_generate_messages_cpp.dir/clean:
 .PHONY : CMakeFiles/geometry_msgs_generate_messages_cpp.dir/clean
 
 CMakeFiles/geometry_msgs_generate_messages_cpp.dir/depend:
-	cd /home/tesol/sitl_ws/build/stag_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/fiducials/stag_detect /home/tesol/sitl_ws/src/fiducials/stag_detect /home/tesol/sitl_ws/build/stag_detect /home/tesol/sitl_ws/build/stag_detect /home/tesol/sitl_ws/build/stag_detect/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/stag_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/fiducials/stag_detect /home/ammar/sitl_ws/src/fiducials/stag_detect /home/ammar/sitl_ws/build/stag_detect /home/ammar/sitl_ws/build/stag_detect /home/ammar/sitl_ws/build/stag_detect/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/geometry_msgs_generate_messages_cpp.dir/depend
 

@@ -1,0 +1,10 @@
+<launch>
+    <!-- Parameters -->
+    <param name="camera_name" value="sony_cam3" />
+    <param name="aruco_dict" value="DICT_4X4_50" />
+    <param name="aruco_marker_size" value="0.02" />
+    <param name="experiment_name" value="Exp1"/>
+
+    <!-- Node to run -->
+    <node pkg="detector_pkg" type="detect.py" name="aruco_detect" output="screen" />
+</launch>

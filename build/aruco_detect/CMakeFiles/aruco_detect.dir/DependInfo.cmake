@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/tesol/sitl_ws/src/fiducials/aruco_detect/src/aruco_detect.cpp" "/home/tesol/sitl_ws/build/aruco_detect/CMakeFiles/aruco_detect.dir/src/aruco_detect.cpp.o"
+  "/home/ammar/sitl_ws/src/fiducials/aruco_detect/src/aruco_detect.cpp" "/home/ammar/sitl_ws/build/aruco_detect/CMakeFiles/aruco_detect.dir/src/aruco_detect.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -17,9 +17,9 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/tesol/sitl_ws/devel/.private/aruco_detect/include"
-  "/home/tesol/sitl_ws/devel/.private/vision_msgs/include"
-  "/home/tesol/sitl_ws/devel/.private/fiducial_msgs/include"
+  "/home/ammar/sitl_ws/devel/.private/aruco_detect/include"
+  "/home/ammar/sitl_ws/devel/.private/vision_msgs/include"
+  "/home/ammar/sitl_ws/devel/.private/fiducial_msgs/include"
   "/opt/ros/noetic/include"
   "/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   "/usr/include/eigen3"

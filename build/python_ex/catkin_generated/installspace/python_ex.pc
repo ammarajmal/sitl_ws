@@ -1,4 +1,4 @@
-prefix=/home/tesol/sitl_ws/install
+prefix=/home/ammar/sitl_ws/install
 
 Name: python_ex
 Description: Description of python_ex

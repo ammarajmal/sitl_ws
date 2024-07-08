@@ -1,4 +1,4 @@
-prefix=/home/tesol/sitl_ws/install
+prefix=/home/ammar/sitl_ws/install
 
 Name: fiducial_slam
 Description: Description of fiducial_slam
