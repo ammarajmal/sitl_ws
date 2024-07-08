@@ -5,12 +5,14 @@ from geometry_msgs.msg import Pose
 import csv
 import os
 import time
+
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
 class PoseDataSaver:
     def __init__(self):
+        self.type = 'x-axis'
         self.pose_data = []
         self.start_time = time.time()
         self.duration = 20  # Duration to collect data in seconds
@@ -73,7 +75,8 @@ class PoseDataSaver:
         pos_z = [row[3] for row in self.pose_data]
 
         plt.figure(figsize=(10, 6))
-        
+        # give the title to the plot as the experiment name
+        plt.suptitle(f'Exp_{self.type}_{self.name_time}', fontsize=12)
         ax1 = plt.subplot(3, 1, 1)
         ax1.plot(times, pos_x, label='Position X')
         ax1.set_xlabel('Time (s)')
@@ -101,7 +104,7 @@ class PoseDataSaver:
         plt.tight_layout()
         plot_file_path = self.csv_file_path.replace('.csv', '.png')
         plt.savefig(plot_file_path)
-        plt.show()
+        # plt.show()
         plt.close()
         rospy.loginfo(f"Plot saved to {plot_file_path}")
 

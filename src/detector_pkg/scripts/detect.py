@@ -4,9 +4,6 @@ import cv2
 import cv2.aruco as aruco
 import numpy as np
 import rospy
-import csv
-import os
-import time
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge, CvBridgeError
 from geometry_msgs.msg import Pose
@@ -59,16 +56,19 @@ class ArucoDetector:
             rospy.logerr(f"Could not convert image: {e}")
             return
 
+        # Apply Gaussian blur to reduce noise
         gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+        # gray = cv2.GaussianBlur(gray, (5, 5), 0)
+        
         corners, ids, rejected = aruco.detectMarkers(gray, self.aruco_dict, parameters=self.parameters)
 
         if ids is not None:
-             # Refine corners for sub-pixel accuracy
+            # Refine corners for sub-pixel accuracy
             for corner in corners:
                 cv2.cornerSubPix(gray, corner,
                                  winSize=(5, 5),
                                  zeroZone=(-1, -1),
-                                 criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 30, 0.1))
+                                 criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 30, 0.01))  # Increased accuracy
 
             rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, self.aruco_marker_size, self.camera_matrix, self.dist_coeffs)
             for rvec, tvec in zip(rvecs, tvecs):
