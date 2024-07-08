@@ -440,9 +440,9 @@ class NodeGUI(customtkinter.CTk):
         try:
             calib_launch_args = [
                 f"{self.calib_launch}",
-                f"camera:=sony_cam{nuc_number}",
-                f"board_size:={self.board_size}",
-                f"square_size:={self.square_size}"]
+                f"camera_name:=sony_cam{nuc_number}",
+                f"cb_size:={self.board_size}",
+                f"cb_square:={self.square_size}"]
             calib_roslaunch_file = [(
                 roslaunch.rlutil.resolve_launch_arguments(calib_launch_args)[0],
                 calib_launch_args[1:])]

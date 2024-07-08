@@ -12,7 +12,7 @@
     <param name="frame_rate" value="60"/>
     <param name="camera_name" value="$(arg camera_name)"/>
     <param name="camera_frame_id" value="$(arg camera_name)"/>
-    <param name="device_id" value="/dev/$(arg camera_id)"/>
+    <param name="device_id" value="/dev/video$(arg camera_id)"/>
     <!-- <param name="image_width" value="320"/>
     <param name="image_height" value="240"/> -->
     <param name="image_width" value="640"/>
