@@ -1,1 +1,0 @@
-/home/ammar/sitl_ws/devel/.private/image_view/include/image_view/ImageViewConfig.h

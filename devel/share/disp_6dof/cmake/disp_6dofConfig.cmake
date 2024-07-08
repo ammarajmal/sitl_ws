@@ -1,1 +1,0 @@
-/home/ammar/sitl_ws/devel/.private/disp_6dof/share/disp_6dof/cmake/disp_6dofConfig.cmake

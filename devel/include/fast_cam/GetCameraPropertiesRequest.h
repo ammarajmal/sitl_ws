@@ -1,1 +1,0 @@
-/home/ammar/sitl_ws/devel/.private/fast_cam/include/fast_cam/GetCameraPropertiesRequest.h

@@ -1,1 +1,0 @@
-/home/ammar/sitl_ws/devel/.private/aruco_detect/include/aruco_detect/DetectorParamsConfig.h

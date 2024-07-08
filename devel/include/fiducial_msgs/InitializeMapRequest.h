@@ -1,1 +1,0 @@
-/home/ammar/sitl_ws/devel/.private/fiducial_msgs/include/fiducial_msgs/InitializeMapRequest.h
