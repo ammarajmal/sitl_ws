@@ -13,3 +13,6 @@
 	path = src/fiducials
 	url = https://github.com/ammarajmal/fiducials
 	branch = noetic-devel
+[submodule "src/aruco_ros"]
+	path = src/aruco_ros
+	url = https://github.com/ammarajmal/aruco_ros.git
