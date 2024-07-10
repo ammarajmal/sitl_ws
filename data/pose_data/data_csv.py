@@ -15,7 +15,7 @@ class PoseDataSaver:
         self.type = 'x-axis'
         self.pose_data = []
         self.start_time = time.time()
-        self.duration = 20  # Duration to collect data in seconds
+        self.duration = 60  # Duration to collect data in seconds
         self.last_print_time = self.start_time  # Track the last time we printed the remaining time
         self.initial_pose = None
 
@@ -25,7 +25,7 @@ class PoseDataSaver:
         self.name_time = time.strftime("%Y%m%d_%H-%M-%S")
         # get current directory and save file into it.
         cur_dir = os.path.dirname(os.path.realpath(__file__))
-        self.csv_file_path = os.path.expanduser(f'{cur_dir}/pose_data_{self.name_time}.csv')
+        self.csv_file_path = os.path.expanduser(f'{cur_dir}/pose_{self.type}_{self.name_time}.csv')
 
     def pose_callback(self, data):
         current_time = time.time()

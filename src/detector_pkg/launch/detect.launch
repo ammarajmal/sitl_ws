@@ -1,10 +1,16 @@
 <launch>
-    <!-- Parameters -->
-    <param name="camera_name" value="sony_cam3" />
-    <param name="aruco_dict" value="DICT_4X4_50" />
-    <param name="aruco_marker_size" value="0.02" />
-    <param name="experiment_name" value="Exp1"/>
+    <arg name="camera_name" default="sony_cam1" />
+    <arg name="aruco_dict" default="DICT_4X4_50" />
+    <arg name="aruco_marker_size" default="0.02" />
+    <arg name="experiment_name" default="Exp1" />
 
-    <!-- Node to run -->
-    <node pkg="detector_pkg" type="detect.py" name="aruco_detect" output="screen" />
+    <node name="$(arg camera_name)_detect"
+            pkg="detector_pkg"
+            type="detect.py"
+            output="screen">
+        <param name="camera_name" value="$(arg camera_name)" />
+        <param name="aruco_dict" value="$(arg aruco_dict)" />
+        <param name="aruco_marker_size" value="$(arg aruco_marker_size)" />
+        <param name="experiment_name" value="$(arg experiment_name)" />
+    </node>
 </launch>

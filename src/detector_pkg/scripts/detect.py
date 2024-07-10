@@ -11,25 +11,31 @@ from geometry_msgs.msg import Pose
 class ArucoDetector:
     def __init__(self) -> None:
         self.bridge = CvBridge()
-        
+
         # Load ROS parameters
-        self.camera_name = rospy.get_param('camera_name', 'sony_cam1')
-        aruco_dict_name = rospy.get_param('aruco_dict', 'DICT_4X4_50')
-        self.aruco_marker_size = rospy.get_param('aruco_marker_size', 0.02)
-        self.experiment_name = rospy.get_param('experiment_name', 'Exp1')
-        
+        self.camera_name = rospy.get_param('~camera_name', 'sony_cam1')
+        aruco_dict_name = rospy.get_param('~aruco_dict', 'DICT_4X4_50')
+        self.aruco_marker_size = rospy.get_param('~aruco_marker_size', 0.02)
+        self.experiment_name = rospy.get_param('~experiment_name', 'Exp1')
+
+        self.camera_info_sub = rospy.Subscriber(f"/{self.camera_name}/camera_info", CameraInfo, self
+        .camera_info_callback)
         self.image_sub = rospy.Subscriber(f"/{self.camera_name}/image_raw", Image, self.image_callback)
-        self.camera_info_sub = rospy.Subscriber(f"/{self.camera_name}/camera_info", CameraInfo, self.camera_info_callback)
+ 
 
         # Initialize pose publisher
         self.node_name = rospy.get_name()
         self.pose_pub = rospy.Publisher(f"{self.node_name}/pose", Pose, queue_size=10)
-        
+
         self.camera_matrix = None
         self.dist_coeffs = None
         self.aruco_dict = aruco.Dictionary_get(getattr(aruco, aruco_dict_name, aruco.DICT_4X4_50))
         self.parameters = self.setup_aruco_parameters()
-        
+
+        # Flags to check the reception of valid messages
+        self.image_received = False
+        self.camera_info_received = False
+
         # Register shutdown hook
         rospy.on_shutdown(self.cleanup)
 
@@ -46,36 +52,47 @@ class ArucoDetector:
         return parameters
 
     def image_callback(self, data):
-        if self.camera_matrix is None or self.dist_coeffs is None:
-            rospy.logwarn("Camera matrix or distortion coefficients are not available yet.")
+        if not self.camera_info_received:
+            rospy.logwarn("Camera info not received yet. Skipping image processing.")
             return
 
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+            self.image_received = True
         except CvBridgeError as e:
             rospy.logerr(f"Could not convert image: {e}")
             return
 
-        # Apply Gaussian blur to reduce noise
-        gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
-        # gray = cv2.GaussianBlur(gray, (5, 5), 0)
+        if self.image_received and self.camera_info_received:
+            self.process_image(cv_image)
+
+    def camera_info_callback(self, data):
+        try:
+            self.camera_matrix = np.array(data.K).reshape(3, 3)
+            self.dist_coeffs = np.array(data.D)
+            self.camera_info_received = True
+        except Exception as e:
+            rospy.logerr(f"Could not convert camera info: {e}")
+            return
         
+
+    def process_image(self, cv_image):
+        gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+
         corners, ids, rejected = aruco.detectMarkers(gray, self.aruco_dict, parameters=self.parameters)
 
         if ids is not None:
-            # Refine corners for sub-pixel accuracy
             for corner in corners:
                 cv2.cornerSubPix(gray, corner,
                                  winSize=(5, 5),
                                  zeroZone=(-1, -1),
-                                 criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 30, 0.01))  # Increased accuracy
+                                 criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 30, 0.01))
 
             rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, self.aruco_marker_size, self.camera_matrix, self.dist_coeffs)
             for rvec, tvec in zip(rvecs, tvecs):
                 self.publish_pose(cv_image, rvec, tvec)
 
-        cv_image_resized = cv2.resize(cv_image, (960, 540))
-        cv2.imshow("Image window", cv_image_resized)
+        cv2.imshow(f"Image window {self.camera_name}", cv_image)
         cv2.waitKey(3)
 
     def publish_pose(self, cv_image, rvec, tvec):
@@ -87,10 +104,6 @@ class ArucoDetector:
         rmat, _ = cv2.Rodrigues(rvec)
         pose_msg.orientation.w, pose_msg.orientation.x, pose_msg.orientation.y, pose_msg.orientation.z = self.rotation_matrix_to_quaternion(rmat)
         self.pose_pub.publish(pose_msg)
-
-    def camera_info_callback(self, data):
-        self.camera_matrix = np.array(data.K).reshape(3, 3)
-        self.dist_coeffs = np.array(data.D)
 
     def rotation_matrix_to_quaternion(self, R):
         q = np.empty((4,))
@@ -126,6 +139,6 @@ class ArucoDetector:
         cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    rospy.init_node("aruco_detector")
+    rospy.init_node("aruco_detector", anonymous=True)
     aruco_detector = ArucoDetector()
     rospy.spin()

@@ -1,0 +1,21 @@
+<launch>
+    <arg name="camera_select" default="sony_cam1" />
+
+    <group if="$(eval camera_select == 'sony_cam1')">
+        <include file="$(find detector_pkg)/launch/detect.launch">
+            <arg name="camera_name" value="$(arg camera_select)" />
+        </include>
+    </group>
+
+    <group if="$(eval camera_select == 'sony_cam2')">
+        <include file="$(find detector_pkg)/launch/detect.launch">
+            <arg name="camera_name" value="$(arg camera_select)" />
+        </include>
+    </group>
+
+    <group if="$(eval camera_select == 'sony_cam3')">
+        <include file="$(find detector_pkg)/launch/detect.launch">
+            <arg name="camera_name" value="$(arg camera_select)" />
+        </include>
+    </group>
+</launch>
