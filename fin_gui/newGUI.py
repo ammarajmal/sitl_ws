@@ -15,6 +15,7 @@ import message_filters
 from fiducial_msgs.msg import FiducialTransformArray
 import re
 import psutil
+import roslaunch.rlutil
 import rospy
 import rospkg
 import roslaunch
@@ -288,19 +289,19 @@ class NodeGUI(ctk.CTk):
     def create_left_center_first_frame_widgets(self)-> None:
         ''' Starts individual cameras'''
         self.left_start_cam_label = ctk.CTkLabel(self.left_center_first_frame, text='Start Camera')
-        self.left_start_cam1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.start_camera_btn_event(1), width=2)
-        self.left_start_cam2_button = ctk.CTkButton(self.left_center_first_frame, text='  2  ', command=lambda:self.start_camera_btn_event(2), width=2)
-        self.left_start_cam3_button = ctk.CTkButton(self.left_center_first_frame, text='  3  ', command=lambda:self.start_camera_btn_event(3), width=2)
+        self.left_start_cam1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.cam_btn_event(1), width=2)
+        self.left_start_cam2_button = ctk.CTkButton(self.left_center_first_frame, text='  2  ', command=lambda:self.cam_btn_event(2), width=2)
+        self.left_start_cam3_button = ctk.CTkButton(self.left_center_first_frame, text='  3  ', command=lambda:self.cam_btn_event(3), width=2)
 
         self.left_start_view_label = ctk.CTkLabel(self.left_center_first_frame, text='View Camera')
-        self.left_view1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.start_view(1), width=2, fg_color='gray')
-        self.left_view2_button = ctk.CTkButton(self.left_center_first_frame, text='  2  ', command=lambda:self.start_view(2), width=2, fg_color='gray')
-        self.left_view3_button = ctk.CTkButton(self.left_center_first_frame, text='  3  ', command=lambda:self.start_view(3), width=2, fg_color='gray')
+        self.left_view1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.view_btn_event(1), width=2, fg_color='gray')
+        self.left_view2_button = ctk.CTkButton(self.left_center_first_frame, text='  2  ', command=lambda:self.view_btn_event(2), width=2, fg_color='gray')
+        self.left_view3_button = ctk.CTkButton(self.left_center_first_frame, text='  3  ', command=lambda:self.view_btn_event(3), width=2, fg_color='gray')
 
         self.left_startnview_label = ctk.CTkLabel(self.left_center_first_frame, text='Start & View')
-        self.left_startnview1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.start_camera_view(1), width=2)
-        self.left_startnview2_button = ctk.CTkButton(self.left_center_first_frame, text='  2  ' , command=lambda:self.start_camera_view(2), width=2)
-        self.left_startnview3_button = ctk.CTkButton(self.left_center_first_frame, text='  3  ', command=lambda:self.start_camera_view(3), width=2)
+        self.left_startnview1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.cam_view_btn_event(1), width=2)
+        self.left_startnview2_button = ctk.CTkButton(self.left_center_first_frame, text='  2  ' , command=lambda:self.cam_view_btn_event(2), width=2)
+        self.left_startnview3_button = ctk.CTkButton(self.left_center_first_frame, text='  3  ', command=lambda:self.cam_view_btn_event(3), width=2)
 
         v_space1 = 0.15
         v_space2 = 0.42
@@ -361,7 +362,7 @@ class NodeGUI(ctk.CTk):
         self.start_detection_process(2)
         self.start_detection_process(3)
         
-    def start_camera_btn_event(self, cam_num):
+    def cam_btn_event(self, cam_num):
         ''' Starts the camera '''
         try:
             if self.running_processes.get(f'sony_cam{cam_num}_cam_driver') is not None:
@@ -411,12 +412,177 @@ class NodeGUI(ctk.CTk):
             rospy.logerr('ROS Interrupted')
     def start_camera_process(self, cam_num):
         ''' Starts the camera process '''
+        cam_launch_args = [
+            f'{self.cam_launch_file}',
+            f'launch_nuc:=sony_cam{cam_num}']
+        cam_roslaunch_file = [(
+            roslaunch.rlutil.resolve_launch_arguments(cam_launch_args)[0],
+            cam_launch_args[1:])]
+        cam_driver = roslaunch.parent.ROSLaunchParent(self.uuid, cam_roslaunch_file)
+        cam_driver.start()
+        self.running_processes[f'sony_cam{cam_num}_cam_driver'] = cam_driver
+        rospy.loginfo(f'Camera {cam_num} started')
+        rospy.sleep(0.5)
+    def cam_view_btn_event(self, cam_num):
+        rospy.loginfo(f'Starting view for camera {cam_num}')
+        # checking if the camera is running
+        if self.running_processes.get(f'sony_cam{cam_num}_cam_driver') is not None:
+            # i.e., the camera is running
+            if self.running_processes.get(f'sony_cam{cam_num}_view_driver') is not None:
+                # i.e., the view process is running, stop the camera and view processes 
+                # and update the statuses in the right pane
+                try:
+                    self.cleanup_process(f'sony_cam{cam_num}_view_driver')
+                    self.cleanup_process(f'sony_cam{cam_num}_cam_driver')
+                except KeyError:
+                    rospy.logerr(f'View process for camera {cam_num} not found')
+                else:
+                    print(f'Camera {cam_num} view stopped')
+                    # stop the camera driver as well
+                    self._ui_start_cam_btn(cam_num, "IDLE")
+                    self._ui_view_cam_btn(cam_num, "IDLE")
+                    self._ui_start_view_cam_btn(cam_num, "IDLE")
+            else:
+                # i.e., the view process is not running, start the view process
+                try:
+                    self.start_view_process(cam_num)
+                except roslaunch.RLException as e:
+                    rospy.logerr(f'Error starting view for camera {cam_num}: {e}')
+                else:
+                    print(f'Camera {cam_num} view started')
+                    self._ui_view_cam_btn(cam_num, "RUNNING")
+                    self._ui_start_view_cam_btn(cam_num, "RUNNING")
+        else:
+            # i.e., the camera is not running
+            # first start the camera and then the view driver
+            try:
+                self.start_camera_process(cam_num)
+                self.start_view_process(cam_num)
+            except roslaunch.RLException as e:
+                rospy.logerr(f'Error starting view for camera {cam_num}: {e}')
+            else:
+                print(f'Camera {cam_num} view started')
+                self._ui_start_cam_btn(cam_num, "RUNNING")
+                self._ui_view_cam_btn(cam_num, "RUNNING")
+                self._ui_start_view_cam_btn(cam_num, "RUNNING")
+    def view_btn_event(self, cam_num):
+        ''' Starts the view camera process '''
+        # check if the camera is running
+        if self.running_processes.get(f'sony_cam{cam_num}_cam_driver') is not None:
+            # i.e., the camera is running
+            if self.running_processes.get(f'sony_cam{cam_num}_view_driver') is not None:
+                # i.e., the view process is running, stop the view process
+                try:
+                    self.cleanup_process(f'sony_cam{cam_num}_view_driver')
+                    self.cleanup_process(f'sony_cam{cam_num}_cam_driver')
+                except KeyError:
+                    rospy.logerr(f'View process for camera {cam_num} not found')
+                else:
+                    print(f'Camera {cam_num} view stopped')
+                    self._ui_start_cam_btn(cam_num, "IDLE")
+                    self._ui_view_cam_btn(cam_num, "IDLE")
+                    self._ui_start_view_cam_btn(cam_num, "IDLE")
+            else:
+                # i.e., the view process is not running, start the view process
+                try:
+                    self.start_view_process(cam_num)
+                except roslaunch.RLException as e:
+                    rospy.logerr(f'Error starting view for camera {cam_num}: {e}')
+                else:
+                    print(f'Camera {cam_num} view started')
+                    self._ui_view_cam_btn(cam_num, "RUNNING")
+                    self._ui_start_view_cam_btn(cam_num, "RUNNING")
+        else:
+            # i.e., the camera is not running
+            rospy.logerr(f'Camera {cam_num} not running')
+    def start_view_process(self, cam_num):
+        ''' Starts the view process '''
+        view_launch_args = [
+            f'{self.cam_view_launch_file}',
+            f'launch_nuc:=sony_cam{cam_num}']
+        view_roslaunch_file = [(
+            roslaunch.rlutil.resolve_launch_arguments(view_launch_args)[0],
+            view_launch_args[1:])]
+        view_driver = roslaunch.parent.ROSLaunchParent(self.uuid, view_roslaunch_file)
+        view_driver.start()
+        self.running_processes[f'sony_cam{cam_num}_view_driver'] = view_driver
+        rospy.loginfo(f'View for camera {cam_num} started')
+        rospy.sleep(0.5)
+    def _ui_start_cam_btn(self, cam_num, status):
+        ''' Updates the camera status in the UI '''
         if cam_num == 1:
-            self.start_camera(1)
+            if status == "RUNNING":
+                self.left_start_cam1_button.configure(fg_color='green')
+            else:
+                self.left_start_cam1_button.configure(fg_color='black')
         elif cam_num == 2:
-            self.start_camera(2)
+            if status == "RUNNING":
+                self.left_start_cam2_button.configure(fg_color='green')
+            else:
+                self.left_start_cam2_button.configure(fg_color='black')
         elif cam_num == 3:
-            self.start_camera(3)
+            if status == "RUNNING":
+                self.left_start_cam3_button.configure(fg_color='green')
+            else:
+                self.left_start_cam3_button.configure(fg_color='black')
+    def _ui_view_cam_btn(self, cam_num, status):
+        ''' Updates the view status in the UI '''
+        if cam_num == 1:
+            if status == "RUNNING":
+                self.left_view1_button.configure(fg_color='green')
+            else:
+                self.left_view1_button.configure(fg_color='gray')
+        elif cam_num == 2:
+            if status == "RUNNING":
+                self.left_view2_button.configure(fg_color='green')
+            else:
+                self.left_view2_button.configure(fg_color='gray')
+        elif cam_num == 3:
+            if status == "RUNNING":
+                self.left_view3_button.configure(fg_color='green')
+            else:
+                self.left_view3_button.configure(fg_color='gray')
+    def _ui_start_view_cam_btn(self, cam_num, status):
+        ''' Updates the start view status in the UI '''
+        if cam_num == 1:
+            if status == "RUNNING":
+                self.left_startnview1_button.configure(fg_color='green')
+            else:
+                self.left_startnview1_button.configure(fg_color='black')
+        elif cam_num == 2:
+            if status == "RUNNING":
+                self.left_startnview2_button.configure(fg_color='green')
+            else:
+                self.left_startnview2_button.configure(fg_color='black')
+        elif cam_num == 3:
+            if status == "RUNNING":
+                self.left_startnview3_button.configure(fg_color='green')
+            else:
+                self.left_startnview3_button.configure(fg_color='black')
+    def start_detection_process(self, cam_num):
+        ''' Starts the detection process '''
+        detect_launch_args = [
+            f'{self.detect_launch_file}',
+            f'launch_nuc:=sony_cam{cam_num}']
+        detect_roslaunch_file = [(
+            roslaunch.rlutil.resolve_launch_arguments(detect_launch_args)[0],
+            detect_launch_args[1:])]
+        detect_driver = roslaunch.parent.ROSLaunchParent(self.uuid, detect_roslaunch_file)
+        detect_driver.start()
+        self.running_processes[f'sony_cam{cam_num}_detect_driver'] = detect_driver
+        rospy.loginfo(f'Detection for camera {cam_num} started')
+        rospy.sleep(0.5)
+
+    def cleanup_process(self, process_name):
+        ''' Stops the process '''
+        self.running_processes[process_name].shutdown()
+        del self.running_processes[process_name]
+        rospy.loginfo(f'{process_name} stopped')
+
+
+    
+
+                        
 
 
 
@@ -425,7 +591,7 @@ class NodeGUI(ctk.CTk):
 
             
     #     self.menu = tk.Menu(self)
-    #     self.config(menu=self.menu)
+    #     self.configure(menu=self.menu)
     #     self.file_menu = tk.Menu(self.menu, tearoff=0)
     #     self.menu.add_cascade(label="File", menu=self.file_menu)
     #     self.file_menu.add_command(label="Exit", command=self.on_closing)
