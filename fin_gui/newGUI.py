@@ -288,9 +288,9 @@ class NodeGUI(ctk.CTk):
     def create_left_center_first_frame_widgets(self)-> None:
         ''' Starts individual cameras'''
         self.left_start_cam_label = ctk.CTkLabel(self.left_center_first_frame, text='Start Camera')
-        self.left_start_cam1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.start_camera(1), width=2)
-        self.left_start_cam2_button = ctk.CTkButton(self.left_center_first_frame, text='  2  ', command=lambda:self.start_camera(2), width=2)
-        self.left_start_cam3_button = ctk.CTkButton(self.left_center_first_frame, text='  3  ', command=lambda:self.start_camera(3), width=2)
+        self.left_start_cam1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.start_camera_btn_event(1), width=2)
+        self.left_start_cam2_button = ctk.CTkButton(self.left_center_first_frame, text='  2  ', command=lambda:self.start_camera_btn_event(2), width=2)
+        self.left_start_cam3_button = ctk.CTkButton(self.left_center_first_frame, text='  3  ', command=lambda:self.start_camera_btn_event(3), width=2)
 
         self.left_start_view_label = ctk.CTkLabel(self.left_center_first_frame, text='View Camera')
         self.left_view1_button = ctk.CTkButton(self.left_center_first_frame, text='  1  ', command=lambda:self.start_view(1), width=2, fg_color='gray')
@@ -361,17 +361,68 @@ class NodeGUI(ctk.CTk):
         self.start_detection_process(2)
         self.start_detection_process(3)
         
-    def start_camera(self, cam_num):
+    def start_camera_btn_event(self, cam_num):
         ''' Starts the camera '''
+        try:
+            if self.running_processes.get(f'sony_cam{cam_num}_cam_driver') is not None:
+                # i.e., the camera is running, stop the camera
+                rospy.loginfo(f'Stopping camera {cam_num}')
+                # check and stop the detection process if running
+                if self.running_processes.get(f'sony_cam{cam_num}_detect_driver') is not None:
+                    # i.e., the detection process is running, stop the detection process
+                    rospy.loginfo(f'Stopping detection for camera {cam_num}')
+                    try:
+                        self.cleanup_process(f'sony_cam{cam_num}_detect_driver')
+                    except KeyError:
+                        rospy.logerr(f'Detection process for camera {cam_num} not found')
+                    else:
+                        print(f'Camera {cam_num} detection stopped')
+                        # update the detection status in the right pane
+                        self._ui_detect_cam_btn(cam_num, "IDLE")
+                if self.running_processes.get(f'sony_cam{cam_num}_view_driver') is not None:
+                    # i.e., the view process is running, stop the view process
+                    rospy.loginfo(f'Stopping view for camera {cam_num}')
+                    try:
+                        self.cleanup_process(f'sony_cam{cam_num}_view_driver')
+                    except KeyError:
+                        rospy.logerr(f'View process for camera {cam_num} not found')
+                    else:
+                        # update the view status in the right pane
+                        print(f'Camera {cam_num} view stopped')
+                        self._ui_start_cam_btn(cam_num, "IDLE")
+                        self._ui_view_cam_btn(cam_num, "IDLE")
+                        self._ui_start_view_cam_btn(cam_num, "IDLE")
+                else:
+                    # i.e., view and detect processes are not running, but camera is running so stop the camera
+                    try:
+                        self.cleanup_process(f'sony_cam{cam_num}_cam_driver')
+                    except KeyError:
+                        rospy.logerr(f'Camera {cam_num} not found')
+                    else:
+                        print(f'Camera {cam_num} stopped')
+                        self._ui_start_cam_btn(cam_num, "IDLE")
+            else:
+                # i.e., the camera is not running, start the camera
+                rospy.loginfo(f'Starting camera {cam_num}')
+                self.start_camera_process(cam_num)
+                rospy.loginfo(f'Camera {cam_num} started')
+                self._ui_start_cam_btn(cam_num, "RUNNING")
+        except rospy.ROSInterruptException:
+            rospy.logerr('ROS Interrupted')
+    def start_camera_process(self, cam_num):
+        ''' Starts the camera process '''
         if cam_num == 1:
-            self.cam1 = True
-            self.start_camera_process(1)
+            self.start_camera(1)
         elif cam_num == 2:
-            self.cam2 = True
-            self.start_camera_process(2)
+            self.start_camera(2)
         elif cam_num == 3:
-            self.cam3 = True
-            self.start_camera_process(3)
+            self.start_camera(3)
+
+
+
+
+
+
             
     #     self.menu = tk.Menu(self)
     #     self.config(menu=self.menu)
