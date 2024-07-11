@@ -68,13 +68,16 @@ class NodeGUI(ctk.CTk):
 
         self.board_size = '6x5' # default board size for calibration
         self.square_size = '0.025' # default square size for calibration in meters
+        self.sq_size_var = tk.StringVar(self, self.square_size)
+        self.board_size_var = tk.StringVar(self, self.board_size)
 
         self.marker_dim = '0.020' # ARUCO marker dimension in meters
         self.marker_dict = '0' #  ARUCO marker dictionary (DICT_4X4_50)
+        self.marker_dim_var = tk.StringVar(self, self.marker_dim)
         self.marker_dict_var = tk.StringVar(self, self.marker_dict)
 
         self.cam_pkg = 'dslr_cam'
-        self.detect_pkg = 'disp_6dof'
+        self.detect_pkg = 'detector_pkg'
         try:
             self.uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
             self.cam_launch_path = rospkg.RosPack().get_path(self.cam_pkg) + '/launch/'
@@ -239,16 +242,76 @@ class NodeGUI(ctk.CTk):
         ''' Creates the center frame in the middle first frame '''
         self.middle_first_center_frame = ctk.CTkFrame(self.middle_first_frame)
         self.middle_first_center_frame.place(relx=0.5, rely=(self.ver_space*2)+self.label_height, relwidth=self.frame_width, relheight=self.frame_height, anchor='n')
-        # self.create_middle_first_center_frame_widgets()
+        self.create_middle_first_center_frame_widgets()
     def create_middle_first_bottom_frame(self)-> None:
         ''' Creates the bottom frame in the middle first frame '''
         self.middle_first_bottom_frame = ctk.CTkFrame(self.middle_first_frame)
         self.middle_first_bottom_frame.place(relx=0.5, rely=(self.ver_space*3)+self.label_height+self.frame_height, relwidth=self.frame_width, relheight=self.frame_height, anchor='n')
-        # self.create_middle_first_bottom_frame_widgets()
+        self.create_middle_first_bottom_frame_widgets()
     def exit_button_frame(self)-> None:
         ''' Creates the exit button frame '''
         self.exit_button = ctk.CTkButton(self.middle_first_frame, text='EXIT', command=self.on_closing, fg_color=themes["red"])
         self.exit_button.place(relx=0.5, rely=(self.ver_space*4)+self.label_height+(self.frame_height*2), relwidth=self.frame_width, relheight=self.label_height, anchor='n')
+    def create_middle_first_center_frame_widgets(self)-> None:
+        '''Frame for setting Calibration parameters'''
+        self.calib_label = ctk.CTkLabel(self.middle_first_center_frame, text='CALIBRATION PARAMETERS')
+        self.calib_square_size_label = ctk.CTkLabel(self.middle_first_center_frame, text='Square Size (m):')
+        self.calib_square_size_entry = ctk.CTkEntry(self.middle_first_center_frame, textvariable=self.sq_size_var)
+        self.calib_board_size_label = ctk.CTkLabel(self.middle_first_center_frame, text='Board Size:')
+        self.calib_board_size_entry = ctk.CTkEntry(self.middle_first_center_frame, textvariable=self.board_size_var)
+        self.calib_update_btn = ctk.CTkButton(self.middle_first_center_frame, text='UPDATE', command=self.update_calib_params)
+        self.calib_label.place(relx=0.5, rely=0.1, anchor='n')
+        self.calib_square_size_label.place(relx=0.1, rely=0.3)
+        self.calib_square_size_entry.place(relx=0.8, rely=0.3, anchor='n', relwidth=0.3)
+        self.calib_board_size_label.place(relx=0.1, rely=0.5)
+        self.calib_board_size_entry.place(relx=0.8, rely=0.5, anchor='n', relwidth=0.3)
+        self.calib_update_btn.place(relx=0.5, rely=0.7, anchor='n')
+    def update_calib_params(self):
+        ''' Updates the calibration parameters '''
+        self.square_size = self.calib_square_size_entry.get()
+        self.board_size = self.calib_board_size_entry.get()
+        print(f'Square Size: {self.square_size}, Board Size: {self.board_size}')
+        self.calib_update_btn.configure(text='UPDATED', fg_color='green')
+    def create_middle_first_bottom_frame_widgets(self)-> None:
+        '''Update the ARUCO parameters'''
+        self.aruco_label = ctk.CTkLabel(self.middle_first_bottom_frame, text='DETECTION PARAMETERS')
+        self.aruco_marker_dim_label = ctk.CTkLabel(self.middle_first_bottom_frame, text='Marker Size (m):')
+        self.aruco_marker_dim_entry = ctk.CTkEntry(self.middle_first_bottom_frame, textvariable=self.marker_dim_var)
+        self.aruco_marker_dict_label = ctk.CTkLabel(self.middle_first_bottom_frame, text='Marker Dictionary:')
+        self.aruco_marker_dict_entry = ctk.CTkEntry(self.middle_first_bottom_frame, textvariable=self.marker_dict_var)
+        self.aruco_update_btn = ctk.CTkButton(self.middle_first_bottom_frame, text='UPDATE', command=self.update_aruco_params)
+        self.aruco_label.place(relx=0.5, rely=0.1, anchor='n')
+        self.aruco_marker_dim_label.place(relx=0.1, rely=0.3)
+        self.aruco_marker_dim_entry.place(relx=0.8, rely=0.3, anchor='n', relwidth=0.3)
+        self.aruco_marker_dict_label.place(relx=0.1, rely=0.5)
+        self.aruco_marker_dict_entry.place(relx=0.8, rely=0.5, anchor='n', relwidth=0.3)
+        self.aruco_update_btn.place(relx=0.5, rely=0.7, anchor='n')
+    def update_aruco_params(self):
+        ''' Updates the ARUCO parameters '''
+        self.marker_dim = self.aruco_marker_dim_entry.get()
+        self.marker_dict = self.aruco_marker_dict_entry.get()
+        print(f'Marker Dimension: {self.marker_dim}, Marker Dictionary: {self.marker_dict}')
+        self.aruco_update_btn.configure(text='UPDATED', fg_color='green')
+    def on_closing(self):
+        ''' Stops all the processes and closes the GUI '''
+        self.is_detection_active = False
+        self.is_data_collection_active = False
+        for process in self.running_processes:
+            self.cleanup_process(process)
+        self.destroy()
+    def cleanup_process(self, process_name):
+        ''' Stops the process '''
+        try:
+            self.running_processes[process_name].stop()
+            del self.running_processes[process_name]
+        except KeyError:
+            rospy.logerr(f'{process_name} not found')
+        else:
+            rospy.loginfo(f'{process_name} stopped')
+
+
+
+
         
         
         
@@ -328,9 +391,9 @@ class NodeGUI(ctk.CTk):
     def create_left_center_second_frame_widgets(self)-> None:
         ''' Calibrate Cameras '''
         self.left_calib_cam_label = ctk.CTkLabel(self.left_center_second_frame, text='CALIBRATE CAMERA')
-        self.left_calib_cam1_button = ctk.CTkButton(self.left_center_second_frame, text='1', command=lambda:self.calibrate_camera(1))
-        self.left_calib_cam2_button = ctk.CTkButton(self.left_center_second_frame, text='2', command=lambda:self.calibrate_camera(2))
-        self.left_calib_cam3_button = ctk.CTkButton(self.left_center_second_frame, text='3', command=lambda:self.calibrate_camera(3))
+        self.left_calib_cam1_button = ctk.CTkButton(self.left_center_second_frame, text='1', command=lambda:self.calibrate_cam_btn_event(1))
+        self.left_calib_cam2_button = ctk.CTkButton(self.left_center_second_frame, text='2', command=lambda:self.calibrate_cam_btn_event(2))
+        self.left_calib_cam3_button = ctk.CTkButton(self.left_center_second_frame, text='3', command=lambda:self.calibrate_cam_btn_event(3))
         self.left_calib_cam_label.place(relx=0.5, rely=0.1, anchor='n')
         self.left_calib_cam1_button.place(relx=0.2, rely=0.5, anchor='n', relwidth=0.2)
         self.left_calib_cam2_button.place(relx=0.5, rely=0.5, anchor='n', relwidth=0.2)
@@ -338,9 +401,9 @@ class NodeGUI(ctk.CTk):
         
     def create_left_bottom_frame_widgets(self)-> None:
         self.left_start_detect_label = ctk.CTkLabel(self.left_bottom_frame, text='START DETECTION')
-        self.left_detect1_button = ctk.CTkButton(self.left_bottom_frame, text='1', command=lambda:self.start_detection(1))
-        self.left_detect2_button = ctk.CTkButton(self.left_bottom_frame, text='2', command=lambda:self.start_detection(2))
-        self.left_detect3_button = ctk.CTkButton(self.left_bottom_frame, text='3', command=lambda:self.start_detection(3))
+        self.left_detect1_button = ctk.CTkButton(self.left_bottom_frame, text='1', command=lambda:self.start_detect_btn_event(1))
+        self.left_detect2_button = ctk.CTkButton(self.left_bottom_frame, text='2', command=lambda:self.start_detect_btn_event(2))
+        self.left_detect3_button = ctk.CTkButton(self.left_bottom_frame, text='3', command=lambda:self.start_detect_btn_event(3))
         self.left_detectall_button = ctk.CTkButton(self.left_bottom_frame, text='ALL CAMERAS', command=self.start_detection_all, fg_color='gray')
         
         self.left_start_detect_label.place(relx=0.5, rely=0.08, anchor='n')
@@ -348,19 +411,73 @@ class NodeGUI(ctk.CTk):
         self.left_detect2_button.place(relx=0.5, rely=0.34, anchor='n', relwidth=0.2)
         self.left_detect3_button.place(relx=0.8, rely=0.34, anchor='n', relwidth=0.2)
         self.left_detectall_button.place(relx=0.5, rely=0.66, anchor='n')
-    def start_detection(self, cam_num):
+    def start_detect_btn_event(self, cam_num):
         ''' Starts detection for the selected camera '''
-        if cam_num == 1:
-            self.start_detection_process(1)
-        elif cam_num == 2:
-            self.start_detection_process(2)
-        elif cam_num == 3:
-            self.start_detection_process(3)
+        rospy.loginfo(f'Starting detection for camera {cam_num}')
+        if self.running_processes.get(f'sony_cam{cam_num}_detect_driver') is not None:
+            # i.e., the detection process is running, stop the detection process
+            try:
+                self.cleanup_process(f'sony_cam{cam_num}_detect_driver')
+            except KeyError:
+                rospy.logerr(f'Detection process for camera {cam_num} not found')
+            else:
+                print(f'Detection for camera {cam_num} stopped')
+                self._ui_detect_cam_btn(cam_num, "IDLE")
+                try:
+                    self.cleanup_process(f'sony_cam{cam_num}_cam_driver')
+                except KeyError:
+                    rospy.logerr(f'Camera {cam_num} not found')
+                else:
+                    print(f'Camera {cam_num} stopped')
+                    self._ui_start_cam_btn(cam_num, "IDLE")
+        else:
+            # i.e., the detection process is not running, start the detection process
+            # check if the camera is running or not
+            if self.running_processes.get(f'sony_cam{cam_num}_cam_driver') is not None:
+                # i.e., the camera is running, start the detection process
+                try:
+                    self.start_detect_process(cam_num)
+                except roslaunch.RLException as e:
+                    rospy.logerr(f'Error starting detection for camera {cam_num}: {e}')
+                else:
+                    print(f'Detection for camera {cam_num} started')
+                    self._ui_detect_cam_btn(cam_num, "RUNNING")
+            else:
+                # i.e., the camera is not running, start the camera and then the detection process
+                try:
+                    self.start_camera_process(cam_num)
+                    self.start_detect_process(cam_num)
+                except roslaunch.RLException as e:
+                    rospy.logerr(f'Error starting detection for camera {cam_num}: {e}')
+                else:
+                    print(f'Detection for camera {cam_num} started')
+                    self._ui_detect_cam_btn(cam_num, "RUNNING")
+                    self._ui_start_cam_btn(cam_num, "RUNNING")
+    def start_detect_process(self, cam_num):
+        ''' Starts the detection process '''
+        self.marker_dict = self.marker_dict_var.get()
+        self.marker_dim = self.marker_dim_var.get()
+        detect_launch_args = [
+            f'{self.detect_launch_file}',
+            f'launch_nuc:=sony_cam{cam_num}',
+            f'dictionary:={self.marker_dict}',
+            f'fiducial_len:={self.marker_dim}']
+        detect_roslaunch_file = [(
+            roslaunch.rlutil.resolve_launch_arguments(detect_launch_args)[0],
+            detect_launch_args[1:])]
+        detect_driver = roslaunch.parent.ROSLaunchParent(self.uuid, detect_roslaunch_file)
+        detect_driver.start()
+        self.running_processes[f'sony_cam{cam_num}_detect_driver'] = detect_driver
+        rospy.loginfo(f'Detection for camera {cam_num} started')
+        rospy.sleep(0.5)
     def start_detection_all(self):
-        ''' Starts detection for all cameras '''
-        self.start_detection_process(1)
-        self.start_detection_process(2)
-        self.start_detection_process(3)
+        ''' Starts detection for all the cameras '''
+        for cam_num in range(1, 4):
+            self.start_detect_btn_event(cam_num)
+            
+
+
+
         
     def cam_btn_event(self, cam_num):
         ''' Starts the camera '''
@@ -405,9 +522,13 @@ class NodeGUI(ctk.CTk):
             else:
                 # i.e., the camera is not running, start the camera
                 rospy.loginfo(f'Starting camera {cam_num}')
-                self.start_camera_process(cam_num)
-                rospy.loginfo(f'Camera {cam_num} started')
-                self._ui_start_cam_btn(cam_num, "RUNNING")
+                try:
+                    self.start_camera_process(cam_num)
+                except roslaunch.RLException as e:
+                    rospy.logerr(f'Error starting camera {cam_num}: {e}')
+                else:
+                    rospy.loginfo(f'Camera {cam_num} started')
+                    self._ui_start_cam_btn(cam_num, "RUNNING")
         except rospy.ROSInterruptException:
             rospy.logerr('ROS Interrupted')
     def start_camera_process(self, cam_num):
@@ -495,6 +616,67 @@ class NodeGUI(ctk.CTk):
         else:
             # i.e., the camera is not running
             rospy.logerr(f'Camera {cam_num} not running')
+    def calibrate_cam_btn_event(self, cam_num):
+        ''' Calibrates the camera '''
+        if self.running_processes.get(f'sony_cam{cam_num}_calib_driver') is not None:
+            # i.e., the calibration process is running, stop the calibration process
+            try:
+                self.cleanup_process(f'sony_cam{cam_num}_calib_driver')
+            except KeyError:
+                rospy.logerr(f'Calibration process for camera {cam_num} not found')
+            else:
+                print(f'Camera {cam_num} calibration stopped')
+                self._ui_calib_cam_btn(cam_num, "IDLE")
+                try:
+                    self.cleanup_process(f'sony_cam{cam_num}_cam_driver')
+                    self.cleanup_process(f'sony_cam{cam_num}_view_driver')
+                    
+                except KeyError:
+                    rospy.logerr(f'Camera {cam_num} not found')
+                else:
+                    print(f'Camera {cam_num} stopped')
+                    self._ui_start_cam_btn(cam_num, "IDLE")
+                    self._ui_view_cam_btn(cam_num, "IDLE")
+                    self._ui_start_view_cam_btn(cam_num, "IDLE")
+        else:
+            # i.e., the calibration process is not running, start the calibration process
+            # but first start the camera node first and put it into the processes dictionary
+            try:
+                self.start_calibration_process(cam_num)
+            except roslaunch.RLException as e:
+                rospy.logerr(f'Error starting calibration for camera {cam_num}: {e}')
+            else:
+                print(f'Camera {cam_num} calibration started')
+                self._ui_calib_cam_btn(cam_num, "RUNNING")
+    def start_calibration_process(self, cam_num):
+        ''' Starts the calibration process '''
+        self.board_size = self.board_size_var.get()
+        self.square_size = self.sq_size_var.get()
+        if self.running_processes.get(f'sony_cam{cam_num}_cam_driver') is None:
+            # i.e., the camera is not running, start the camera
+            try:
+                self.start_camera_process(cam_num)
+            except roslaunch.RLException as e:
+                rospy.logerr(f'Error starting camera {cam_num}: {e}')
+            else:
+                print(f'Camera {cam_num} started')
+                self._ui_start_cam_btn(cam_num, "RUNNING")
+        calib_launch_args = [
+            f'{self.cam_calib_launch_file}',
+            f'launch_nuc:=sony_cam{cam_num}',
+            f'cb_size:={self.board_size}',
+            f'cb_square:={self.square_size}']
+        calib_roslaunch_file = [(
+            roslaunch.rlutil.resolve_launch_arguments(calib_launch_args)[0],
+            calib_launch_args[1:])]
+        calib_driver = roslaunch.parent.ROSLaunchParent(self.uuid, calib_roslaunch_file)
+        calib_driver.start()
+        self.running_processes[f'sony_cam{cam_num}_calib_driver'] = calib_driver
+        rospy.loginfo(f'Calibration for camera {cam_num} started')
+        rospy.sleep(0.5)
+
+
+
     def start_view_process(self, cam_num):
         ''' Starts the view process '''
         view_launch_args = [
@@ -514,17 +696,17 @@ class NodeGUI(ctk.CTk):
             if status == "RUNNING":
                 self.left_start_cam1_button.configure(fg_color='green')
             else:
-                self.left_start_cam1_button.configure(fg_color='black')
+                self.left_start_cam1_button.configure(fg_color=themes['blue'][0])
         elif cam_num == 2:
             if status == "RUNNING":
                 self.left_start_cam2_button.configure(fg_color='green')
             else:
-                self.left_start_cam2_button.configure(fg_color='black')
+                self.left_start_cam2_button.configure(fg_color=themes['blue'][0])
         elif cam_num == 3:
             if status == "RUNNING":
                 self.left_start_cam3_button.configure(fg_color='green')
             else:
-                self.left_start_cam3_button.configure(fg_color='black')
+                self.left_start_cam3_button.configure(fg_color=themes['blue'][0])
     def _ui_view_cam_btn(self, cam_num, status):
         ''' Updates the view status in the UI '''
         if cam_num == 1:
@@ -548,31 +730,51 @@ class NodeGUI(ctk.CTk):
             if status == "RUNNING":
                 self.left_startnview1_button.configure(fg_color='green')
             else:
-                self.left_startnview1_button.configure(fg_color='black')
+                self.left_startnview1_button.configure(fg_color=themes['blue'][0])
         elif cam_num == 2:
             if status == "RUNNING":
                 self.left_startnview2_button.configure(fg_color='green')
             else:
-                self.left_startnview2_button.configure(fg_color='black')
+                self.left_startnview2_button.configure(fg_color=themes['blue'][0])
         elif cam_num == 3:
             if status == "RUNNING":
                 self.left_startnview3_button.configure(fg_color='green')
             else:
-                self.left_startnview3_button.configure(fg_color='black')
-    def start_detection_process(self, cam_num):
-        ''' Starts the detection process '''
-        detect_launch_args = [
-            f'{self.detect_launch_file}',
-            f'launch_nuc:=sony_cam{cam_num}']
-        detect_roslaunch_file = [(
-            roslaunch.rlutil.resolve_launch_arguments(detect_launch_args)[0],
-            detect_launch_args[1:])]
-        detect_driver = roslaunch.parent.ROSLaunchParent(self.uuid, detect_roslaunch_file)
-        detect_driver.start()
-        self.running_processes[f'sony_cam{cam_num}_detect_driver'] = detect_driver
-        rospy.loginfo(f'Detection for camera {cam_num} started')
-        rospy.sleep(0.5)
-
+                self.left_startnview3_button.configure(fg_color=themes['blue'][0])
+    def _ui_calib_cam_btn(self, cam_num, status):
+        ''' Updates the calibration status in the UI '''
+        if cam_num == 1:
+            if status == "RUNNING":
+                self.left_calib_cam1_button.configure(fg_color='green')
+            else:
+                self.left_calib_cam1_button.configure(fg_color=themes['blue'][0])
+        elif cam_num == 2:
+            if status == "RUNNING":
+                self.left_calib_cam2_button.configure(fg_color='green')
+            else:
+                self.left_calib_cam2_button.configure(fg_color=themes['blue'][0])
+        elif cam_num == 3:
+            if status == "RUNNING":
+                self.left_calib_cam3_button.configure(fg_color='green')
+            else:
+                self.left_calib_cam3_button.configure(fg_color=themes['blue'][0])
+    def _ui_detect_cam_btn(self, cam_num, status):
+        ''' Updates the detection status in the UI '''
+        if cam_num == 1:
+            if status == "RUNNING":
+                self.left_detect1_button.configure(fg_color='green')
+            else:
+                self.left_detect1_button.configure(fg_color=themes['blue'][0])
+        elif cam_num == 2:
+            if status == "RUNNING":
+                self.left_detect2_button.configure(fg_color='green')
+            else:
+                self.left_detect2_button.configure(fg_color=themes['blue'][0])
+        elif cam_num == 3:
+            if status == "RUNNING":
+                self.left_detect3_button.configure(fg_color='green')
+            else:
+                self.left_detect3_button.configure(fg_color=themes['blue'][0])
     def cleanup_process(self, process_name):
         ''' Stops the process '''
         self.running_processes[process_name].shutdown()
