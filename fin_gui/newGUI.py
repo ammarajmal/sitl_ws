@@ -44,17 +44,19 @@ class NodeGUI(ctk.CTk):
         self.sub2 = None
         self.sub3 = None
         self.ats = None
-        self.cam1 = False
-        self.cam2 = False
-        self.cam3 = False
+        self.cam1_status = False
+        self.cam2_status = False
+        self.cam3_status = False
+        self.detect1_status = False
+        self.detect2_status = False
+        self.detect3_status = False
 
         self.experiment_name = 'Exp1'
+        self.file_name = None
         self.experiment_dur = 60 # seconds
         self.exp_name_var = tk.StringVar(self, self.experiment_name)
         self.exp_dur_var = tk.StringVar(self, self.experiment_dur)
-
-        self.file_name = None
-
+    
         self.image_width = '640'
         self.image_height = '480'
         self.camera_resolution = self.image_width + 'x' + self.image_height
@@ -184,28 +186,51 @@ class NodeGUI(ctk.CTk):
         self.middle_second_center_rec2_button.place(relx=0.4, rely=0.58, relwidth=0.2)
         self.middle_second_center_rec3_button = ctk.CTkButton(self.middle_second_center_frame, text='3', command=lambda:self.record_data(3))
         self.middle_second_center_rec3_button.place(relx=0.7, rely=0.58, relwidth=0.2)
-        self.middle_second_center_recall_button = ctk.CTkButton(self.middle_second_center_frame, text='RECALL', command=self.recall_data)
+        self.middle_second_center_recall_button = ctk.CTkButton(self.middle_second_center_frame, text='RECORD ALL', command=self.recall_data)
         self.middle_second_center_recall_button.place(relx=0.5, rely=0.8, anchor='n')
+    def record_data_param_update(self):
+        ''' Updates the record data parameters '''
+        try:
+            self.experiment_dur = int(self.exp_dur_var.get())
+        except ValueError:
+            print('Invalid Experiment Duration, please input a valid number')
+        else:
+            self.experiment_name = self.exp_name_var.get()
+            # File name for saving the data
+            cur_time = rospy.get_time()
+            cur_time = datetime.datetime.fromtimestamp(cur_time).strftime('%Y-%m-%d_%H-%M-%S')
+            cwd = os.getcwd()
+            cwd = os.path.join(cwd, 'data/data_analysis/new/')
+            self.file_name = f'data_{self.experiment_name}_{self.experiment_dur}s_{cur_time}.csv'
+            self.file_name = os.path.join(cwd, self.file_name)
+    def check_running_cameras(self):
+        # check which of the self.cam1_status, self.cam2_status, self.cam3_status are True and return the camera numbers
+        cam_nums = []
+        if self.cam1_status:
+            cam_nums.append(1)
+        if self.cam2_status:
+            cam_nums.append(2)
+        if self.cam3_status:
+            cam_nums.append(3)
+        return (len(cam_nums), cam_nums)
+    
+
     def recall_data(self):
         ''' Recalls the data '''
-        print('Recall Data')
-        
-        
-    def record_data(self, num):
-        ''' Records the data '''
-        self.experiment_name = self.exp_name_var.get()
-        self.experiment_dur = int(self.exp_dur_var.get())
-        self.file_name = f'{self.experiment_name}_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv'
-        self.is_data_collection_active = True
-        self.record_data_process()
-    def record_data_process(self):
-        ''' Records the data '''
-        if self.is_data_collection_active:
-            self.data_collection_process()
-            self.after(self.experiment_dur*1000, self.record_data_process)
-    def data_collection_process(self):
-        ''' Collects the data '''
-        print('Data Collection Process')
+        print('Recording Pose Data')
+        self.record_data_param_update()
+        print(f'File Name: {self.file_name}')
+        num, cams = self.check_running_cameras()
+        print(f'Number of running cameras: {num}, Cameras: {cams}')
+        if num == 1:
+            first_cam = cams[0]
+        if num == 2:
+            first_cam = cams[0]
+            second_cam = cams[1]
+
+
+
+
     def create_middle_second_bottom_frame(self)-> None:
         ''' Creates the bottom frame in the middle second frame '''
         self.middle_second_bottom_frame = ctk.CTkFrame(self.middle_second_frame)
@@ -301,22 +326,10 @@ class NodeGUI(ctk.CTk):
         self.destroy()
     def cleanup_process(self, process_name):
         ''' Stops the process '''
-        try:
-            self.running_processes[process_name].stop()
-            del self.running_processes[process_name]
-        except KeyError:
-            rospy.logerr(f'{process_name} not found')
-        else:
-            rospy.loginfo(f'{process_name} stopped')
+        self.running_processes[process_name].shutdown()
+        del self.running_processes[process_name]
 
 
-
-
-        
-        
-        
-        
-        
     def create_left_frame(self)-> None:
         ''' Creates the left frame to start Camera and Detection '''
         self.left_frame = tk.Frame(self, bg=themes[COLOR_SELECT][0])
@@ -595,12 +608,10 @@ class NodeGUI(ctk.CTk):
                 # i.e., the view process is running, stop the view process
                 try:
                     self.cleanup_process(f'sony_cam{cam_num}_view_driver')
-                    self.cleanup_process(f'sony_cam{cam_num}_cam_driver')
                 except KeyError:
                     rospy.logerr(f'View process for camera {cam_num} not found')
                 else:
                     print(f'Camera {cam_num} view stopped')
-                    self._ui_start_cam_btn(cam_num, "IDLE")
                     self._ui_view_cam_btn(cam_num, "IDLE")
                     self._ui_start_view_cam_btn(cam_num, "IDLE")
             else:
@@ -695,18 +706,24 @@ class NodeGUI(ctk.CTk):
         if cam_num == 1:
             if status == "RUNNING":
                 self.left_start_cam1_button.configure(fg_color='green')
+                self.cam1_status = True
             else:
                 self.left_start_cam1_button.configure(fg_color=themes['blue'][0])
+                self.cam1_status = False
         elif cam_num == 2:
             if status == "RUNNING":
                 self.left_start_cam2_button.configure(fg_color='green')
+                self.cam2_status = True
             else:
                 self.left_start_cam2_button.configure(fg_color=themes['blue'][0])
+                self.cam2_status = False
         elif cam_num == 3:
             if status == "RUNNING":
                 self.left_start_cam3_button.configure(fg_color='green')
+                self.cam3_status = True
             else:
                 self.left_start_cam3_button.configure(fg_color=themes['blue'][0])
+                self.cam3_status = False
     def _ui_view_cam_btn(self, cam_num, status):
         ''' Updates the view status in the UI '''
         if cam_num == 1:
@@ -763,23 +780,25 @@ class NodeGUI(ctk.CTk):
         if cam_num == 1:
             if status == "RUNNING":
                 self.left_detect1_button.configure(fg_color='green')
+                self.detect1_status = True
             else:
                 self.left_detect1_button.configure(fg_color=themes['blue'][0])
+                self.detect1_status = False
         elif cam_num == 2:
             if status == "RUNNING":
                 self.left_detect2_button.configure(fg_color='green')
+                self.detect2_status = True
             else:
                 self.left_detect2_button.configure(fg_color=themes['blue'][0])
+                self.detect2_status = False
         elif cam_num == 3:
             if status == "RUNNING":
                 self.left_detect3_button.configure(fg_color='green')
+                self.detect3_status = True
             else:
                 self.left_detect3_button.configure(fg_color=themes['blue'][0])
-    def cleanup_process(self, process_name):
-        ''' Stops the process '''
-        self.running_processes[process_name].shutdown()
-        del self.running_processes[process_name]
-        rospy.loginfo(f'{process_name} stopped')
+                self.detect3_status = False
+
 
 
     
@@ -896,5 +915,6 @@ class NodeGUI(ctk.CTk):
         self.label_camera_info = ctk.CTkLabel(self.frame_camera_info, text="Camera Information", font=("Helvetica", 16))
         self.label_camera_info.pack(fill="both", expand=True)
 if __name__ == "__main__":
+    rospy.init_node('fin_gui', anonymous=True)
     app = NodeGUI()
     app.mainloop()
