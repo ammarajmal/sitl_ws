@@ -92,11 +92,11 @@ class ArucoDetector:
             for rvec, tvec in zip(rvecs, tvecs):
                 self.publish_pose(cv_image, rvec, tvec)
 
-        cv2.imshow(f"Image window {self.camera_name}", cv_image)
-        cv2.waitKey(3)
+        # cv2.imshow(f"Image window {self.camera_name}", cv_image)
+        # cv2.waitKey(3)
 
     def publish_pose(self, cv_image, rvec, tvec):
-        aruco.drawAxis(cv_image, self.camera_matrix, self.dist_coeffs, rvec, tvec, 0.1)
+        # aruco.drawAxis(cv_image, self.camera_matrix, self.dist_coeffs, rvec, tvec, 0.1)
         pose_msg = Pose()
         pose_msg.position.x = tvec[0][0]
         pose_msg.position.y = tvec[0][1]

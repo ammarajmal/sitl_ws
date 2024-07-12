@@ -459,7 +459,7 @@ class NodeGUI(ctk.CTk):
         self.marker_dim = self.marker_dim_var.get()
         detect_launch_args = [
             f'{self.detect_launch_file}',
-            f'launch_nuc:=sony_cam{cam_num}',
+            f'camera_select:=sony_cam{cam_num}',
             f'dictionary:={self.marker_dict}',
             f'fiducial_len:={self.marker_dim}']
         detect_roslaunch_file = [(
