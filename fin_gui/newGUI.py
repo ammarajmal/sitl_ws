@@ -44,6 +44,9 @@ class NodeGUI(ctk.CTk):
         self.sub2 = None
         self.sub3 = None
         self.ats = None
+        self.cam_first = None
+        self.cam_second = None
+        self.cam_third = None
         self.cam1_status = False
         self.cam2_status = False
         self.cam3_status = False
@@ -200,7 +203,7 @@ class NodeGUI(ctk.CTk):
             cur_time = rospy.get_time()
             cur_time = datetime.datetime.fromtimestamp(cur_time).strftime('%Y-%m-%d_%H-%M-%S')
             cwd = os.getcwd()
-            cwd = os.path.join(cwd, 'data/data_analysis/new/')
+            cwd = os.path.join(cwd, 'data/pose_data/')
             self.file_name = f'data_{self.experiment_name}_{self.experiment_dur}s_{cur_time}.csv'
             self.file_name = os.path.join(cwd, self.file_name)
     def check_running_cameras(self):
@@ -214,7 +217,44 @@ class NodeGUI(ctk.CTk):
             cam_nums.append(3)
         return (len(cam_nums), cam_nums)
     
-
+    def record_data(self, cam_num):
+        ''' Records the data '''
+        print(f'Recording Pose Data for Camera {cam_num}')
+        self.cam_first = cam_num
+        self.record_data_param_update()
+        print(f'File Name: {self.file_name}')
+        self.sub1 = rospy.Subscriber(f'/sony_cam{cam_num}_detect/fiducial_transforms', FiducialTransformArray, self.record_single)
+        self.is_data_collection_active = True
+        rospy.Timer(rospy.Duration(self.experiment_dur), self.stop_data_collection, oneshot=True)
+        self.collectected_data = []
+    def record_single(self, msg):
+        if not self.is_data_collection_active:
+            return
+        timestamp = rospy.get_time()
+        # print the x and y position of the first fiducial from the msg to the console
+        print(f'Fiducial ID: {msg.transforms[0].fiducial_id}, Position: ({msg.transforms[0].transform.translation.x}, {msg.transforms[0].transform.translation.y}, {msg.transforms[0].transform.translation.z}), Rotation: ({msg.transforms[0].transform.rotation.x}, {msg.transforms[0].transform.rotation.y}, {msg.transforms[0].transform.rotation.z}, {msg.transforms[0].transform.rotation.w})')
+        self.collectected_data.append([timestamp, msg])
+    def stop_data_collection(self, event):
+        self.is_data_collection_active = False
+        self.sub1.unregister()
+        self.save_to_csv()
+    def save_to_csv(self):
+        ''' Saves the data to a CSV file '''
+        with open(self.file_name, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Time (s)',
+                             f'Cam{self.cam_first} Fiducial ID',
+                             f'Cam{self.cam_first} Position X',
+                             f'Cam{self.cam_first} Position Y',
+                             f'Cam{self.cam_first} Position Z',
+                             f'Cam{self.cam_first} Rotation X',
+                             f'Cam{self.cam_first} Rotation Y',
+                              f'Cam{self.cam_first} Rotation Z',
+                              f'Cam{self.cam_first} Rotation W'])
+            for data in self.collectected_data:
+                for msg in data[1].transforms:
+                    writer.writerow([data[0], msg.fiducial_id, msg.transform.translation.x, msg.transform.translation.y, msg.transform.translation.z, msg.transform.rotation.x, msg.transform.rotation.y, msg.transform.rotation.z, msg.transform.rotation.w])
+        print(f'Data saved to {self.file_name}')
     def recall_data(self):
         ''' Recalls the data '''
         print('Recording Pose Data')
@@ -224,9 +264,88 @@ class NodeGUI(ctk.CTk):
         print(f'Number of running cameras: {num}, Cameras: {cams}')
         if num == 1:
             first_cam = cams[0]
+            self.record_data(first_cam)
         if num == 2:
             first_cam = cams[0]
             second_cam = cams[1]
+            self.sub1 = message_filters.Subscriber(f'/sony_cam{first_cam}_detect/fiducial_transforms', FiducialTransformArray)
+            self.sub2 = message_filters.Subscriber(f'/sony_cam{second_cam}_detect/fiducial_transforms', FiducialTransformArray)
+            self.ats = message_filters.ApproximateTimeSynchronizer([self.sub1, self.sub2], 10, 0.1, allow_headerless=True)
+            self.ats.registerCallback(self.record_two_cams)
+            self.is_data_collection_active = True
+            rospy.Timer(rospy.Duration(self.experiment_dur), self.stop_data_collection2, oneshot=True)
+            self.collectected_data = []
+        if num == 3:
+            print('Recording Pose Data for 3 Cameras')
+            self.sub1 = message_filters.Subscriber(f'/sony_cam{cams[0]}_detect/fiducial_transforms', FiducialTransformArray)
+            self.sub2 = message_filters.Subscriber(f'/sony_cam{cams[1]}_detect/fiducial_transforms', FiducialTransformArray)
+            self.sub3 = message_filters.Subscriber(f'/sony_cam{cams[2]}_detect/fiducial_transforms', FiducialTransformArray)
+            self.ats = message_filters.ApproximateTimeSynchronizer([self.sub1, self.sub2, self.sub3], 10, 0.1, allow_headerless=True)
+            self.ats.registerCallback(self.record_multiple)
+            self.is_data_collection_active = True
+            rospy.Timer(rospy.Duration(self.experiment_dur), self.stop_data_collection3, oneshot=True)
+            self.collectected_data = []
+    def record_two_cams(self, msg1, msg2):
+        if not self.is_data_collection_active:
+            return
+        timestamp = rospy.get_time()
+        self.collectected_data.append([timestamp, msg1, msg2])
+    def stop_data_collection2(self, event):
+        self.is_data_collection_active = False
+        self.sub1.unregister()
+        self.sub2.unregister()
+        self.save_to_csv2()
+    def save_to_csv2(self):
+        ''' Save the data from two cameras to a CSV file '''
+        with open(self.file_name, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Time (s)', 'Cam1 Fiducial ID', 'Cam1 Position X', 'Cam1 Position Y', 'Cam1 Position Z', 'Cam1 Rotation X', 'Cam1 Rotation Y', 'Cam1 Rotation Z', 'Cam1 Rotation W',
+                            'Cam2 Fiducial ID', 'Cam2 Position X', 'Cam2 Position Y', 'Cam2 Position Z', 'Cam2 Rotation X', 'Cam2 Rotation Y', 'Cam2 Rotation Z', 'Cam2 Rotation W'])
+            for data in self.collectected_data:
+                for i in range(len(data[1].transforms)):
+                    cam1 = data[1].transforms[i]
+                    cam2 = data[2].transforms[i] if i < len(data[2].transforms) else None
+                    row = [data[0],
+                        cam1.fiducial_id, cam1.transform.translation.x, cam1.transform.translation.y, cam1.transform.translation.z, cam1.transform.rotation.x, cam1.transform.rotation.y, cam1.transform.rotation.z, cam1.transform.rotation.w,
+                        cam2.fiducial_id if cam2 else '', cam2.transform.translation.x if cam2 else '', cam2.transform.translation.y if cam2 else '', cam2.transform.translation.z if cam2 else '', cam2.transform.rotation.x if cam2 else '', cam2.transform.rotation.y if cam2 else '', cam2.transform.rotation.z if cam2 else '', cam2.transform.rotation.w if cam2 else '']
+                    writer.writerow(row)
+        print(f'Data saved to {self.file_name}')
+    
+    def record_multiple(self, msg1, msg2, msg3):
+        if not self.is_data_collection_active:
+            return
+        timestamp = rospy.get_time()
+        self.collectected_data.append([timestamp, msg1, msg2, msg3])
+    def stop_data_collection3(self, event):
+        self.is_data_collection_active = False
+        self.sub1.unregister()
+        self.sub2.unregister()
+        self.sub3.unregister()
+        self.save_to_csv3()
+    def save_to_csv3(self):
+        '''Save the data from three cameras to a CSV file'''
+        with open(self.file_name, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Time (s)', 'Cam1 Fiducial ID', 'Cam1 Position X', 'Cam1 Position Y', 'Cam1 Position Z', 'Cam1 Rotation X', 'Cam1 Rotation Y', 'Cam1 Rotation Z', 'Cam1 Rotation W',
+                            'Cam2 Fiducial ID', 'Cam2 Position X', 'Cam2 Position Y', 'Cam2 Position Z', 'Cam2 Rotation X', 'Cam2 Rotation Y', 'Cam2 Rotation Z', 'Cam2 Rotation W',
+                            'Cam3 Fiducial ID', 'Cam3 Position X', 'Cam3 Position Y', 'Cam3 Position Z', 'Cam3 Rotation X', 'Cam3 Rotation Y', 'Cam3 Rotation Z', 'Cam3 Rotation W'])
+            for data in self.collectected_data:
+                for i in range(len(data[1].transforms)):
+                    cam1 = data[1].transforms[i]
+                    cam2 = data[2].transforms[i] if i < len(data[2].transforms) else None
+                    cam3 = data[3].transforms[i] if i < len(data[3].transforms) else None
+                    row = [data[0],
+                        cam1.fiducial_id, cam1.transform.translation.x, cam1.transform.translation.y, cam1.transform.translation.z, cam1.transform.rotation.x, cam1.transform.rotation.y, cam1.transform.rotation.z, cam1.transform.rotation.w,
+                        cam2.fiducial_id if cam2 else '', cam2.transform.translation.x if cam2 else '', cam2.transform.translation.y if cam2 else '', cam2.transform.translation.z if cam2 else '', cam2.transform.rotation.x if cam2 else '', cam2.transform.rotation.y if cam2 else '', cam2.transform.rotation.z if cam2 else '', cam2.transform.rotation.w if cam2 else '',
+                        cam3.fiducial_id if cam3 else '', cam3.transform.translation.x if cam3 else '', cam3.transform.translation.y if cam3 else '', cam3.transform.translation.z if cam3 else '', cam3.transform.rotation.x if cam3 else '', cam3.transform.rotation.y if cam3 else '', cam3.transform.rotation.z if cam3 else '', cam3.transform.rotation.w if cam3 else '']
+                    writer.writerow(row)
+        print(f'Data saved to {self.file_name}')
+
+
+
+
+            
+            
 
 
 
@@ -240,11 +359,70 @@ class NodeGUI(ctk.CTk):
         ''' Creates the widgets in the bottom frame in the middle second frame '''
         self.middle_second_bottom_frame_label = ctk.CTkLabel(self.middle_second_bottom_frame, text='PLOT DATA')
         self.middle_second_bottom_frame_label.place(relx=0.5, rely=0.1, anchor='n')
-        self.middle_second_bottom_frame_button = ctk.CTkButton(self.middle_second_bottom_frame, text='PLOT', command=self.plot_data)
+        self.middle_second_bottom_frame_button = ctk.CTkButton(self.middle_second_bottom_frame, text='PLOT - OVERLAP', command=lambda:self.plot_data(True))
         self.middle_second_bottom_frame_button.place(relx=0.5, rely=0.5, anchor='n')
-    def plot_data(self):
+        self.middle_second_bottom_frame_button = ctk.CTkButton(self.middle_second_bottom_frame, text='PLOT - SEPARATE', command=lambda:self.plot_data(False))
+        self.middle_second_bottom_frame_button.place(relx=0.5, rely=0.8, anchor='n')
+
+    def plot_data(self, overlap: bool):
         ''' Plots the data '''
-        print('Plot Data')
+        print('Experiment name:', self.experiment_name)
+        print('File name:', self.file_name)
+        print('Experiment duration:', self.experiment_dur)
+        print('Plotting Data')
+
+        data = pd.read_csv(self.file_name)
+
+        def adjust_positions(data, cam_prefix):
+            for axis in ['X', 'Y', 'Z']:
+                col_name = f'{cam_prefix} Position {axis}'
+                data[col_name] -= data[col_name].iloc[0]
+            for axis in ['X', 'Y', 'Z', 'W']:
+                col_name = f'{cam_prefix} Rotation {axis}'
+                data[col_name] -= data[col_name].iloc[0]
+
+        for cam_num in range(1, 4):
+            adjust_positions(data, f'Cam{cam_num}')
+
+        # Convert Unix timestamp to seconds relative to the start of the experiment
+        start_time = data['Time (s)'].iloc[0]
+        data['Time (s)'] = (data['Time (s)'] - start_time)
+
+        def plot_axis(ax, x_data, y_data, label, color, linestyle='-'):
+            ax.plot(x_data, y_data, label=label, color=color, linestyle=linestyle)
+
+        colors = ['red', 'green', 'blue']
+        linestyles = ['-', 'dashed', 'dotted']
+        axis_labels = ['X', 'Y', 'Z']
+
+        fig, axs = plt.subplots(3, 1, figsize=(10, 15))
+
+        for i, axis in enumerate(axis_labels):
+            for cam_num in range(1, 4):
+                col_name = f'Cam{cam_num} Position {axis}'
+                plot_axis(axs[i], data['Time (s)'].values, data[col_name].values, f'Cam{cam_num} Position {axis}', colors[cam_num-1], linestyles[cam_num-1])
+            axs[i].set_title(f'{axis} Axis Displacement - {self.experiment_name}')
+            axs[i].set_xlabel('Time (s)')
+            axs[i].set_ylabel('Displacement (mm)')
+            axs[i].legend()
+            axs[i].grid(True, which='both')
+            axs[i].minorticks_on()
+            axs[i].xaxis.set_major_locator(MaxNLocator(integer=True))
+            axs[i].yaxis.set_major_locator(MaxNLocator(integer=True))
+            axs[i].set_yticklabels([f'{x * 1000:.2f}' for x in axs[i].get_yticks()])
+            axs[i].set_xticklabels([f'{x:.0f}' for x in axs[i].get_xticks()])
+
+        file_name = self.file_name.replace('.csv', '.png')
+        plt.savefig(file_name)
+        print(f'Plot saved to {file_name}')
+        plt.show()
+
+
+
+        
+
+
+
         
     def create_middle_first_frame(self)-> None:
         ''' Creates the middle frame for setting system parameters '''
