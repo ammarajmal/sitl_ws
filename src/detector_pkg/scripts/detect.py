@@ -6,7 +6,7 @@ import numpy as np
 import rospy
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge, CvBridgeError
-from geometry_msgs.msg import PoseStamped
+from fiducial_msgs.msg import FiducialTransform, FiducialTransformArray
 
 class ArucoDetector:
     def __init__(self) -> None:
@@ -23,10 +23,9 @@ class ArucoDetector:
         rospy.sleep(5)
         self.image_sub = rospy.Subscriber(f"/{self.camera_name}/image_raw", Image, self.image_callback)
         
-        # Initialize pose publishers
+        # Initialize pose publisher
         self.node_name = rospy.get_name()
-        self.pose_pub = rospy.Publisher(f"{self.node_name}/pose", PoseStamped, queue_size=10)
-        self.pose_w_pub = rospy.Publisher(f"{self.node_name}/pose_world", PoseStamped, queue_size=10)
+        self.transform_pub = rospy.Publisher(f"{self.node_name}/fiducial_transforms", FiducialTransformArray, queue_size=10)
 
         # Initialize camera matrix and distortion coefficients
         self.camera_matrix = None
@@ -92,46 +91,61 @@ class ArucoDetector:
                                  criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 30, 0.01))
 
             rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, self.aruco_marker_size, self.camera_matrix, self.dist_coeffs)
-            for rvec, tvec in zip(rvecs, tvecs):
-                R_w, T_w = self.camera_to_world_pose(rvec, tvec)
-                self.publish_pose(cv_image, rvec, tvec, R_w, T_w)
-            # show the image with the markers
-            cv2.imshow(f"Camera {self.camera_name[-1]}", cv_image)
-            cv2.waitKey(1)
+            
+            # Prepare the FiducialTransformArray message
+            transform_array_msg = FiducialTransformArray()
+            transform_array_msg.header.stamp = rospy.Time.now()
+            transform_array_msg.header.frame_id = self.camera_name
 
-    def publish_pose(self, cv_image, rvec, tvec, R_w, T_w):
-        aruco.drawAxis(cv_image, self.camera_matrix, self.dist_coeffs, rvec, tvec, 0.1)
-        pose_msg = PoseStamped()
-        pose_msg.header.stamp = rospy.Time.now()
-        pose_msg.header.frame_id = self.camera_name
-        pose_msg.pose.position.x = tvec[0][0]
-        pose_msg.pose.position.y = tvec[0][1]
-        pose_msg.pose.position.z = tvec[0][2]
-        rmat, _ = cv2.Rodrigues(rvec)
-        pose_msg.pose.orientation.w, pose_msg.pose.orientation.x, pose_msg.pose.orientation.y, pose_msg.pose.orientation.z = self.rotation_matrix_to_quaternion(rmat)
-        self.pose_pub.publish(pose_msg)
+            for rvec, tvec, corner, fid in zip(rvecs, tvecs, corners, ids):
+                transform = FiducialTransform()
+                transform.fiducial_id = int(fid)
 
-        pose_w_msg = PoseStamped()
-        pose_w_msg.header.stamp = rospy.Time.now()
-        pose_w_msg.header.frame_id = "world"
-        pose_w_msg.pose.position.x = T_w[0][0]
-        pose_w_msg.pose.position.y = T_w[1][0]
-        pose_w_msg.pose.position.z = T_w[2][0]
-        pose_w_msg.pose.orientation.w, pose_w_msg.pose.orientation.x, pose_w_msg.pose.orientation.y, pose_w_msg.pose.orientation.z = self.rotation_matrix_to_quaternion(R_w)
-        self.pose_w_pub.publish(pose_w_msg)
+                transform.transform.translation.x = tvec[0][0]
+                transform.transform.translation.y = tvec[0][1]
+                transform.transform.translation.z = tvec[0][2]
 
-    def camera_to_world_pose(self, rvec, tvec):
-        # Convert rotation vector to rotation matrix
-        R_c, _ = cv2.Rodrigues(rvec)
-        
-        # Inverse of the rotation matrix
-        R_w = R_c.T
-        
-        # Adjust the translation vector
-        T_c = np.array(tvec).reshape(-1, 1)
-        T_w = -np.dot(R_w, T_c)
-        
-        return R_w, T_w
+                rmat, _ = cv2.Rodrigues(rvec)
+                qw, qx, qy, qz = self.rotation_matrix_to_quaternion(rmat)
+                transform.transform.rotation.x = qx
+                transform.transform.rotation.y = qy
+                transform.transform.rotation.z = qz
+                transform.transform.rotation.w = qw
+
+                # Calculate the reprojection error
+                image_error = self.calculate_reprojection_error(rvec, tvec, corner)
+                transform.image_error = image_error
+
+                # Calculate the fiducial area
+                fiducial_area = cv2.contourArea(corner)
+                transform.fiducial_area = fiducial_area
+
+                # Object error can be calculated if there's a specific metric, for now, we set it to 0
+                transform.object_error = 0
+
+                # Add the transform to the array message
+                transform_array_msg.transforms.append(transform)
+
+            # Publish the transform array message
+            self.transform_pub.publish(transform_array_msg)
+
+    def calculate_reprojection_error(self, rvec, tvec, corner):
+        # Project the 3D marker points back to the image plane
+        marker_points = np.array([
+            [-self.aruco_marker_size/2, self.aruco_marker_size/2, 0],
+            [self.aruco_marker_size/2, self.aruco_marker_size/2, 0],
+            [self.aruco_marker_size/2, -self.aruco_marker_size/2, 0],
+            [-self.aruco_marker_size/2, -self.aruco_marker_size/2, 0]
+        ])
+
+        projected_points, _ = cv2.projectPoints(marker_points, rvec, tvec, self.camera_matrix, self.dist_coeffs)
+
+        # Convert types to match
+        corner = np.squeeze(corner).astype(np.float64)
+        projected_points = np.squeeze(projected_points).astype(np.float64)
+        error = cv2.norm(corner, projected_points, cv2.NORM_L2) / len(projected_points)
+
+        return error
 
     def rotation_matrix_to_quaternion(self, R):
         q = np.empty((4,))
@@ -149,7 +163,7 @@ class ArucoDetector:
                 q[0] = 0.25 * S
                 q[1] = (R[0, 1] + R[1, 0]) / S
                 q[2] = (R[0, 2] + R[2, 0]) / S
-            elif (R[1, 1] > R[2, 2]):
+            elif R[1, 1] > R[2, 2]:
                 S = np.sqrt(1.0 + R[1, 1] - R[0, 0] - R[2, 2]) * 2
                 q[3] = (R[0, 2] - R[2, 0]) / S
                 q[0] = (R[0, 1] + R[1, 0]) / S
@@ -160,7 +174,6 @@ class ArucoDetector:
                 q[3] = (R[1, 0] - R[0, 1]) / S
                 q[0] = (R[0, 2] + R[2, 0]) / S
                 q[1] = (R[1, 2] + R[2, 1]) / S
-                q[2] = 0.25 * S
         return q
 
     def cleanup(self):
