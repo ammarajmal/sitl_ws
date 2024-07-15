@@ -70,6 +70,10 @@ class NodeGUI(ctk.CTk):
 
         self.is_detection_active = False
         self.is_data_collection_active = False
+        self.collectected_data_world = []
+        self.collectected_data_camera = []
+        self.collectected_data_displacement = []
+
 
         self.board_size = '6x5' # default board size for calibration
         self.square_size = '0.025' # default square size for calibration in meters
@@ -114,15 +118,6 @@ class NodeGUI(ctk.CTk):
         
         
 
-        
-        # self.after(1000, self.update)
-        # self.after(1000, self.update_cpu)
-        # self.after(1000, self.update_memory)
-        # self.after(1000, self.update_temp)
-        # self.after(1000, self.update_disk)
-        # self.after(1000, self.update_network)
-        # self.after(1000, self.update_camera)
-        # self.after(1000, self.update_fiducial)
     def create_widgets(self)-> None:
         ''' Starts the GUI widgets creation '''
 
@@ -149,7 +144,172 @@ class NodeGUI(ctk.CTk):
         ''' Creates the bottom frame in the right frame '''
         self.right_bottom_frame = ctk.CTkFrame(self.right_frame, fg_color=themes[COLOR_SELECT][0])
         self.right_bottom_frame.place(relx=0.5, rely=(self.ver_space*2)+self.label_height, relwidth=self.frame_width, relheight=1-(self.ver_space*3)-self.label_height, anchor='n')
-        # self.create_right_bottom_frame_widgets()
+        self.create_right_bottom_frame_widgets()
+    def create_right_bottom_frame_widgets(self)-> None:
+        ''' creates button for camera 1 saving data and plotting data'''
+        self.cam_custom_record_button = ctk.CTkButton(self.right_bottom_frame, text='cam 1 comparison', command=lambda:self.custom_cam_record(1))
+        self.cam_custom_plot_button = ctk.CTkButton(self.right_bottom_frame, text='cam 1 plot', command=self.plot_data_custom)
+        self.cam_custom_record_button.place(relx=0.5, rely=0.1, anchor='n')
+        self.cam_custom_plot_button.place(relx=0.5, rely=0.3, anchor='n')
+    def custom_cam_record(self, cam_num=1):
+        ''' Records the data '''
+        rospy.loginfo(f'Recording Pose Data for Camera {cam_num}')
+        self.is_data_collection_active = True
+        self.cam_first = cam_num
+        self.record_data_param_update()
+        print(f'File Name: {self.file_name}')
+
+        
+        self.sub_world = rospy.Subscriber(f'/sony_cam{cam_num}_detect/world_fiducial_transforms', FiducialTransformArray, self.record_world)
+        self.sub_camera = rospy.Subscriber(f'/sony_cam{cam_num}_detect/camera_fiducial_transforms', FiducialTransformArray, self.record_camera)
+        self.sub_displacement = rospy.Subscriber(f'/sony_cam{cam_num}_detect/disp_fiducial', FiducialTransformArray, self.record_displacement)
+        
+        rospy.Timer(rospy.Duration(self.experiment_dur), self.stop_data_collection_custom, oneshot=True)
+        
+    def record_world(self, msg):
+        if not self.is_data_collection_active:
+            return
+        timestamp = rospy.get_time()
+        for transform in msg.transforms:
+            print(f'Fiducial ID: {transform.fiducial_id}, Position: ({transform.transform.translation.x}, {transform.transform.translation.y}, {transform.transform.translation.z}), Rotation: ({transform.transform.rotation.x}, {transform.transform.rotation.y}, {transform.transform.rotation.z}, {transform.transform.rotation.w})')
+            self.collectected_data_world.append([timestamp, transform.fiducial_id, transform.transform.translation.x,
+                                                 transform.transform.translation.y, transform.transform.translation.z,
+                                                 transform.transform.rotation.x, transform.transform.rotation.y,
+                                                 transform.transform.rotation.z, transform.transform.rotation.w])
+    
+    def record_camera(self, msg):
+        if not self.is_data_collection_active:
+            return
+        timestamp = rospy.get_time()
+        for transform in msg.transforms:
+            self.collectected_data_camera.append([timestamp, transform.fiducial_id, transform.transform.translation.x,
+                                                  transform.transform.translation.y, transform.transform.translation.z,
+                                                  transform.transform.rotation.x, transform.transform.rotation.y,
+                                                  transform.transform.rotation.z, transform.transform.rotation.w])
+    
+    def record_displacement(self, msg):
+        if not self.is_data_collection_active:
+            return
+        timestamp = rospy.get_time()
+        for transform in msg.transforms:
+            self.collectected_data_displacement.append([timestamp, transform.fiducial_id, transform.transform.translation.x,
+                                                        transform.transform.translation.y, transform.transform.translation.z,
+                                                        transform.transform.rotation.x, transform.transform.rotation.y,
+                                                        transform.transform.rotation.z, transform.transform.rotation.w])
+    
+    def stop_data_collection_custom(self, event):
+        self.is_data_collection_active = False
+        self.sub_world.unregister()
+        self.sub_camera.unregister()
+        self.sub_displacement.unregister()
+        self.save_to_csv_custom()
+    def save_to_csv_custom(self):
+        ''' Saves the data to a CSV file '''
+        with open(self.file_name, 'w', newline='') as file:
+            writer = csv.writer(file)
+            # Write the header
+            writer.writerow(['Time (s)',
+                            f'Cam{self.cam_first} Fiducial ID',
+                            'Camera Position X', 'Camera Position Y', 'Camera Position Z',
+                            'Camera Rotation W', 'Camera Rotation X', 'Camera Rotation Y', 'Camera Rotation Z',
+                            'World Position X', 'World Position Y', 'World Position Z',
+                            'World Rotation W', 'World Rotation X', 'World Rotation Y', 'World Rotation Z',
+                            'Displacement Position X', 'Displacement Position Y', 'Displacement Position Z',
+                            'Displacement Rotation W', 'Displacement Rotation X', 'Displacement Rotation Y', 'Displacement Rotation Z'])
+
+            # Ensure all lists have the same length by filling missing values with None
+            max_length = max(len(self.collectected_data_world), len(self.collectected_data_camera), len(self.collectected_data_displacement))
+
+            for i in range(max_length):
+                world_data = self.collectected_data_world[i] if i < len(self.collectected_data_world) else [None] * 9
+                camera_data = self.collectected_data_camera[i] if i < len(self.collectected_data_camera) else [None] * 9
+                displacement_data = self.collectected_data_displacement[i] if i < len(self.collectected_data_displacement) else [None] * 9
+
+                # Assuming all data points share the same timestamp and fiducial ID, otherwise, adjust accordingly
+                timestamp = world_data[0] if world_data[0] is not None else camera_data[0] if camera_data[0] is not None else displacement_data[0]
+                fiducial_id = world_data[1] if world_data[1] is not None else camera_data[1] if camera_data[1] is not None else displacement_data[1]
+
+                row = [timestamp, fiducial_id] + \
+                    camera_data[2:] + \
+                    world_data[2:] + \
+                    displacement_data[2:]
+                
+                writer.writerow(row)
+
+        rospy.loginfo(f'Data saved to {self.file_name}')
+
+        
+
+
+    def plot_data_custom(self):
+        ''' Plots the data '''
+        print('Experiment name:', self.experiment_name)
+        print('File name:', self.file_name)
+        print('Experiment duration:', self.experiment_dur)
+        print('Plotting Data')
+        data = pd.read_csv(self.file_name)
+        
+        # Convert Unix timestamp to seconds relative to the start of the experiment
+        start_time = data['Time (s)'].iloc[0]
+        data['Time (s)'] = (data['Time (s)'] - start_time)
+        
+        # Plot Camera Positions
+        fig1, axs1 = plt.subplots(3, 1, figsize=(15, 15))
+        for i, axis in enumerate(['X', 'Y', 'Z']):
+            col_name = f'Camera Position {axis}'
+            if col_name in data.columns:
+                axs1[i].plot(data['Time (s)'].to_numpy(), data[col_name].to_numpy(), label=f'Camera Position {axis}')
+                axs1[i].set_title(f'Camera Position {axis} - {self.experiment_name}')
+                axs1[i].set_xlabel('Time (s)')
+                axs1[i].set_ylabel('Position (m)')
+                axs1[i].legend()
+                axs1[i].grid(True)
+        fig1.savefig(self.file_name.replace('.csv', '_camera_positions.png'))
+        
+        # Plot World Positions
+        fig2, axs2 = plt.subplots(3, 1, figsize=(15, 15))
+        for i, axis in enumerate(['X', 'Y', 'Z']):
+            col_name = f'World Position {axis}'
+            if col_name in data.columns:
+                axs2[i].plot(data['Time (s)'].to_numpy(), data[col_name].to_numpy(), label=f'World Position {axis}')
+                axs2[i].set_title(f'World Position {axis} - {self.experiment_name}')
+                axs2[i].set_xlabel('Time (s)')
+                axs2[i].set_ylabel('Position (m)')
+                axs2[i].legend()
+                axs2[i].grid(True)
+        fig2.savefig(self.file_name.replace('.csv', '_world_positions.png'))
+        
+        # Plot Displacement Positions
+        fig3, axs3 = plt.subplots(3, 1, figsize=(15, 15))
+        for i, axis in enumerate(['X', 'Y', 'Z']):
+            col_name = f'Displacement Position {axis}'
+            if col_name in data.columns:
+                axs3[i].plot(data['Time (s)'].to_numpy(), data[col_name].to_numpy(), label=f'Displacement Position {axis}')
+                axs3[i].set_title(f'Displacement Position {axis} - {self.experiment_name}')
+                axs3[i].set_xlabel('Time (s)')
+                axs3[i].set_ylabel('Position (m)')
+                axs3[i].legend()
+                axs3[i].grid(True)
+        fig3.savefig(self.file_name.replace('.csv', '_displacement_positions.png'))
+        
+        # Plot Comparison of Positions
+        fig4, axs4 = plt.subplots(3, 1, figsize=(15, 15))
+        for i, axis in enumerate(['X', 'Y', 'Z']):
+            for frame in ['Camera', 'World', 'Displacement']:
+                col_name = f'{frame} Position {axis}'
+                if col_name in data.columns:
+                    axs4[i].plot(data['Time (s)'].to_numpy(), data[col_name].to_numpy(), label=f'{frame} Position {axis}')
+            axs4[i].set_title(f'Comparison of {axis} Positions - {self.experiment_name}')
+            axs4[i].set_xlabel('Time (s)')
+            axs4[i].set_ylabel('Position (m)')
+            axs4[i].legend()
+            axs4[i].grid(True)
+        fig4.savefig(self.file_name.replace('.csv', '_comparison_positions.png'))
+        
+        plt.show()
+        rospy.loginfo(f'Plots saved to {self.file_name.replace(".csv", "_*.png")}')
+
+
     def create_middle_second_frame(self)-> None:
         ''' Creates the middle frame for setting system parameters '''
         self.middle_second_frame = tk.Frame(self, bg=themes[COLOR_SELECT][0])
@@ -340,16 +500,6 @@ class NodeGUI(ctk.CTk):
                         cam3.fiducial_id if cam3 else '', cam3.transform.translation.x if cam3 else '', cam3.transform.translation.y if cam3 else '', cam3.transform.translation.z if cam3 else '', cam3.transform.rotation.x if cam3 else '', cam3.transform.rotation.y if cam3 else '', cam3.transform.rotation.z if cam3 else '', cam3.transform.rotation.w if cam3 else '']
                     writer.writerow(row)
         print(f'Data saved to {self.file_name}')
-
-
-
-
-            
-            
-
-
-
-
     def create_middle_second_bottom_frame(self)-> None:
         ''' Creates the bottom frame in the middle second frame '''
         self.middle_second_bottom_frame = ctk.CTkFrame(self.middle_second_frame)
@@ -404,7 +554,7 @@ class NodeGUI(ctk.CTk):
         linestyles = ['-', 'dashed', 'dotted']
         axis_labels = ['X', 'Y', 'Z']
 
-        fig, axs = plt.subplots(3, 1, figsize=(10, 15))
+        fig, axs = plt.subplots(3, 1, figsize=(15, 15))
 
         for i, axis in enumerate(axis_labels):
             for cam_num in available_cameras:
@@ -501,13 +651,23 @@ class NodeGUI(ctk.CTk):
         ''' Stops all the processes and closes the GUI '''
         self.is_detection_active = False
         self.is_data_collection_active = False
-        for process in self.running_processes:
+        print('Stopping all processes')
+        
+        # Make a copy of the keys to avoid modifying the dictionary while iterating
+        processes = list(self.running_processes.keys())
+        for process in processes:
             self.cleanup_process(process)
+        
         self.destroy()
+
     def cleanup_process(self, process_name):
         ''' Stops the process '''
-        self.running_processes[process_name].shutdown()
-        del self.running_processes[process_name]
+        try:
+            self.running_processes[process_name].shutdown()
+            del self.running_processes[process_name]
+        except KeyError:
+            print(f'{process_name} not running')
+
 
 
     def create_left_frame(self)-> None:
@@ -978,122 +1138,6 @@ class NodeGUI(ctk.CTk):
             else:
                 self.left_detect3_button.configure(fg_color=themes['blue'][0])
                 self.detect3_status = False
-
-
-
-    
-
-                        
-
-
-
-
-
-
-            
-    #     self.menu = tk.Menu(self)
-    #     self.configure(menu=self.menu)
-    #     self.file_menu = tk.Menu(self.menu, tearoff=0)
-    #     self.menu.add_cascade(label="File", menu=self.file_menu)
-    #     self.file_menu.add_command(label="Exit", command=self.on_closing)
-    #     self.help_menu = tk.Menu(self.menu, tearoff=0)
-    #     self.menu.add_cascade(label="Help", menu=self.help_menu)
-    #     self.help_menu.add_command(label="About", command=self.show_about)
-    # def create_tabs(self):
-    #     self.tabs = ctk.CTkNotebook(self)
-    #     self.tabs.pack(fill="both", expand=True)
-    #     self.create_tab_system()
-    #     self.create_tab_camera()
-    #     self.create_tab_fiducial()
-    # def create_tab_system(self):
-    #     self.tab_system = ctk.CTkFrame(self.tabs)
-    #     self.tabs.add(self.tab_system, text="System")
-    #     self.create_system_widgets()
-    # def create_system_widgets(self):
-    #     self.create_system_info()
-    #     self.create_system_cpu()
-    #     self.create_system_memory()
-    #     self.create_system_temp()
-    #     self.create_system_disk()
-    #     self.create_system_network()
-    # def create_system_info(self):
-    #     self.frame_system_info = ctk.CTkFrame(self.tab_system)
-    #     self.frame_system_info.pack(fill="both", expand=True)
-    #     self.label_system_info = ctk.CTkLabel(self.frame_system_info, text="System Information", font=("Helvetica", 16))
-    #     self.label_system_info.pack(fill="both", expand=True)
-    #     self.label_system_info = ctk.CTkLabel(self.frame_system_info, text="System Information", font=("Helvetica", 16))
-    #     self.label_system_info.pack(fill="both", expand=True)
-    #     self.label_system_info = ctk.CTkLabel(self.frame_system_info, text="System Information", font=("Helvetica", 16))
-    #     self.label_system_info.pack(fill="both", expand=True)
-    #     self.label_system_info = ctk.CTkLabel(self.frame_system_info, text="System Information", font=("Helvetica", 16))
-    #     self.label_system_info.pack(fill="both", expand=True)
-    #     self.label_system_info = ctk.CTkLabel(self.frame_system_info, text="System Information", font=("Helvetica", 16))
-    #     self.label_system_info.pack(fill="both", expand=True)
-    #     self.label_system_info = ctk.CTkLabel(self.frame_system_info, text="System Information", font=("Helvetica", 16))
-    #     self.label_system_info.pack(fill="both", expand=True)
-    # def create_system_cpu(self):
-    #     self.frame_system_cpu = ctk.CTkFrame(self.tab_system)
-    #     self.frame_system_cpu.pack(fill="both", expand=True)
-    #     self.label_system_cpu = ctk.CTkLabel(self.frame_system_cpu, text="CPU Usage", font=("Helvetica", 16))
-    #     self.label_system_cpu.pack(fill="both", expand=True)
-    #     self.label_system_cpu = ctk.CTkLabel(self.frame_system_cpu, text="CPU Usage", font=("Helvetica", 16))
-    #     self.label_system_cpu.pack(fill="both", expand=True)
-    #     self.label_system_cpu = ctk.CTkLabel(self.frame_system_cpu, text="CPU Usage", font=("Helvetica", 16))
-    #     self.label_system_cpu.pack(fill="both", expand=True)
-    #     self.label_system_cpu = ctk.CTkLabel(self.frame_system_cpu, text="CPU Usage", font=("Helvetica", 16))
-    #     self.label_system_cpu.pack(fill="both", expand=True)
-    #     self.label_system_cpu = ctk.CTkLabel(self.frame_system_cpu, text="CPU Usage", font=("Helvetica", 16))
-    #     self.label_system_cpu.pack(fill="both", expand=True)
-    #     self.label_system_cpu = ctk.CTkLabel(self.frame_system_cpu, text="CPU Usage", font=("Helvetica", 16))
-    #     self.label_system_cpu.pack(fill="both", expand=True)
-    # def create_system_memory(self):
-    #     self.frame_system_memory = ctk.CTkFrame(self.tab_system)
-    #     self.frame_system_memory.pack(fill="both", expand=True)
-    #     self.label_system_memory = ctk.CTkLabel(self.frame_system_memory, text="Memory Usage", font=("Helvetica", 16))
-    #     self.label_system_memory.pack(fill="both", expand=True)
-    #     self.label_system_memory = ctk.CTkLabel(self.frame_system_memory, text="Memory Usage", font=("Helvetica", 16))
-    #     self.label_system_memory.pack(fill="both", expand=True)
-    #     self.label_system_memory = ctk.CTkLabel(self.frame_system_memory, text="Memory Usage", font=("Helvetica", 16))
-    #     self.label_system_memory.pack(fill="both", expand=True)
-    #     self.label_system_memory = ctk.CTkLabel(self.frame_system_memory, text="Memory Usage", font=("Helvetica", 16))
-    #     self.label_system_memory.pack(fill="both", expand=True)
-    #     self.label_system_memory = ctk.CTkLabel(self.frame_system_memory, text="Memory Usage", font=("Helvetica", 16))
-    #     self.label_system_memory.pack(fill="both", expand=True)
-    #     self.label_system_memory = ctk.CTkLabel(self.frame_system_memory, text="Memory Usage", font=("Helvetica", 16))
-    #     self.label_system_memory.pack(fill="both", expand=True)
-    def on_closing(self):
-        self.quit()
-    def show_about(self):
-        ctk.messagebox.showinfo("About", "Displacement Measurement System\nVersion 1.0")
-    def update(self):
-        self.after(1000, self.update)
-    def update_cpu(self):
-        self.after(1000, self.update_cpu)
-    def update_memory(self):
-        self.after(1000, self.update_memory)
-    def update_temp(self):
-        self.after(1000, self.update_temp)
-    def update_disk(self):
-        self.after(1000, self.update_disk)
-    def update_network(self):
-        self.after(1000, self.update_network)
-    def update_camera(self):
-        self.after(1000, self.update_camera)
-    def update_fiducial(self):
-        self.after(1000, self.update_fiducial)
-    def create_tab_camera(self):
-        self.tab_camera = ctk.CTkFrame(self.tabs)
-        self.tabs.add(self.tab_camera, text="Camera")
-        self.create_camera_widgets()
-    def create_camera_widgets(self):
-        self.create_camera_info()
-        self.create_camera_specs()
-        self.create_camera_image()
-    def create_camera_info(self):
-        self.frame_camera_info = ctk.CTkFrame(self.tab_camera)
-        self.frame_camera_info.pack(fill="both", expand=True)
-        self.label_camera_info = ctk.CTkLabel(self.frame_camera_info, text="Camera Information", font=("Helvetica", 16))
-        self.label_camera_info.pack(fill="both", expand=True)
 if __name__ == "__main__":
     rospy.init_node('fin_gui', anonymous=True)
     app = NodeGUI()
