@@ -26,6 +26,7 @@ class ArucoDetector:
         # Initialize pose publisher
         self.node_name = rospy.get_name()
         self.transform_pub = rospy.Publisher(f"{self.node_name}/fiducial_transforms", FiducialTransformArray, queue_size=10)
+        self.transform_disp_pub = rospy.Publisher(f"{self.node_name}/fiducial_transforms_disp", FiducialTransformArray, queue_size=10)
 
         # Initialize camera matrix and distortion coefficients
         self.camera_matrix = None
@@ -38,6 +39,10 @@ class ArucoDetector:
         # Flags to check the reception of valid messages
         self.image_received = False
         self.camera_info_received = False
+        
+        # Variables to store initial pose
+        self.initial_tvec = None
+        self.initial_rvec = None
 
         # Register shutdown hook
         rospy.on_shutdown(self.cleanup)

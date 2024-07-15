@@ -381,8 +381,17 @@ class NodeGUI(ctk.CTk):
                 col_name = f'{cam_prefix} Rotation {axis}'
                 data[col_name] -= data[col_name].iloc[0]
 
+        # Check for available cameras
+        available_cameras = []
         for cam_num in range(1, 4):
-            adjust_positions(data, f'Cam{cam_num}')
+            col_name = f'Cam{cam_num} Position X'
+            if col_name in data.columns:
+                available_cameras.append(cam_num)
+                adjust_positions(data, f'Cam{cam_num}')
+
+        if not available_cameras:
+            print("No camera data available.")
+            return
 
         # Convert Unix timestamp to seconds relative to the start of the experiment
         start_time = data['Time (s)'].iloc[0]
@@ -398,7 +407,7 @@ class NodeGUI(ctk.CTk):
         fig, axs = plt.subplots(3, 1, figsize=(10, 15))
 
         for i, axis in enumerate(axis_labels):
-            for cam_num in range(1, 4):
+            for cam_num in available_cameras:
                 col_name = f'Cam{cam_num} Position {axis}'
                 plot_axis(axs[i], data['Time (s)'].values, data[col_name].values, f'Cam{cam_num} Position {axis}', colors[cam_num-1], linestyles[cam_num-1])
             axs[i].set_title(f'{axis} Axis Displacement - {self.experiment_name}')
@@ -417,13 +426,6 @@ class NodeGUI(ctk.CTk):
         print(f'Plot saved to {file_name}')
         plt.show()
 
-
-
-        
-
-
-
-        
     def create_middle_first_frame(self)-> None:
         ''' Creates the middle frame for setting system parameters '''
         self.middle_first_frame = tk.Frame(self, bg=themes['blue'][2])
