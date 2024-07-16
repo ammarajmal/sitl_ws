@@ -1,0 +1,284 @@
+#!/usr/bin/env python3
+
+import cv2
+import cv2.aruco as aruco
+import numpy as np
+import rospy
+from sensor_msgs.msg import Image, CameraInfo
+from cv_bridge import CvBridge, CvBridgeError
+from fiducial_msgs.msg import FiducialTransform, FiducialTransformArray
+
+class ArucoDetector:
+    def __init__(self) -> None:
+        self.bridge = CvBridge()
+
+        # Load ROS parameters
+        self.camera_name = rospy.get_param('~camera_name', 'sony_cam1')
+        aruco_dict_name = rospy.get_param('~aruco_dict', 'DICT_4X4_50')
+        self.aruco_marker_size = rospy.get_param('~aruco_marker_size', 0.02)
+        self.experiment_name = rospy.get_param('~experiment_name', 'Exp1')
+
+        # Set up subscribers and publishers
+        self.camera_info_sub = rospy.Subscriber(f"/{self.camera_name}/camera_info", CameraInfo, self.camera_info_callback)
+        rospy.sleep(0.5)
+        self.image_sub = rospy.Subscriber(f"/{self.camera_name}/image_raw", Image, self.image_callback)
+        
+        # Initialize pose publishers
+        self.node_name = rospy.get_name()
+        self.transform_pub_world = rospy.Publisher(f"{self.node_name}/world_fiducial_transforms", FiducialTransformArray, queue_size=10)
+        self.transform_pub_camera = rospy.Publisher(f"{self.node_name}/fiducial_transforms", FiducialTransformArray, queue_size=10)
+        self.displacement_pub = rospy.Publisher(f"{self.node_name}/_fiducial_transforms", FiducialTransformArray, queue_size=10)
+
+        # Initialize camera matrix and distortion coefficients
+        self.camera_matrix = None
+        self.dist_coeffs = None
+
+        # Set up ArUco dictionary and parameters
+        self.aruco_dict = aruco.Dictionary_get(getattr(aruco, aruco_dict_name, aruco.DICT_4X4_50))
+        self.parameters = self.setup_aruco_parameters()
+
+        # Flags to check the reception of valid messages
+        self.image_received = False
+        self.camera_info_received = False
+        
+        # Variables to store initial pose
+        self.initial_tvec = None
+        self.initial_rvec = None
+
+        # Register shutdown hook
+        rospy.on_shutdown(self.cleanup)
+
+        # Initialize flag and variable for the fixed rotation matrix
+        self.initial_rotation_matrix = None
+        self.first_detection = True
+
+    def setup_aruco_parameters(self):
+        parameters = aruco.DetectorParameters_create()
+        parameters.adaptiveThreshConstant = 10  # Threshold constant for adaptive thresholding
+        parameters.adaptiveThreshWinSizeMax = 23  # Maximum window size for adaptive thresholding
+        parameters.adaptiveThreshWinSizeMin = 3  # Minimum window size for adaptive thresholding
+        parameters.adaptiveThreshWinSizeStep = 10  # Step size for adaptive thresholding window
+        parameters.minMarkerPerimeterRate = 0.02  # Minimum marker perimeter rate
+        parameters.maxMarkerPerimeterRate = 4.0  # Maximum marker perimeter rate
+        parameters.polygonalApproxAccuracyRate = 0.05  # Polygonal approximation accuracy rate
+        parameters.errorCorrectionRate = 0.6  # Error correction rate
+        return parameters
+
+    def image_callback(self, data):
+        if not self.camera_info_received:
+            rospy.logwarn("Camera info not received yet. Skipping image processing.")
+            return
+
+        try:
+            cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+            self.image_received = True
+        except CvBridgeError as e:
+            rospy.logerr(f"Could not convert image: {e}")
+            return
+
+        if self.image_received and self.camera_info_received:
+            self.process_image(cv_image)
+
+    def camera_info_callback(self, data):
+        try:
+            self.camera_matrix = np.array(data.K).reshape(3, 3)
+            self.dist_coeffs = np.array(data.D)
+            self.camera_info_received = True
+        except Exception as e:
+            rospy.logerr(f"Could not convert camera info: {e}")
+            return
+
+    def process_image(self, cv_image):
+        gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+        corners, ids, rejected = aruco.detectMarkers(gray, self.aruco_dict, parameters=self.parameters)
+
+        if ids is not None:
+            for corner in corners:
+                cv2.cornerSubPix(gray, corner,
+                                winSize=(5, 5),
+                                zeroZone=(-1, -1),
+                                criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 10, 0.01))
+
+            rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, self.aruco_marker_size, self.camera_matrix, self.dist_coeffs)
+            current_time = rospy.Time.now()
+
+            transform_array_msg_world = FiducialTransformArray()
+            transform_array_msg_world.header.stamp = current_time
+            transform_array_msg_world.header.frame_id = self.camera_name
+
+            transform_array_msg_camera = FiducialTransformArray()
+            transform_array_msg_camera.header.stamp = current_time
+            transform_array_msg_camera.header.frame_id = self.camera_name
+
+            displacement_array_msg = FiducialTransformArray()
+            displacement_array_msg.header.stamp = current_time
+            displacement_array_msg.header.frame_id = self.camera_name
+
+            for rvec, tvec, corner, fid in zip(rvecs, tvecs, corners, ids):
+                transform_world = FiducialTransform()
+                transform_camera = FiducialTransform()
+                displacement_transform = FiducialTransform()
+                transform_world.fiducial_id = int(fid)
+                transform_camera.fiducial_id = int(fid)
+                displacement_transform.fiducial_id = int(fid)
+
+                # World Coordinates
+                if self.first_detection:
+                    self.initial_rotation_matrix, _ = cv2.Rodrigues(rvec)
+                    self.first_detection = False
+
+                world_tvec = self.convert_to_world_frame(self.initial_rotation_matrix, tvec)
+
+                transform_world.transform.translation.x = world_tvec[0]
+                transform_world.transform.translation.y = world_tvec[1]
+                transform_world.transform.translation.z = world_tvec[2]
+
+                rmat, _ = cv2.Rodrigues(rvec)
+                qw, qx, qy, qz = self.rotation_matrix_to_quaternion(rmat)
+                transform_world.transform.rotation.x = qx
+                transform_world.transform.rotation.y = qy
+                transform_world.transform.rotation.z = qz
+                transform_world.transform.rotation.w = qw
+
+                image_error = self.calculate_reprojection_error(rvec, tvec, corner)
+                transform_world.image_error = image_error
+
+                fiducial_area = cv2.contourArea(corner)
+                transform_world.fiducial_area = fiducial_area
+
+                if len(corner) == 4:  # Check if there are 4 corners detected
+                    transform_world.object_error = (image_error / cv2.norm(corner[0] - corner[2])) * (np.linalg.norm(tvec) / self.aruco_marker_size)
+                else:
+                    transform_world.object_error = -1
+
+                transform_array_msg_world.transforms.append(transform_world)
+
+                # Camera Coordinates
+                transform_camera.transform.translation.x = tvec[0][0]
+                transform_camera.transform.translation.y = tvec[0][1]
+                transform_camera.transform.translation.z = tvec[0][2]
+
+                qw, qx, qy, qz = self.rotation_matrix_to_quaternion(rmat)
+                transform_camera.transform.rotation.x = qx
+                transform_camera.transform.rotation.y = qy
+                transform_camera.transform.rotation.z = qz
+                transform_camera.transform.rotation.w = qw
+
+                image_error = self.calculate_reprojection_error(rvec, tvec, corner)
+                transform_camera.image_error = image_error
+
+                fiducial_area = cv2.contourArea(corner)
+                transform_camera.fiducial_area = fiducial_area
+
+                if len(corner) == 4:  # Check if there are 4 corners detected
+                    transform_camera.object_error = (image_error / cv2.norm(corner[0] - corner[2])) * (np.linalg.norm(tvec) / self.aruco_marker_size)
+                else:
+                    transform_camera.object_error = -1
+
+                transform_array_msg_camera.transforms.append(transform_camera)
+
+                # Displacement
+                if self.initial_tvec is None:
+                    self.initial_tvec = tvec[0]
+                    self.initial_rvec = rvec[0]
+                    # print("Initial tvec and rvec set")
+                    # print(f'Initial tvec: {self.initial_tvec}')
+                    # print(f'Initial rvec: {self.initial_rvec}')
+
+                displacement_tvec = tvec[0] - self.initial_tvec
+                displacement_rvec = rvec[0] - self.initial_rvec
+
+                displacement_transform.transform.translation.x = displacement_tvec[0]
+                displacement_transform.transform.translation.y = displacement_tvec[1]
+                displacement_transform.transform.translation.z = displacement_tvec[2]
+
+
+
+                rmat_disp, _ = cv2.Rodrigues(displacement_rvec)
+                qw_disp, qx_disp, qy_disp, qz_disp = self.rotation_matrix_to_quaternion(rmat_disp)
+                displacement_transform.transform.rotation.x = qx_disp
+                displacement_transform.transform.rotation.y = qy_disp
+                displacement_transform.transform.rotation.z = qz_disp
+                displacement_transform.transform.rotation.w = qw_disp
+
+                image_error = self.calculate_reprojection_error(rvec, tvec, corner)
+                displacement_transform.image_error = image_error
+
+                fiducial_area = cv2.contourArea(corner)
+                displacement_transform.fiducial_area = fiducial_area
+
+                if len(corner) == 4:  # Check if there are 4 corners detected
+                    displacement_transform.object_error = (image_error / cv2.norm(corner[0] - corner[2])) * (np.linalg.norm(tvec) / self.aruco_marker_size)
+                else:
+                    displacement_transform.object_error = -1
+
+                displacement_array_msg.transforms.append(displacement_transform)
+
+
+                # Draw the detected marker and the axis for visualization
+                aruco.drawDetectedMarkers(cv_image, corners)
+                aruco.drawAxis(cv_image, self.camera_matrix, self.dist_coeffs, rvec, tvec, 0.1)
+
+            self.transform_pub_world.publish(transform_array_msg_world)
+            self.transform_pub_camera.publish(transform_array_msg_camera)
+            self.displacement_pub.publish(displacement_array_msg)
+
+            # Show the image with detected markers
+            cv2.imshow(f"Image window {self.camera_name}", cv_image)
+            cv2.waitKey(3)
+
+    def convert_to_world_frame(self, R, tvec):
+        world_tvec = -np.dot(R.T, tvec.T)
+        return world_tvec
+
+    def calculate_reprojection_error(self, rvec, tvec, corner):
+        marker_points = np.array([
+            [-self.aruco_marker_size/2, self.aruco_marker_size/2, 0],
+            [self.aruco_marker_size/2, self.aruco_marker_size/2, 0],
+            [self.aruco_marker_size/2, -self.aruco_marker_size/2, 0],
+            [-self.aruco_marker_size/2, -self.aruco_marker_size/2, 0]
+        ])
+
+        projected_points, _ = cv2.projectPoints(marker_points, rvec, tvec, self.camera_matrix, self.dist_coeffs)
+        corner = np.squeeze(corner).astype(np.float32)
+        projected_points = np.squeeze(projected_points).astype(np.float32)
+        error = cv2.norm(corner, projected_points, cv2.NORM_L2) / len(projected_points)
+
+        return error
+
+    def rotation_matrix_to_quaternion(self, R):
+        q = np.empty((4,))
+        t = np.trace(R)
+        if t > 0:
+            S = np.sqrt(t + 1.0) * 2
+            q[3] = 0.25 * S
+            q[0] = (R[2, 1] - R[1, 2]) / S
+            q[1] = (R[0, 2] - R[2, 0]) / S
+            q[2] = (R[1, 0] - R[0, 1]) / S
+        else:
+            if (R[0, 0] > R[1, 1]) and (R[0, 0] > R[2, 2]):
+                S = np.sqrt(1.0 + R[0, 0] - R[1, 1] - R[2, 2]) * 2
+                q[3] = (R[2, 1] - R[1, 2]) / S
+                q[0] = 0.25 * S
+                q[1] = (R[0, 1] + R[1, 0]) / S
+                q[2] = (R[0, 2] + R[2, 0]) / S
+            elif (R[1, 1] > R[2, 2]):
+                S = np.sqrt(1.0 + R[1, 1] - R[0, 0] - R[2, 2]) * 2
+                q[3] = (R[0, 2] - R[2, 0]) / S
+                q[0] = (R[0, 1] + R[1, 0]) / S
+                q[1] = 0.25 * S
+                q[2] = (R[1, 2] + R[2, 1]) / S
+            else:
+                S = np.sqrt(1.0 + R[2, 2] - R[0, 0] - R[1, 1]) * 2
+                q[3] = (R[1, 0] - R[0, 1]) / S
+                q[0] = (R[0, 2] + R[2, 0]) / S
+                q[1] = (R[1, 2] + R[2, 1]) / S
+        return q
+
+    def cleanup(self):
+        cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    rospy.init_node("aruco_detector", anonymous=True)
+    aruco_detector = ArucoDetector()
+    rospy.spin()

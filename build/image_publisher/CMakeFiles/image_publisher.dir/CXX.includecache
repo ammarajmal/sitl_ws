@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/ammar/sitl_ws/devel/.private/image_publisher/include/image_publisher/ImagePublisherConfig.h
+/home/tesol/sitl_ws/devel/.private/image_publisher/include/image_publisher/ImagePublisherConfig.h
 dynamic_reconfigure/config_tools.h
 -
 limits
@@ -24,7 +24,7 @@ dynamic_reconfigure/config_init_mutex.h
 boost/any.hpp
 -
 
-/home/ammar/sitl_ws/src/image_pipeline/image_publisher/src/nodelet/image_publisher_nodelet.cpp
+/home/tesol/sitl_ws/src/image_pipeline/image_publisher/src/nodelet/image_publisher_nodelet.cpp
 ros/ros.h
 -
 nodelet/nodelet.h

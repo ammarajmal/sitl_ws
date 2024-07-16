@@ -13,21 +13,21 @@ fi
 
 echo_and_run() { echo "+ $@" ; "$@" ; }
 
-echo_and_run cd "/home/ammar/sitl_ws/src/image_pipeline/camera_calibration"
+echo_and_run cd "/home/tesol/sitl_ws/src/image_pipeline/camera_calibration"
 
 # ensure that Python install destination exists
-echo_and_run mkdir -p "$DESTDIR/home/ammar/sitl_ws/install/lib/python3/dist-packages"
+echo_and_run mkdir -p "$DESTDIR/home/tesol/sitl_ws/install/lib/python3/dist-packages"
 
 # Note that PYTHONPATH is pulled from the environment to support installing
 # into one location when some dependencies were installed in another
 # location, #123.
 echo_and_run /usr/bin/env \
-    PYTHONPATH="/home/ammar/sitl_ws/install/lib/python3/dist-packages:/home/ammar/sitl_ws/build/camera_calibration/lib/python3/dist-packages:$PYTHONPATH" \
-    CATKIN_BINARY_DIR="/home/ammar/sitl_ws/build/camera_calibration" \
+    PYTHONPATH="/home/tesol/sitl_ws/install/lib/python3/dist-packages:/home/tesol/sitl_ws/build/camera_calibration/lib/python3/dist-packages:$PYTHONPATH" \
+    CATKIN_BINARY_DIR="/home/tesol/sitl_ws/build/camera_calibration" \
     "/usr/bin/python3" \
-    "/home/ammar/sitl_ws/src/image_pipeline/camera_calibration/setup.py" \
-    egg_info --egg-base /home/ammar/sitl_ws/build/camera_calibration \
-    build --build-base "/home/ammar/sitl_ws/build/camera_calibration" \
+    "/home/tesol/sitl_ws/src/image_pipeline/camera_calibration/setup.py" \
+    egg_info --egg-base /home/tesol/sitl_ws/build/camera_calibration \
+    build --build-base "/home/tesol/sitl_ws/build/camera_calibration" \
     install \
     --root="${DESTDIR-/}" \
-    --install-layout=deb --prefix="/home/ammar/sitl_ws/install" --install-scripts="/home/ammar/sitl_ws/install/bin"
+    --install-layout=deb --prefix="/home/tesol/sitl_ws/install" --install-scripts="/home/tesol/sitl_ws/install/bin"

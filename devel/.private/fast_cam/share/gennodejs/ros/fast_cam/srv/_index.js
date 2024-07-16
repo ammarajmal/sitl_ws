@@ -1,10 +1,10 @@
 
 "use strict";
 
-let GetCameraProperties = require('./GetCameraProperties.js')
 let SetGain = require('./SetGain.js')
+let GetCameraProperties = require('./GetCameraProperties.js')
 
 module.exports = {
-  GetCameraProperties: GetCameraProperties,
   SetGain: SetGain,
+  GetCameraProperties: GetCameraProperties,
 };

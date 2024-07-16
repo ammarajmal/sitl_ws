@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/vision_msgs
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/vision_msgs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/vision_msgs
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/vision_msgs
 
 # Utility rule file for clean_test_results_vision_msgs.
 
@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/vision_msgs
 include test/CMakeFiles/clean_test_results_vision_msgs.dir/progress.make
 
 test/CMakeFiles/clean_test_results_vision_msgs:
-	cd /home/ammar/sitl_ws/build/vision_msgs/test && /usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/ammar/sitl_ws/build/vision_msgs/test_results/vision_msgs
+	cd /home/tesol/sitl_ws/build/vision_msgs/test && /usr/bin/python3 /opt/ros/noetic/share/catkin/cmake/test/remove_test_results.py /home/tesol/sitl_ws/build/vision_msgs/test_results/vision_msgs
 
 clean_test_results_vision_msgs: test/CMakeFiles/clean_test_results_vision_msgs
 clean_test_results_vision_msgs: test/CMakeFiles/clean_test_results_vision_msgs.dir/build.make
@@ -67,10 +67,10 @@ test/CMakeFiles/clean_test_results_vision_msgs.dir/build: clean_test_results_vis
 .PHONY : test/CMakeFiles/clean_test_results_vision_msgs.dir/build
 
 test/CMakeFiles/clean_test_results_vision_msgs.dir/clean:
-	cd /home/ammar/sitl_ws/build/vision_msgs/test && $(CMAKE_COMMAND) -P CMakeFiles/clean_test_results_vision_msgs.dir/cmake_clean.cmake
+	cd /home/tesol/sitl_ws/build/vision_msgs/test && $(CMAKE_COMMAND) -P CMakeFiles/clean_test_results_vision_msgs.dir/cmake_clean.cmake
 .PHONY : test/CMakeFiles/clean_test_results_vision_msgs.dir/clean
 
 test/CMakeFiles/clean_test_results_vision_msgs.dir/depend:
-	cd /home/ammar/sitl_ws/build/vision_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/vision_msgs /home/ammar/sitl_ws/src/vision_msgs/test /home/ammar/sitl_ws/build/vision_msgs /home/ammar/sitl_ws/build/vision_msgs/test /home/ammar/sitl_ws/build/vision_msgs/test/CMakeFiles/clean_test_results_vision_msgs.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/vision_msgs && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/vision_msgs /home/tesol/sitl_ws/src/vision_msgs/test /home/tesol/sitl_ws/build/vision_msgs /home/tesol/sitl_ws/build/vision_msgs/test /home/tesol/sitl_ws/build/vision_msgs/test/CMakeFiles/clean_test_results_vision_msgs.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : test/CMakeFiles/clean_test_results_vision_msgs.dir/depend
 

@@ -56,7 +56,7 @@ class NodeGUI(ctk.CTk):
 
         self.experiment_name = 'Exp1'
         self.file_name = None
-        self.experiment_dur = 60 # seconds
+        self.experiment_dur = 20 # seconds
         self.exp_name_var = tk.StringVar(self, self.experiment_name)
         self.exp_dur_var = tk.StringVar(self, self.experiment_dur)
     
@@ -75,8 +75,8 @@ class NodeGUI(ctk.CTk):
         self.collectected_data_displacement = []
 
 
-        self.board_size = '6x5' # default board size for calibration
-        self.square_size = '0.025' # default square size for calibration in meters
+        self.board_size = '6x9' # default board size for calibration
+        self.square_size = '0.00725' # default square size for calibration in meters
         self.sq_size_var = tk.StringVar(self, self.square_size)
         self.board_size_var = tk.StringVar(self, self.board_size)
 
@@ -147,8 +147,8 @@ class NodeGUI(ctk.CTk):
         self.create_right_bottom_frame_widgets()
     def create_right_bottom_frame_widgets(self)-> None:
         ''' creates button for camera 1 saving data and plotting data'''
-        self.cam_custom_record_button = ctk.CTkButton(self.right_bottom_frame, text='cam 1 comparison', command=lambda:self.custom_cam_record(1))
-        self.cam_custom_plot_button = ctk.CTkButton(self.right_bottom_frame, text='cam 1 plot', command=self.plot_data_custom)
+        self.cam_custom_record_button = ctk.CTkButton(self.right_bottom_frame, text='cam 2 comparison', command=lambda:self.custom_cam_record(2))
+        self.cam_custom_plot_button = ctk.CTkButton(self.right_bottom_frame, text='cam 2 plot', command=self.plot_data_custom)
         self.cam_custom_record_button.place(relx=0.5, rely=0.1, anchor='n')
         self.cam_custom_plot_button.place(relx=0.5, rely=0.3, anchor='n')
     def custom_cam_record(self, cam_num=1):
@@ -162,7 +162,7 @@ class NodeGUI(ctk.CTk):
         
         self.sub_world = rospy.Subscriber(f'/sony_cam{cam_num}_detect/world_fiducial_transforms', FiducialTransformArray, self.record_world)
         self.sub_camera = rospy.Subscriber(f'/sony_cam{cam_num}_detect/camera_fiducial_transforms', FiducialTransformArray, self.record_camera)
-        self.sub_displacement = rospy.Subscriber(f'/sony_cam{cam_num}_detect/disp_fiducial', FiducialTransformArray, self.record_displacement)
+        self.sub_displacement = rospy.Subscriber(f'/sony_cam{cam_num}_detect/fiducial_transforms', FiducialTransformArray, self.record_displacement)
         
         rospy.Timer(rospy.Duration(self.experiment_dur), self.stop_data_collection_custom, oneshot=True)
         
@@ -262,9 +262,6 @@ class NodeGUI(ctk.CTk):
                 axs1[i].set_title(f'Camera Position {axis} - {self.experiment_name}')
                 axs1[i].set_xlabel('Time (s)')
                 axs1[i].set_ylabel('Position (m)')
-                axs1[i].legend()
-                axs1[i].grid(True)
-        fig1.savefig(self.file_name.replace('.csv', '_camera_positions.png'))
         
         # Plot World Positions
         fig2, axs2 = plt.subplots(3, 1, figsize=(15, 15))
@@ -551,7 +548,7 @@ class NodeGUI(ctk.CTk):
             ax.plot(x_data, y_data, label=label, color=color, linestyle=linestyle)
 
         colors = ['red', 'green', 'blue']
-        linestyles = ['-', 'dashed', 'dotted']
+        linestyles = ['-', '-', '-']
         axis_labels = ['X', 'Y', 'Z']
 
         fig, axs = plt.subplots(3, 1, figsize=(15, 15))
@@ -1014,7 +1011,7 @@ class NodeGUI(ctk.CTk):
                 self._ui_start_cam_btn(cam_num, "RUNNING")
         calib_launch_args = [
             f'{self.cam_calib_launch_file}',
-            f'launch_nuc:=sony_cam{cam_num}',
+            f'camera_name:=sony_cam{cam_num}',
             f'cb_size:={self.board_size}',
             f'cb_square:={self.square_size}']
         calib_roslaunch_file = [(

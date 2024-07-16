@@ -1,1 +1,1 @@
-/home/ammar/sitl_ws/devel/.private/fiducial_slam/share/roseus/ros/fiducial_slam/manifest.l
+/home/tesol/sitl_ws/devel/.private/fiducial_slam/share/roseus/ros/fiducial_slam/manifest.l

@@ -1,4 +1,4 @@
-prefix=/home/ammar/sitl_ws/install
+prefix=/home/tesol/sitl_ws/install
 
 Name: image_view
 Description: Description of image_view

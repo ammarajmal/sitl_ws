@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/ammar/sitl_ws/devel/.private/image_proc/setup.sh
+    local-name: /home/tesol/sitl_ws/devel/.private/image_proc/setup.sh

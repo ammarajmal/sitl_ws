@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/ammar/sitl_ws/devel/.private/stereo_image_proc/lib/libstereo_image_proc.pdb"
-  "/home/ammar/sitl_ws/devel/.private/stereo_image_proc/lib/libstereo_image_proc.so"
+  "/home/tesol/sitl_ws/devel/.private/stereo_image_proc/lib/libstereo_image_proc.pdb"
+  "/home/tesol/sitl_ws/devel/.private/stereo_image_proc/lib/libstereo_image_proc.so"
   "CMakeFiles/stereo_image_proc.dir/src/libstereo_image_proc/processor.cpp.o"
   "CMakeFiles/stereo_image_proc.dir/src/nodelets/disparity.cpp.o"
   "CMakeFiles/stereo_image_proc.dir/src/nodelets/point_cloud2.cpp.o"

@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/ammar/sitl_ws/devel/.private/stereo_image_proc:$CMAKE_PREFIX_PATH"
-export PWD='/home/ammar/sitl_ws/build/stereo_image_proc'
-export ROSLISP_PACKAGE_DIRECTORIES="/home/ammar/sitl_ws/devel/.private/stereo_image_proc/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/ammar/sitl_ws/src/image_pipeline/stereo_image_proc:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/tesol/sitl_ws/devel/.private/stereo_image_proc:$CMAKE_PREFIX_PATH"
+export PWD='/home/tesol/sitl_ws/build/stereo_image_proc'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/tesol/sitl_ws/devel/.private/stereo_image_proc/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/tesol/sitl_ws/src/image_pipeline/stereo_image_proc:$ROS_PACKAGE_PATH"

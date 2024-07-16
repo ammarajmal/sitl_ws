@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/depth_image_proc
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/image_pipeline/depth_image_proc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/depth_image_proc
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/depth_image_proc
 
 # Utility rule file for actionlib_msgs_generate_messages_cpp.
 
@@ -67,6 +67,6 @@ CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/clean:
 .PHONY : CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/clean
 
 CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/depend:
-	cd /home/ammar/sitl_ws/build/depth_image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/depth_image_proc /home/ammar/sitl_ws/src/image_pipeline/depth_image_proc /home/ammar/sitl_ws/build/depth_image_proc /home/ammar/sitl_ws/build/depth_image_proc /home/ammar/sitl_ws/build/depth_image_proc/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/depth_image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/image_pipeline/depth_image_proc /home/tesol/sitl_ws/src/image_pipeline/depth_image_proc /home/tesol/sitl_ws/build/depth_image_proc /home/tesol/sitl_ws/build/depth_image_proc /home/tesol/sitl_ws/build/depth_image_proc/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/depend
 

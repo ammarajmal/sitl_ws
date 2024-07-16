@@ -6,127 +6,127 @@
 
 #IncludeRegexTransform: 
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Decoder.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/Decoder.h
 vector
 -
 bitset
 -
 stag/MarkerIDs.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/MarkerIDs.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/MarkerIDs.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Drawer.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/Drawer.h
 string
 -
 opencv2/opencv.hpp
 -
 stag/ED/EDLines.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EDLines.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EDLines.h
 stag/ED/EdgeMap.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EdgeMap.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EdgeMap.h
 stag/QuadDetector.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/QuadDetector.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/QuadDetector.h
 stag/Marker.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/ED.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/ED.h
 stag/ED/EdgeMap.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EDInternals.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EDInternals.h
 stag/ED/EdgeMap.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EDLines.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EDLines.h
 memory.h
 -
 stag/ED/EdgeMap.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
 stag/ED/LineSegment.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/LineSegment.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/LineSegment.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EdgeMap.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/EdgeMap.h
 memory.h
 -
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/GradientOperators.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/GradientOperators.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/ImageSmooth.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/ImageSmooth.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/LineSegment.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/LineSegment.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/MyMath.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/MyMath.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/NFA.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/NFA.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/ValidateEdgeSegments.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/ValidateEdgeSegments.h
 stag/ED/EdgeMap.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/ED/stag/ED/EdgeMap.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/EDInterface.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/EDInterface.h
 opencv2/opencv.hpp
 -
 stag/ED/EDLines.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EDLines.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EDLines.h
 stag/ED/EdgeMap.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EdgeMap.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/ED/EdgeMap.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Ellipse.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/Ellipse.h
 vector
 -
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Marker.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/Marker.h
 stag/Quad.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Quad.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Quad.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/MarkerIDs.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/MarkerIDs.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/PoseRefiner.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/PoseRefiner.h
 stag/EDInterface.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
 stag/Marker.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
 stag/EDInterface.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Quad.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/Quad.h
 vector
 -
 opencv2/opencv.hpp
 -
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/QuadDetector.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/QuadDetector.h
 vector
 -
 stag/EDInterface.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
 stag/Quad.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Quad.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Quad.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/Stag.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/Stag.h
 stag/EDInterface.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/EDInterface.h
 stag/QuadDetector.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/QuadDetector.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/QuadDetector.h
 stag/Drawer.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Drawer.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Drawer.h
 stag/Marker.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Marker.h
 stag/Decoder.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Decoder.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/Decoder.h
 stag/PoseRefiner.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/stag/PoseRefiner.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/stag/PoseRefiner.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/colors.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/colors.h
 vector
 -
 opencv2/opencv.hpp
 -
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag/utility.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag/utility.h
 opencv2/opencv.hpp
 -
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/include/stag_ros/instrument.hpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/include/stag_ros/instrument.hpp
 chrono
 -
 numeric
@@ -138,9 +138,9 @@ algorithm
 iostream
 -
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/Decoder.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/Decoder.cpp
 stag/Decoder.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Decoder.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Decoder.h
 stdexcept
 -
 fstream
@@ -150,13 +150,13 @@ string
 sstream
 -
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/Drawer.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/Drawer.cpp
 stag/Drawer.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Drawer.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Drawer.h
 stag/colors.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/colors.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/colors.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/ED.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/ED.cpp
 stdio.h
 -
 stdlib.h
@@ -166,17 +166,17 @@ math.h
 limits.h
 -
 stag/ED/EDInternals.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/EDInternals.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/EDInternals.h
 stag/ED/ED.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ED.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ED.h
 stag/ED/ImageSmooth.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ImageSmooth.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ImageSmooth.h
 stag/ED/GradientOperators.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/GradientOperators.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/GradientOperators.h
 stag/ED/ValidateEdgeSegments.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ValidateEdgeSegments.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ValidateEdgeSegments.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/EDInternals.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/EDInternals.cpp
 stdio.h
 -
 stdlib.h
@@ -186,9 +186,9 @@ math.h
 limits.h
 -
 stag/ED/EDInternals.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/EDInternals.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/EDInternals.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/EDLines.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/EDLines.cpp
 math.h
 -
 stdlib.h
@@ -198,39 +198,39 @@ stdio.h
 float.h
 -
 stag/ED/EDInternals.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/EDInternals.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/EDInternals.h
 stag/ED/ImageSmooth.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ImageSmooth.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ImageSmooth.h
 stag/ED/GradientOperators.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/GradientOperators.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/GradientOperators.h
 stag/ED/ED.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ED.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ED.h
 stag/ED/EDLines.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/EDLines.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/EDLines.h
 stag/ED/LineSegment.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/LineSegment.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/LineSegment.h
 stag/ED/NFA.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/NFA.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/NFA.h
 stag/ED/MyMath.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/MyMath.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/MyMath.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/GradientOperators.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/GradientOperators.cpp
 stdlib.h
 -
 math.h
 -
 stag/ED/GradientOperators.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/GradientOperators.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/GradientOperators.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/ImageSmooth.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/ImageSmooth.cpp
 stdlib.h
 -
 opencv2/opencv.hpp
 -
 stag/ED/ImageSmooth.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ImageSmooth.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ImageSmooth.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/LineSegment.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/LineSegment.cpp
 stdio.h
 -
 stdlib.h
@@ -238,15 +238,15 @@ stdlib.h
 math.h
 -
 stag/ED/LineSegment.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/LineSegment.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/LineSegment.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/MyMath.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/MyMath.cpp
 math.h
 -
 stag/ED/MyMath.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/MyMath.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/MyMath.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/NFA.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/NFA.cpp
 stdio.h
 -
 limits.h
@@ -256,9 +256,9 @@ float.h
 math.h
 -
 stag/ED/NFA.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/NFA.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/NFA.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/ValidateEdgeSegments.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/ValidateEdgeSegments.cpp
 stdio.h
 -
 stdlib.h
@@ -268,19 +268,19 @@ memory.h
 math.h
 -
 stag/ED/ValidateEdgeSegments.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ValidateEdgeSegments.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/ED/stag/ED/ValidateEdgeSegments.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/EDInterface.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/EDInterface.cpp
 stag/EDInterface.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/EDInterface.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/EDInterface.h
 stag/utility.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
 algorithm
 -
 vector
 -
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/Ellipse.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/Ellipse.cpp
 stdio.h
 -
 stdlib.h
@@ -290,29 +290,29 @@ string.h
 math.h
 -
 stag/Ellipse.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Ellipse.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Ellipse.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/Marker.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/Marker.cpp
 stag/Marker.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Marker.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Marker.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/PoseRefiner.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/PoseRefiner.cpp
 numeric
 -
 stag/PoseRefiner.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/PoseRefiner.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/PoseRefiner.h
 stag/Ellipse.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Ellipse.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Ellipse.h
 stag/utility.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/Quad.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/Quad.cpp
 stag/Quad.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Quad.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Quad.h
 stag/utility.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/QuadDetector.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/QuadDetector.cpp
 vector
 -
 algorithm
@@ -320,23 +320,23 @@ algorithm
 opencv2/opencv.hpp
 -
 stag/QuadDetector.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/QuadDetector.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/QuadDetector.h
 stag/utility.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/Stag.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/Stag.cpp
 stag/Stag.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Stag.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Stag.h
 stag/Ellipse.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Ellipse.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/Ellipse.h
 stag/utility.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
 stag_ros/instrument.hpp
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag_ros/instrument.hpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag_ros/instrument.hpp
 
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/utility.cpp
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/utility.cpp
 stag/utility.h
-/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
+/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag/stag/utility.h
 
 /usr/include/opencv4/opencv2/calib3d.hpp
 opencv2/core.hpp

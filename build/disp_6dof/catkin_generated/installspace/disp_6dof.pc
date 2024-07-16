@@ -1,4 +1,4 @@
-prefix=/home/ammar/sitl_ws/install
+prefix=/home/tesol/sitl_ws/install
 
 Name: disp_6dof
 Description: Description of disp_6dof

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/ammar/sitl_ws/devel/.private/image_view/lib/image_view/video_recorder"
-  "/home/ammar/sitl_ws/devel/.private/image_view/lib/image_view/video_recorder.pdb"
+  "/home/tesol/sitl_ws/devel/.private/image_view/lib/image_view/video_recorder"
+  "/home/tesol/sitl_ws/devel/.private/image_view/lib/image_view/video_recorder.pdb"
   "CMakeFiles/video_recorder.dir/src/nodes/video_recorder.cpp.o"
 )
 

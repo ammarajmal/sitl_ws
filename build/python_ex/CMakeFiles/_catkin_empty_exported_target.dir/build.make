@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/python_ex
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/python_ex
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/python_ex
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/python_ex
 
 # Utility rule file for _catkin_empty_exported_target.
 
@@ -67,6 +67,6 @@ CMakeFiles/_catkin_empty_exported_target.dir/clean:
 .PHONY : CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 CMakeFiles/_catkin_empty_exported_target.dir/depend:
-	cd /home/ammar/sitl_ws/build/python_ex && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/python_ex /home/ammar/sitl_ws/src/python_ex /home/ammar/sitl_ws/build/python_ex /home/ammar/sitl_ws/build/python_ex /home/ammar/sitl_ws/build/python_ex/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/python_ex && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/python_ex /home/tesol/sitl_ws/src/python_ex /home/tesol/sitl_ws/build/python_ex /home/tesol/sitl_ws/build/python_ex /home/tesol/sitl_ws/build/python_ex/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/_catkin_empty_exported_target.dir/depend
 
