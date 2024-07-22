@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/dslr_cam
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/dslr_cam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/dslr_cam
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/dslr_cam
 
 # Utility rule file for roscpp_generate_messages_eus.
 
@@ -67,6 +67,6 @@ CMakeFiles/roscpp_generate_messages_eus.dir/clean:
 .PHONY : CMakeFiles/roscpp_generate_messages_eus.dir/clean
 
 CMakeFiles/roscpp_generate_messages_eus.dir/depend:
-	cd /home/tesol/sitl_ws/build/dslr_cam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/dslr_cam /home/tesol/sitl_ws/src/dslr_cam /home/tesol/sitl_ws/build/dslr_cam /home/tesol/sitl_ws/build/dslr_cam /home/tesol/sitl_ws/build/dslr_cam/CMakeFiles/roscpp_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/dslr_cam && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/dslr_cam /home/ammar/sitl_ws/src/dslr_cam /home/ammar/sitl_ws/build/dslr_cam /home/ammar/sitl_ws/build/dslr_cam /home/ammar/sitl_ws/build/dslr_cam/CMakeFiles/roscpp_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/roscpp_generate_messages_eus.dir/depend
 

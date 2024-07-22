@@ -67,14 +67,14 @@ set(vision_msgs_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(vision_msgs_SOURCE_PREFIX /home/tesol/sitl_ws/src/vision_msgs)
-  set(vision_msgs_DEVEL_PREFIX /home/tesol/sitl_ws/devel/.private/vision_msgs)
+  set(vision_msgs_SOURCE_PREFIX /home/ammar/sitl_ws/src/vision_msgs)
+  set(vision_msgs_DEVEL_PREFIX /home/ammar/sitl_ws/devel/.private/vision_msgs)
   set(vision_msgs_INSTALL_PREFIX "")
   set(vision_msgs_PREFIX ${vision_msgs_DEVEL_PREFIX})
 else()
   set(vision_msgs_SOURCE_PREFIX "")
   set(vision_msgs_DEVEL_PREFIX "")
-  set(vision_msgs_INSTALL_PREFIX /home/tesol/sitl_ws/install)
+  set(vision_msgs_INSTALL_PREFIX /home/ammar/sitl_ws/install)
   set(vision_msgs_PREFIX ${vision_msgs_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/tesol/sitl_ws/install/lib;/home/tesol/sitl_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/ammar/sitl_ws/install/lib;/home/ammar/sitl_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/disp_6dof
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/disp_6dof
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/disp_6dof
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/disp_6dof
 
 # Utility rule file for visualization_msgs_generate_messages_cpp.
 
@@ -67,6 +67,6 @@ CMakeFiles/visualization_msgs_generate_messages_cpp.dir/clean:
 .PHONY : CMakeFiles/visualization_msgs_generate_messages_cpp.dir/clean
 
 CMakeFiles/visualization_msgs_generate_messages_cpp.dir/depend:
-	cd /home/tesol/sitl_ws/build/disp_6dof && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/disp_6dof /home/tesol/sitl_ws/src/disp_6dof /home/tesol/sitl_ws/build/disp_6dof /home/tesol/sitl_ws/build/disp_6dof /home/tesol/sitl_ws/build/disp_6dof/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/disp_6dof && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/disp_6dof /home/ammar/sitl_ws/src/disp_6dof /home/ammar/sitl_ws/build/disp_6dof /home/ammar/sitl_ws/build/disp_6dof /home/ammar/sitl_ws/build/disp_6dof/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/visualization_msgs_generate_messages_cpp.dir/depend
 

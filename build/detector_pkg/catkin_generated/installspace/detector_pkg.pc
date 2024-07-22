@@ -1,4 +1,4 @@
-prefix=/home/tesol/sitl_ws/install
+prefix=/home/ammar/sitl_ws/install
 
 Name: detector_pkg
 Description: Description of detector_pkg

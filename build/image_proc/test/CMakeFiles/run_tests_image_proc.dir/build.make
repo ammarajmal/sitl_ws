@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/image_pipeline/image_proc
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/image_proc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/image_proc
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/image_proc
 
 # Utility rule file for run_tests_image_proc.
 
@@ -63,10 +63,10 @@ test/CMakeFiles/run_tests_image_proc.dir/build: run_tests_image_proc
 .PHONY : test/CMakeFiles/run_tests_image_proc.dir/build
 
 test/CMakeFiles/run_tests_image_proc.dir/clean:
-	cd /home/tesol/sitl_ws/build/image_proc/test && $(CMAKE_COMMAND) -P CMakeFiles/run_tests_image_proc.dir/cmake_clean.cmake
+	cd /home/ammar/sitl_ws/build/image_proc/test && $(CMAKE_COMMAND) -P CMakeFiles/run_tests_image_proc.dir/cmake_clean.cmake
 .PHONY : test/CMakeFiles/run_tests_image_proc.dir/clean
 
 test/CMakeFiles/run_tests_image_proc.dir/depend:
-	cd /home/tesol/sitl_ws/build/image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/image_pipeline/image_proc /home/tesol/sitl_ws/src/image_pipeline/image_proc/test /home/tesol/sitl_ws/build/image_proc /home/tesol/sitl_ws/build/image_proc/test /home/tesol/sitl_ws/build/image_proc/test/CMakeFiles/run_tests_image_proc.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/image_proc /home/ammar/sitl_ws/src/image_pipeline/image_proc/test /home/ammar/sitl_ws/build/image_proc /home/ammar/sitl_ws/build/image_proc/test /home/ammar/sitl_ws/build/image_proc/test/CMakeFiles/run_tests_image_proc.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : test/CMakeFiles/run_tests_image_proc.dir/depend
 

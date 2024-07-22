@@ -1,8 +1,8 @@
-# Install script for directory: /home/tesol/sitl_ws/src/image_pipeline/image_proc
+# Install script for directory: /home/ammar/sitl_ws/src/image_pipeline/image_proc
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/tesol/sitl_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/ammar/sitl_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -49,126 +49,126 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/tesol/sitl_ws/install/_setup_util.py")
+   "/home/ammar/sitl_ws/install/_setup_util.py")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/tesol/sitl_ws/install" TYPE PROGRAM FILES "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/_setup_util.py")
+file(INSTALL DESTINATION "/home/ammar/sitl_ws/install" TYPE PROGRAM FILES "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/_setup_util.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/tesol/sitl_ws/install/env.sh")
+   "/home/ammar/sitl_ws/install/env.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/tesol/sitl_ws/install" TYPE PROGRAM FILES "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/env.sh")
+file(INSTALL DESTINATION "/home/ammar/sitl_ws/install" TYPE PROGRAM FILES "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/env.sh")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/tesol/sitl_ws/install/setup.bash;/home/tesol/sitl_ws/install/local_setup.bash")
+   "/home/ammar/sitl_ws/install/setup.bash;/home/ammar/sitl_ws/install/local_setup.bash")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/tesol/sitl_ws/install" TYPE FILE FILES
-    "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/setup.bash"
-    "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/local_setup.bash"
+file(INSTALL DESTINATION "/home/ammar/sitl_ws/install" TYPE FILE FILES
+    "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/setup.bash"
+    "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/local_setup.bash"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/tesol/sitl_ws/install/setup.sh;/home/tesol/sitl_ws/install/local_setup.sh")
+   "/home/ammar/sitl_ws/install/setup.sh;/home/ammar/sitl_ws/install/local_setup.sh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/tesol/sitl_ws/install" TYPE FILE FILES
-    "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/setup.sh"
-    "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/local_setup.sh"
+file(INSTALL DESTINATION "/home/ammar/sitl_ws/install" TYPE FILE FILES
+    "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/setup.sh"
+    "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/local_setup.sh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/tesol/sitl_ws/install/setup.zsh;/home/tesol/sitl_ws/install/local_setup.zsh")
+   "/home/ammar/sitl_ws/install/setup.zsh;/home/ammar/sitl_ws/install/local_setup.zsh")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/tesol/sitl_ws/install" TYPE FILE FILES
-    "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/setup.zsh"
-    "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/local_setup.zsh"
+file(INSTALL DESTINATION "/home/ammar/sitl_ws/install" TYPE FILE FILES
+    "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/setup.zsh"
+    "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/local_setup.zsh"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/tesol/sitl_ws/install/.rosinstall")
+   "/home/ammar/sitl_ws/install/.rosinstall")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/tesol/sitl_ws/install" TYPE FILE FILES "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/.rosinstall")
+file(INSTALL DESTINATION "/home/ammar/sitl_ws/install" TYPE FILE FILES "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/.rosinstall")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE FILE FILES "/home/tesol/sitl_ws/devel/.private/image_proc/include/image_proc/CropDecimateConfig.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE FILE FILES "/home/ammar/sitl_ws/devel/.private/image_proc/include/image_proc/CropDecimateConfig.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE FILE FILES "/home/tesol/sitl_ws/devel/.private/image_proc/include/image_proc/DebayerConfig.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE FILE FILES "/home/ammar/sitl_ws/devel/.private/image_proc/include/image_proc/DebayerConfig.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE FILE FILES "/home/tesol/sitl_ws/devel/.private/image_proc/include/image_proc/RectifyConfig.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE FILE FILES "/home/ammar/sitl_ws/devel/.private/image_proc/include/image_proc/RectifyConfig.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE FILE FILES "/home/tesol/sitl_ws/devel/.private/image_proc/include/image_proc/ResizeConfig.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE FILE FILES "/home/ammar/sitl_ws/devel/.private/image_proc/include/image_proc/ResizeConfig.h")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages/image_proc" TYPE FILE FILES "/home/tesol/sitl_ws/devel/.private/image_proc/lib/python3/dist-packages/image_proc/__init__.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages/image_proc" TYPE FILE FILES "/home/ammar/sitl_ws/devel/.private/image_proc/lib/python3/dist-packages/image_proc/__init__.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python3" -m compileall "/home/tesol/sitl_ws/devel/.private/image_proc/lib/python3/dist-packages/image_proc/cfg")
+  execute_process(COMMAND "/usr/bin/python3" -m compileall "/home/ammar/sitl_ws/devel/.private/image_proc/lib/python3/dist-packages/image_proc/cfg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages/image_proc" TYPE DIRECTORY FILES "/home/tesol/sitl_ws/devel/.private/image_proc/lib/python3/dist-packages/image_proc/cfg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages/image_proc" TYPE DIRECTORY FILES "/home/ammar/sitl_ws/devel/.private/image_proc/lib/python3/dist-packages/image_proc/cfg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/image_proc.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/image_proc.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/image_proc/cmake" TYPE FILE FILES
-    "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/image_procConfig.cmake"
-    "/home/tesol/sitl_ws/build/image_proc/catkin_generated/installspace/image_procConfig-version.cmake"
+    "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/image_procConfig.cmake"
+    "/home/ammar/sitl_ws/build/image_proc/catkin_generated/installspace/image_procConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/image_proc" TYPE FILE FILES "/home/tesol/sitl_ws/src/image_pipeline/image_proc/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/image_proc" TYPE FILE FILES "/home/ammar/sitl_ws/src/image_pipeline/image_proc/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -178,7 +178,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libimage_proc.so"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/tesol/sitl_ws/devel/.private/image_proc/lib/libimage_proc.so")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib" TYPE SHARED_LIBRARY FILES "/home/ammar/sitl_ws/devel/.private/image_proc/lib/libimage_proc.so")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libimage_proc.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libimage_proc.so")
     file(RPATH_CHANGE
@@ -195,11 +195,11 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE DIRECTORY FILES "/home/tesol/sitl_ws/src/image_pipeline/image_proc/include/image_proc/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/image_proc" TYPE DIRECTORY FILES "/home/ammar/sitl_ws/src/image_pipeline/image_proc/include/image_proc/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/image_proc" TYPE FILE FILES "/home/tesol/sitl_ws/src/image_pipeline/image_proc/nodelet_plugins.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/image_proc" TYPE FILE FILES "/home/ammar/sitl_ws/src/image_pipeline/image_proc/nodelet_plugins.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -209,12 +209,12 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/image_proc/image_proc"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/image_proc" TYPE EXECUTABLE FILES "/home/tesol/sitl_ws/devel/.private/image_proc/lib/image_proc/image_proc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/image_proc" TYPE EXECUTABLE FILES "/home/ammar/sitl_ws/devel/.private/image_proc/lib/image_proc/image_proc")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/image_proc/image_proc" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/image_proc/image_proc")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/image_proc/image_proc"
-         OLD_RPATH "/home/tesol/sitl_ws/devel/.private/image_proc/lib:/opt/ros/noetic/lib:"
+         OLD_RPATH "/home/ammar/sitl_ws/devel/.private/image_proc/lib:/opt/ros/noetic/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/image_proc/image_proc")
@@ -223,13 +223,13 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/image_proc/" TYPE DIRECTORY FILES "/home/tesol/sitl_ws/src/image_pipeline/image_proc/launch")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/image_proc/" TYPE DIRECTORY FILES "/home/ammar/sitl_ws/src/image_pipeline/image_proc/launch")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/tesol/sitl_ws/build/image_proc/gtest/cmake_install.cmake")
-  include("/home/tesol/sitl_ws/build/image_proc/test/cmake_install.cmake")
+  include("/home/ammar/sitl_ws/build/image_proc/gtest/cmake_install.cmake")
+  include("/home/ammar/sitl_ws/build/image_proc/test/cmake_install.cmake")
 
 endif()
 
@@ -241,5 +241,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/tesol/sitl_ws/build/image_proc/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/ammar/sitl_ws/build/image_proc/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

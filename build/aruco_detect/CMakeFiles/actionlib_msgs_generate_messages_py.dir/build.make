@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/aruco_detect
+CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/fiducials/aruco_detect
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/aruco_detect
+CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/aruco_detect
 
 # Utility rule file for actionlib_msgs_generate_messages_py.
 
@@ -67,6 +67,6 @@ CMakeFiles/actionlib_msgs_generate_messages_py.dir/clean:
 .PHONY : CMakeFiles/actionlib_msgs_generate_messages_py.dir/clean
 
 CMakeFiles/actionlib_msgs_generate_messages_py.dir/depend:
-	cd /home/tesol/sitl_ws/build/aruco_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/fiducials/aruco_detect /home/tesol/sitl_ws/src/fiducials/aruco_detect /home/tesol/sitl_ws/build/aruco_detect /home/tesol/sitl_ws/build/aruco_detect /home/tesol/sitl_ws/build/aruco_detect/CMakeFiles/actionlib_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/ammar/sitl_ws/build/aruco_detect && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/fiducials/aruco_detect /home/ammar/sitl_ws/src/fiducials/aruco_detect /home/ammar/sitl_ws/build/aruco_detect /home/ammar/sitl_ws/build/aruco_detect /home/ammar/sitl_ws/build/aruco_detect/CMakeFiles/actionlib_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/actionlib_msgs_generate_messages_py.dir/depend
 

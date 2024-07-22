@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/tesol/sitl_ws/devel/.private/image_rotate/include/image_rotate/ImageRotateConfig.h
+/home/ammar/sitl_ws/devel/.private/image_rotate/include/image_rotate/ImageRotateConfig.h
 dynamic_reconfigure/config_tools.h
 -
 limits
@@ -24,7 +24,7 @@ dynamic_reconfigure/config_init_mutex.h
 boost/any.hpp
 -
 
-/home/tesol/sitl_ws/src/image_pipeline/image_rotate/src/nodelet/image_rotate_nodelet.cpp
+/home/ammar/sitl_ws/src/image_pipeline/image_rotate/src/nodelet/image_rotate_nodelet.cpp
 ros/ros.h
 -
 nodelet/nodelet.h

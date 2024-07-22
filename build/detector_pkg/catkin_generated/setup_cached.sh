@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/tesol/sitl_ws/devel/.private/detector_pkg:$CMAKE_PREFIX_PATH"
-export PWD='/home/tesol/sitl_ws/build/detector_pkg'
-export ROSLISP_PACKAGE_DIRECTORIES="/home/tesol/sitl_ws/devel/.private/detector_pkg/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/tesol/sitl_ws/src/detector_pkg:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/ammar/sitl_ws/devel/.private/detector_pkg:$CMAKE_PREFIX_PATH"
+export PWD='/home/ammar/sitl_ws/build/detector_pkg'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/ammar/sitl_ws/devel/.private/detector_pkg/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/ammar/sitl_ws/src/detector_pkg:$ROS_PACKAGE_PATH"

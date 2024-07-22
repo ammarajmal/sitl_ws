@@ -1,6 +1,6 @@
-devel_space: /home/tesol/sitl_ws/devel
+devel_space: /home/ammar/sitl_ws/devel
 install: false
-install_space: /home/tesol/sitl_ws/install
+install_space: /home/ammar/sitl_ws/install
 profile: default
-source_space: /home/tesol/sitl_ws/src
-workspace: /home/tesol/sitl_ws
+source_space: /home/ammar/sitl_ws/src
+workspace: /home/ammar/sitl_ws

@@ -462,12 +462,12 @@ def py_plotting_multi(file, exp_name):
         plt.show()
 
 
-# if __name__ == '__main__':
-#     file=  ['/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_12_10s_2023-05-30_13-44-04_cam1.csv', 
-#              '/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_12_10s_2023-05-30_13-44-04_cam2.csv']
+if __name__ == '__main__':
+    file=  ['/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_12_10s_2023-05-30_13-44-04_cam1.csv', 
+             '/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_12_10s_2023-05-30_13-44-04_cam2.csv']
     
-#     file3 = ['/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_123_10s_2023-06-02_13-12-27_cam1.csv',
-#              '/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_123_10s_2023-06-02_13-12-27_cam2.csv',
-#              '/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_123_10s_2023-06-02_13-12-27_cam3.csv']
-#     # py_plotting_double(file, exp_name='agcam')
-#     py_plotting_multi(file3, exp_name='agcam')
+    file3 = ['/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_123_10s_2023-06-02_13-12-27_cam1.csv',
+             '/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_123_10s_2023-06-02_13-12-27_cam2.csv',
+             '/home/ammar/ros_ws/src/gige_cam_driver/csvfiles/cameras_123_10s_2023-06-02_13-12-27_cam3.csv']
+    # py_plotting_double(file, exp_name='agcam')
+    py_plotting_multi(file3, exp_name='agcam')

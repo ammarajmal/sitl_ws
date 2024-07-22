@@ -1,8 +1,8 @@
-# Install script for directory: /home/tesol/sitl_ws/src/image_pipeline/image_proc/test
+# Install script for directory: /home/ammar/sitl_ws/src/image_pipeline/image_proc/test
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/tesol/sitl_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/ammar/sitl_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

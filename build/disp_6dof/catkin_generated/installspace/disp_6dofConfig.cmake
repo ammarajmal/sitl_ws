@@ -67,14 +67,14 @@ set(disp_6dof_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(disp_6dof_SOURCE_PREFIX /home/tesol/sitl_ws/src/disp_6dof)
-  set(disp_6dof_DEVEL_PREFIX /home/tesol/sitl_ws/devel/.private/disp_6dof)
+  set(disp_6dof_SOURCE_PREFIX /home/ammar/sitl_ws/src/disp_6dof)
+  set(disp_6dof_DEVEL_PREFIX /home/ammar/sitl_ws/devel/.private/disp_6dof)
   set(disp_6dof_INSTALL_PREFIX "")
   set(disp_6dof_PREFIX ${disp_6dof_DEVEL_PREFIX})
 else()
   set(disp_6dof_SOURCE_PREFIX "")
   set(disp_6dof_DEVEL_PREFIX "")
-  set(disp_6dof_INSTALL_PREFIX /home/tesol/sitl_ws/install)
+  set(disp_6dof_INSTALL_PREFIX /home/ammar/sitl_ws/install)
   set(disp_6dof_PREFIX ${disp_6dof_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/tesol/sitl_ws/install/lib;/home/tesol/sitl_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/ammar/sitl_ws/install/lib;/home/ammar/sitl_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

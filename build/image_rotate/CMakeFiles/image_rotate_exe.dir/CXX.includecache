@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/tesol/sitl_ws/src/image_pipeline/image_rotate/src/node/image_rotate.cpp
+/home/ammar/sitl_ws/src/image_pipeline/image_rotate/src/node/image_rotate.cpp
 ros/ros.h
 -
 nodelet/loader.h

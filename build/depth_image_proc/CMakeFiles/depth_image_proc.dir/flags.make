@@ -6,5 +6,5 @@ CXX_FLAGS = -fPIC
 
 CXX_DEFINES = -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\"depth_image_proc\" -Ddepth_image_proc_EXPORTS
 
-CXX_INCLUDES = -I/home/tesol/sitl_ws/src/image_pipeline/depth_image_proc/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/usr/include/eigen3 -isystem /usr/include/opencv4 
+CXX_INCLUDES = -I/home/ammar/sitl_ws/src/image_pipeline/depth_image_proc/include -I/opt/ros/noetic/include -I/opt/ros/noetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/usr/include/eigen3 -isystem /usr/include/opencv4 
 

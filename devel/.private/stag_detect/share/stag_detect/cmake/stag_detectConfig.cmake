@@ -67,14 +67,14 @@ set(stag_detect_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(stag_detect_SOURCE_PREFIX /home/tesol/sitl_ws/src/fiducials/stag_detect)
-  set(stag_detect_DEVEL_PREFIX /home/tesol/sitl_ws/devel/.private/stag_detect)
+  set(stag_detect_SOURCE_PREFIX /home/ammar/sitl_ws/src/fiducials/stag_detect)
+  set(stag_detect_DEVEL_PREFIX /home/ammar/sitl_ws/devel/.private/stag_detect)
   set(stag_detect_INSTALL_PREFIX "")
   set(stag_detect_PREFIX ${stag_detect_DEVEL_PREFIX})
 else()
   set(stag_detect_SOURCE_PREFIX "")
   set(stag_detect_DEVEL_PREFIX "")
-  set(stag_detect_INSTALL_PREFIX /home/tesol/sitl_ws/install)
+  set(stag_detect_INSTALL_PREFIX /home/ammar/sitl_ws/install)
   set(stag_detect_PREFIX ${stag_detect_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(stag_detect_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/tesol/sitl_ws/devel/.private/stag_detect/include;/home/tesol/sitl_ws/src/fiducials/stag_detect/include;/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag " STREQUAL " ")
+if(NOT "/home/ammar/sitl_ws/devel/.private/stag_detect/include;/home/ammar/sitl_ws/src/fiducials/stag_detect/include;/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag " STREQUAL " ")
   set(stag_detect_INCLUDE_DIRS "")
-  set(_include_dirs "/home/tesol/sitl_ws/devel/.private/stag_detect/include;/home/tesol/sitl_ws/src/fiducials/stag_detect/include;/home/tesol/sitl_ws/src/fiducials/stag_detect/src/stag")
+  set(_include_dirs "/home/ammar/sitl_ws/devel/.private/stag_detect/include;/home/ammar/sitl_ws/src/fiducials/stag_detect/include;/home/ammar/sitl_ws/src/fiducials/stag_detect/src/stag")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/tesol/sitl_ws/devel/.private/stag_detect/include;/home/tesol/sitl_
         message(FATAL_ERROR "Project 'stag_detect' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'stag_detect' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/tesol/sitl_ws/src/fiducials/stag_detect/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'stag_detect' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/ammar/sitl_ws/src/fiducials/stag_detect/${idir}'.  ${_report}")
     endif()
     _list_append_unique(stag_detect_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/tesol/sitl_ws/devel/.private/stag_detect/lib;/home/tesol/sitl_ws/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/ammar/sitl_ws/devel/.private/stag_detect/lib;/home/ammar/sitl_ws/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
