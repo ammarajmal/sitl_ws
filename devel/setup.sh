@@ -1,1 +1,1 @@
-/home/ammar/sitl_ws/devel/.private/catkin_tools_prebuild/setup.sh
+/home/tesol/sitl_ws/devel/.private/catkin_tools_prebuild/setup.sh

@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/fiducials/fiducial_slam
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/fiducials/fiducial_slam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/fiducial_slam
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/fiducial_slam
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -137,9 +137,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/sitl_ws/build/fiducial_slam/CMakeFiles /home/ammar/sitl_ws/build/fiducial_slam/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tesol/sitl_ws/build/fiducial_slam/CMakeFiles /home/tesol/sitl_ws/build/fiducial_slam/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ammar/sitl_ws/build/fiducial_slam/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tesol/sitl_ws/build/fiducial_slam/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

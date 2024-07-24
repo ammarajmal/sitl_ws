@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/image_proc
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/image_pipeline/image_proc
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/image_proc
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/image_proc
 
 # Utility rule file for dynamic_reconfigure_gencfg.
 
@@ -67,6 +67,6 @@ CMakeFiles/dynamic_reconfigure_gencfg.dir/clean:
 .PHONY : CMakeFiles/dynamic_reconfigure_gencfg.dir/clean
 
 CMakeFiles/dynamic_reconfigure_gencfg.dir/depend:
-	cd /home/ammar/sitl_ws/build/image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/image_proc /home/ammar/sitl_ws/src/image_pipeline/image_proc /home/ammar/sitl_ws/build/image_proc /home/ammar/sitl_ws/build/image_proc /home/ammar/sitl_ws/build/image_proc/CMakeFiles/dynamic_reconfigure_gencfg.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/image_proc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/image_pipeline/image_proc /home/tesol/sitl_ws/src/image_pipeline/image_proc /home/tesol/sitl_ws/build/image_proc /home/tesol/sitl_ws/build/image_proc /home/tesol/sitl_ws/build/image_proc/CMakeFiles/dynamic_reconfigure_gencfg.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/dynamic_reconfigure_gencfg.dir/depend
 

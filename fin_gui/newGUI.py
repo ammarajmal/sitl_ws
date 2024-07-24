@@ -76,7 +76,7 @@ class NodeGUI(ctk.CTk):
 
 
         self.board_size = '6x9' # default board size for calibration
-        self.square_size = '0.00725' # default square size for calibration in meters
+        self.square_size = '0.00725' # square size for calibration in meters = 7.25 mm
         self.sq_size_var = tk.StringVar(self, self.square_size)
         self.board_size_var = tk.StringVar(self, self.board_size)
 
@@ -810,8 +810,9 @@ class NodeGUI(ctk.CTk):
         detect_launch_args = [
             f'{self.detect_launch_file}',
             f'camera_select:=sony_cam{cam_num}',
-            f'dictionary:={self.marker_dict}',
-            f'fiducial_len:={self.marker_dim}']
+            f'aruco_dict:={self.marker_dict}',
+            f'aruco_marker_size:={self.marker_dim}', 
+            f'experiment_name:={self.experiment_name}']
         detect_roslaunch_file = [(
             roslaunch.rlutil.resolve_launch_arguments(detect_launch_args)[0],
             detect_launch_args[1:])]

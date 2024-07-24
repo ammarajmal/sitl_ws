@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ammar/sitl_ws/src/image_pipeline/image_rotate
+CMAKE_SOURCE_DIR = /home/tesol/sitl_ws/src/image_pipeline/image_rotate
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ammar/sitl_ws/build/image_rotate
+CMAKE_BINARY_DIR = /home/tesol/sitl_ws/build/image_rotate
 
 # Utility rule file for actionlib_generate_messages_nodejs.
 
@@ -67,6 +67,6 @@ CMakeFiles/actionlib_generate_messages_nodejs.dir/clean:
 .PHONY : CMakeFiles/actionlib_generate_messages_nodejs.dir/clean
 
 CMakeFiles/actionlib_generate_messages_nodejs.dir/depend:
-	cd /home/ammar/sitl_ws/build/image_rotate && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ammar/sitl_ws/src/image_pipeline/image_rotate /home/ammar/sitl_ws/src/image_pipeline/image_rotate /home/ammar/sitl_ws/build/image_rotate /home/ammar/sitl_ws/build/image_rotate /home/ammar/sitl_ws/build/image_rotate/CMakeFiles/actionlib_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tesol/sitl_ws/build/image_rotate && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tesol/sitl_ws/src/image_pipeline/image_rotate /home/tesol/sitl_ws/src/image_pipeline/image_rotate /home/tesol/sitl_ws/build/image_rotate /home/tesol/sitl_ws/build/image_rotate /home/tesol/sitl_ws/build/image_rotate/CMakeFiles/actionlib_generate_messages_nodejs.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/actionlib_generate_messages_nodejs.dir/depend
 

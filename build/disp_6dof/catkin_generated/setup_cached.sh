@@ -7,7 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/ammar/sitl_ws/devel/.private/disp_6dof:$CMAKE_PREFIX_PATH"
-export PWD='/home/ammar/sitl_ws/build/disp_6dof'
-export ROSLISP_PACKAGE_DIRECTORIES="/home/ammar/sitl_ws/devel/.private/disp_6dof/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/ammar/sitl_ws/src/disp_6dof:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/tesol/sitl_ws/devel/.private/disp_6dof:$CMAKE_PREFIX_PATH"
+export PWD='/home/tesol/sitl_ws/build/disp_6dof'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/tesol/sitl_ws/devel/.private/disp_6dof/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
+export ROS_PACKAGE_PATH="/home/tesol/sitl_ws/src/disp_6dof:$ROS_PACKAGE_PATH"

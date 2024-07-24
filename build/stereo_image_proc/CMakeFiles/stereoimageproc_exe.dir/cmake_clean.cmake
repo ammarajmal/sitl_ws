@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/ammar/sitl_ws/devel/.private/stereo_image_proc/lib/stereo_image_proc/stereo_image_proc"
-  "/home/ammar/sitl_ws/devel/.private/stereo_image_proc/lib/stereo_image_proc/stereo_image_proc.pdb"
+  "/home/tesol/sitl_ws/devel/.private/stereo_image_proc/lib/stereo_image_proc/stereo_image_proc"
+  "/home/tesol/sitl_ws/devel/.private/stereo_image_proc/lib/stereo_image_proc/stereo_image_proc.pdb"
   "CMakeFiles/stereoimageproc_exe.dir/src/nodes/stereo_image_proc.cpp.o"
 )
 

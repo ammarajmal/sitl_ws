@@ -1,5 +1,8 @@
 <launch>
     <arg name="camera_select" default="sony_cam1" />
+    <arg name="aruco_dict" default="DICT_4X4_1000" />
+    <arg name="aruco_marker_size" default="0.02" />
+    <arg name="experiment_name" default="Exp1" />
 
     <group if="$(eval camera_select == 'sony_cam1')">
         <include file="$(find detector_pkg)/launch/detect.launch">

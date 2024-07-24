@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/ammar/sitl_ws/devel/.private/image_rotate/lib/image_rotate/image_rotate"
-  "/home/ammar/sitl_ws/devel/.private/image_rotate/lib/image_rotate/image_rotate.pdb"
+  "/home/tesol/sitl_ws/devel/.private/image_rotate/lib/image_rotate/image_rotate"
+  "/home/tesol/sitl_ws/devel/.private/image_rotate/lib/image_rotate/image_rotate.pdb"
   "CMakeFiles/image_rotate_exe.dir/src/node/image_rotate.cpp.o"
 )
 
