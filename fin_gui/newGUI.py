@@ -81,7 +81,7 @@ class NodeGUI(ctk.CTk):
         self.board_size_var = tk.StringVar(self, self.board_size)
 
         self.marker_dim = '0.020' # ARUCO marker dimension in meters
-        self.marker_dict = '0' #  ARUCO marker dictionary (DICT_4X4_50)
+        self.marker_dict = 'DICT_4X4_1000' #  ARUCO marker dictionary (DICT_4X4_50)
         self.marker_dim_var = tk.StringVar(self, self.marker_dim)
         self.marker_dict_var = tk.StringVar(self, self.marker_dict)
 
@@ -811,7 +811,7 @@ class NodeGUI(ctk.CTk):
             f'{self.detect_launch_file}',
             f'camera_select:=sony_cam{cam_num}',
             f'aruco_dict:={self.marker_dict}',
-            f'aruco_marker_size:={self.marker_dim}', 
+            f'aruco_marker_size:={self.marker_dim}',
             f'experiment_name:={self.experiment_name}']
         detect_roslaunch_file = [(
             roslaunch.rlutil.resolve_launch_arguments(detect_launch_args)[0],

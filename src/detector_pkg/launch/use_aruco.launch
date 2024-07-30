@@ -7,18 +7,29 @@
     <group if="$(eval camera_select == 'sony_cam1')">
         <include file="$(find detector_pkg)/launch/detect.launch">
             <arg name="camera_name" value="$(arg camera_select)" />
+            <arg name="aruco_dict" value="$(arg aruco_dict)" />
+            <arg name="aruco_marker_size" value="$(arg aruco_marker_size)" />
+            <arg name="experiment_name" value="$(arg experiment_name)" />
         </include>
     </group>
 
     <group if="$(eval camera_select == 'sony_cam2')">
         <include file="$(find detector_pkg)/launch/detect.launch">
             <arg name="camera_name" value="$(arg camera_select)" />
+            <arg name="aruco_dict" value="$(arg aruco_dict)" />
+            <arg name="aruco_marker_size" value="$(arg aruco_marker_size)" />
+            <arg name="experiment_name" value="$(arg experiment_name)" />
+
         </include>
     </group>
 
     <group if="$(eval camera_select == 'sony_cam3')">
         <include file="$(find detector_pkg)/launch/detect.launch">
             <arg name="camera_name" value="$(arg camera_select)" />
+            <arg name="aruco_dict" value="$(arg aruco_dict)" />
+            <arg name="aruco_marker_size" value="$(arg aruco_marker_size)" />
+            <arg name="experiment_name" value="$(arg experiment_name)" />
+            
         </include>
     </group>
 </launch>

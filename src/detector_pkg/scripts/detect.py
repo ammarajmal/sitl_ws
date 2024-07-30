@@ -14,7 +14,7 @@ class ArucoDetector:
 
         # Load ROS parameters
         self.camera_name = rospy.get_param('~camera_name', 'sony_cam1')
-        aruco_dict_name = rospy.get_param('~aruco_dict', 'DICT_4X4_50')
+        self.aruco_dict_name = rospy.get_param('~aruco_dict', 'DICT_4X4_50')
         self.aruco_marker_size = rospy.get_param('~aruco_marker_size', 0.02)
         self.experiment_name = rospy.get_param('~experiment_name', 'Exp1')
 
@@ -32,7 +32,7 @@ class ArucoDetector:
         self.dist_coeffs = None
 
         # Set up ArUco dictionary and parameters
-        self.aruco_dict = aruco.Dictionary_get(getattr(aruco, aruco_dict_name, aruco.DICT_4X4_50))
+        self.aruco_dict = aruco.Dictionary_get(getattr(aruco, self.aruco_dict_name, aruco.DICT_4X4_50))
         self.parameters = self.setup_aruco_parameters()
 
         # Flags to check the reception of valid messages
