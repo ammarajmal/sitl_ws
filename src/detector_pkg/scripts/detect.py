@@ -42,10 +42,6 @@ class ArucoDetector:
         # Register shutdown hook
         rospy.on_shutdown(self.cleanup)
 
-        # Initialize flag and variable for the fixed rotation matrix
-        self.initial_rotation_matrix = None
-        self.first_detection = True
-
     def setup_aruco_parameters(self):
         parameters = aruco.DetectorParameters_create()
         parameters.adaptiveThreshConstant = 10  # Threshold constant for adaptive thresholding
@@ -89,9 +85,9 @@ class ArucoDetector:
         if ids is not None:
             for corner in corners:
                 cv2.cornerSubPix(gray, corner,
-                                winSize=(5, 5),
+                                winSize=(10, 10),
                                 zeroZone=(-1, -1),
-                                criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 10, 0.01))
+                                criteria=(cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_COUNT, 100, 0.001))
 
             rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, self.aruco_marker_size, self.camera_matrix, self.dist_coeffs)
 
@@ -103,15 +99,9 @@ class ArucoDetector:
                 transform = FiducialTransform()
                 transform.fiducial_id = int(fid)
 
-                if self.first_detection:
-                    self.initial_rotation_matrix, _ = cv2.Rodrigues(rvec)
-                    self.first_detection = False
-
-                world_tvec = self.convert_to_world_frame(self.initial_rotation_matrix, tvec)
-
-                transform.transform.translation.x = world_tvec[0]
-                transform.transform.translation.y = world_tvec[1]
-                transform.transform.translation.z = world_tvec[2]
+                transform.transform.translation.x = tvec[0][0]
+                transform.transform.translation.y = tvec[0][1]
+                transform.transform.translation.z = tvec[0][2]
 
                 rmat, _ = cv2.Rodrigues(rvec)
                 qw, qx, qy, qz = self.rotation_matrix_to_quaternion(rmat)
@@ -129,7 +119,6 @@ class ArucoDetector:
                 if len(corner) == 4:  # Check if there are 4 corners detected
                     transform.object_error = (image_error / cv2.norm(corner[0] - corner[2])) * (np.linalg.norm(tvec) / self.aruco_marker_size)
                 else:
-                    # rospy.logwarn("Only detected %d corners for fiducial %d. Skipping object error calculation.", len(corner), transform.fiducial_id)
                     transform.object_error = -1
 
                 transform_array_msg.transforms.append(transform)
@@ -141,17 +130,8 @@ class ArucoDetector:
             self.transform_pub.publish(transform_array_msg)
 
             # Show the image with detected markers
-            str_cam_num = self.camera_name[-1]
-            
-            cv2.imshow(f"Camera {str_cam_num} Marker", cv_image)
+            cv2.imshow(f"Image window {self.camera_name}", cv_image)
             cv2.waitKey(3)
-
-
-    def convert_to_world_frame(self, R, tvec):
-        world_tvec = -np.dot(R.T, tvec.T)
-        return world_tvec
-
-    
 
     def calculate_reprojection_error(self, rvec, tvec, corner):
         marker_points = np.array([

@@ -62,6 +62,10 @@ class NodeGUI(ctk.CTk):
     
         self.image_width = '640'
         self.image_height = '480'
+        # self.image_height = '720'
+        # self.image_width = '1080'
+        
+        
         self.camera_resolution = self.image_width + 'x' + self.image_height
         self.camera_fps = '60'
 
@@ -886,7 +890,9 @@ class NodeGUI(ctk.CTk):
         ''' Starts the camera process '''
         cam_launch_args = [
             f'{self.cam_launch_file}',
-            f'launch_nuc:=sony_cam{cam_num}']
+            f'launch_nuc:=sony_cam{cam_num}',
+            f'image_width:={self.image_width}',
+            f'image_height:={self.image_height}']
         cam_roslaunch_file = [(
             roslaunch.rlutil.resolve_launch_arguments(cam_launch_args)[0],
             cam_launch_args[1:])]
